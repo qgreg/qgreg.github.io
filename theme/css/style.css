@@ -22,7 +22,6 @@ body {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-size: 13px;
 	margin: 0;
-	text-align: center;
 }
 #container {
 	height: auto;
@@ -36,7 +35,6 @@ body {
 #contents {
 	border-left: 1px solid #ccc;
 	height: auto;
-	margin-left: 199px;
 	padding-bottom: 10px;
 }
 
@@ -168,7 +166,6 @@ body {
 .hentry {
 	height: auto;
 	clear: both;
-	position: relative;
 }
 .hentry:after {
 	clear: both;
@@ -179,7 +176,6 @@ body {
 }
 .hentry .main {
 	border-bottom: 1px dashed #ddd;
-	float: left;
 	line-height: 175%;
 	padding: 29px 5px 15px 15px;
 	text-align: left;
@@ -187,8 +183,6 @@ body {
 .hentry .entry-meta {
 	font-family: 'Oswald', Helvetica, Arial, sans-serif;
 	font-size: 25px;
-	float: left;
-	margin: 35px 0 0 -199px;
 	padding: 0px;
 	text-align: right;
 	text-transform: uppercase;
@@ -206,7 +200,6 @@ body {
 }
 .hentry .entry-meta .comments {
 	color: #36bcab;
-	display: block;
 	font-size: 16px;
 	margin: -4px 0 0;
 }
@@ -287,7 +280,6 @@ b, strong {
 }
 .cat-links,
 .tag-links {
-	display: block;
 }
 .tag-links strong {
 	background: #eee;
@@ -320,7 +312,6 @@ b, strong {
 	border-radius: 26px;
 	color: #000;
 	font-weight: normal;
-	display: inline-block;
 	line-height: 26px;
 	margin: 0 0 1em;
 	text-align: center;
@@ -335,7 +326,6 @@ b, strong {
 	background: #333;
 	border-radius: 3px;
 	color: #eee;
-	display: inline-block;
 	font-weight: normal;
 	margin: 0 0 20px;
 	padding: 3px 14px;
@@ -344,7 +334,6 @@ b, strong {
 	margin: 10px 0;
 }
 .navigation div {
-	display: inline;
 	margin: 0 5px;
 }
 
@@ -848,7 +837,6 @@ article.comment {
 	font-size: 11px;
 	font-weight: bold;
 	height: auto;
-	margin: 50px 0 30px;
 	padding-top: 25px;
 	text-align: center;
 }
