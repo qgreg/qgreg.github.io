@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Greg Quinlan Work &mdash; Archives</title>
+	<title>Greg Quinlan Work &mdash; Articles tagged supervisor</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -44,33 +44,39 @@
 				
 				<div class="page-title">
 <div class="page-title">
-	<h2>Archives for <span>Greg Quinlan Work</span> &hellip;</h2>
+	<h2>Tagged with <span>supervisor</span> &hellip;</h2>
 </div>
 				</div>
 			</div><!--col12-->
 		</div><!--row-->
 	
 		<div id="contents">
-<div class="page type-page status-publish hentry" id="post">
-	<div id="main">
+<div class="post type-post status-publish format-standard hentry category-general" id="post">
+	<div class="entry-meta">
+		<div class="date"><a href="/restarting-supervisor-locally.html">Fri 08 September 2017</a></div>
+		<span class="byline">By <a href="/author/greg-quinlan.html">Greg Quinlan</a></span>
+	</div> <!-- /#entry-meta -->
+	<div class="main">
+		<h2 class="entry-title">
+			<a href="/restarting-supervisor-locally.html" title="Permalink to Restarting Supervisor Locally" rel="bookmark">Restarting Supervisor Locally</a>
+		</h2>
 		<div class="entry-content">
-			<dl>
-			    <dt>Fri 08 September 2017</dt>
-			    <dd><a href="/restarting-supervisor-locally.html">Restarting Supervisor Locally</a></dd>
-			    <dt>Mon 21 August 2017</dt>
-			    <dd><a href="/installing-jupyter-notebooks.html">The Platform for Jupyter Notebooks</a></dd>
-			    <dt>Mon 21 August 2017</dt>
-			    <dd><a href="/using-github-pages-w-pelican.html">Github Pages and Pelican</a></dd>
-			    <dt>Mon 21 August 2017</dt>
-			    <dd><a href="/using-pelican-w-vagrant.html">Github Pages and Pelican</a></dd>
-			    <dt>Mon 21 August 2017</dt>
-			    <dd><a href="/using-jupyter-w-pelican.html">Jupyter and Pelican</a></dd>
-			    <dt>Mon 07 August 2017</dt>
-			    <dd><a href="/pittsburgh-internet.html">Pittsburgh Internet</a></dd>
-			</dl>
-		</div> <!-- /#entry-content -->
-	</div> <!-- /#main -->
-</div> <!-- /#post -->
+			<p>You are developing your program, running it through a daemon via <code>supervisor</code>, serving it locally and testing it on your web browser. When you look at the status of your program, you find it is <code>FATAL</code>. Zip over to your editor, fix the bug, and you come back to restart your program and you get this error.</p>
+<p><code>socket.error: [Errno 98] Address already in use</code></p>
+<p>You've got to stop and start <code>supervisor</code>, but before you're done, you've got to hand kill a process. Stop supervisor:</p>
+<p><code>sudo service supervisor stop</code></p>
+<p>Get the process id of the remaining program:</p>
+<p><code>ps -fA | grep python</code></p>
+<p>Kill the process:</p>
+<p><code>sudo kill &lt;id&gt;</code></p>
+<p>Restart supervisor:</p>
+<p><code>sudo service supervisor start</code></p>
+		</div> <!--/#entry-content-->
+    		<span class="tag-links"><strong>Tagged</strong>
+ <a href="/tag/python.html" rel="tag">python</a>,  <a href="/tag/supervisor.html" rel="tag">supervisor</a>    		</span>
+	</div> <!--/#main-->
+</div>  <!--/#post--><div class="navigation">
+</div>
 		</div>
 
 		<div class="row">
