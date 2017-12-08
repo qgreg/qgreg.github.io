@@ -54,75 +54,6 @@
 		<div id="contents">
 <div class="post type-post status-publish format-standard hentry category-general" id="post">
 	<div class="entry-meta">
-		<div class="date"><a href="/ng-Table-AJAX-and-sorting.html">Fri 08 December 2017</a></div>
-		<span class="byline">By <a href="/author/greg-quinlan.html">Greg Quinlan</a></span>
-			<div class="comments"><a href="/ng-Table-AJAX-and-sorting.html#disqus_thread" title="Comment on ng-Table, AJAX api calls and sorting">comments</a></div>
-	</div> <!-- /#entry-meta -->
-	<div class="main">
-		<h2 class="entry-title">
-			<a href="/ng-Table-AJAX-and-sorting.html" title="Permalink to ng-Table, AJAX api calls and sorting" rel="bookmark">ng-Table, AJAX api calls and sorting</a>
-		</h2>
-		<div class="entry-content">
-			<p>I volunteered to develop an app for a non-profit to allow interactive browsing of the local school districts results from state test scores. My portfolio needed more compelling projects and I wanted to build skills on the front end, particularly with TypeScript. With advice from friends, I ended up working with Angularjs, and for this particular post, I chose to make tables with <a href="http://ng-table.com/">ng-Table</a>. </p>
-<p>Have you ever sat in front of some code, a collection of finely crafted functions and variable definitions that from the best of your knowledge should work swimmingly, but when applied to your browser or server, just doesn't? In my experience coding, the key to this coding enterprise is how you proceed when what you expect to happen crashed headlong into what does NOT happen. Then, once it works, and everything is all better, can you explain your steps and what was wrong-headed about your previous mind-frame, now that you understand how it all works. Attempting to capture this shift in thinking is the reason I write these posts, with the hope that I might help another in the future.</p>
-<p>First a word about why I selected ng-Table. I looked at smart-table, ng-Table and uigrid, in that order. I am wary of TypeScript and have not found reason to install npm and bower locally. smart-table was eager for me to install it locally, but was courteous in noting that ng-Table and uigrid also existed and might be good for some purposes. The docs also made it clear that a CDN for smart-table wasn't handy. I quickly moved on to review the other two packages.</p>
-<p>ng-Table offered a CDN and initially I thought the structure of this package made a lot of sense to me. As the title of the post suggests, I eventually ran into issues with table sorting and asynchronous loading of data from my api. In a huff of frustration, I went dashing over to uigrid to see what it offered. UIGrid is notably for the brevity of the HTML you write for it. At first this was thrilling, but once I realized that the concise HTML was a trade off for complexity in the TypeScript, I decided it was rash to abandon ng-Table.</p>
-<h1>Why Won't My Response Data Sort?</h1>
-<p>Getting a table up and running went pretty quickly. I had used ng-repeat elsewhere in the app to take a similar set of AJAX response data to plot multiple charts, so using ng-repeat in a <code>&lt;tr&gt;</code> tag rendered the desired data. However, while the data was in place, the built in sorting controls didn't work. A quick trip to Stackoverflow <a href="https://stackoverflow.com/questions/26237405/ng-table-sorting-not-working">ng-table sorting not working</a> revealed that I needed to process the JSON response through $data in the ngTableParams class.</p>
-<p>The combination of not understanding the getData function within ngTableParams, not loading the controller in an appropriate spot, and needing to make a Angular deep copy of the response data kept me from a working solution for too long.</p>
-<h1>Where Are You Running That Controller?</h1>
-<p>At first, I had the TypeScript Angularjs Controller run with the route for the template. The page has cascading if statements based on making selections on drop downs. Then it hit me! When the ng-if condition was met, the ng-init wasn't doing what I thought it was supposed to be doing. I put a separate controller for the table in a div in the template that gets brought in for the table. </p>
-<h1>Are You Understanding GetData?</h1>
-<p>As I struggled to get my code to work, I was having trouble getting $data to render the response data in the table. <a href="http://ng-table.com/#/loading/demo-external-array">ng-Table example: Loading data - External arry</a> models a solution. I tried to adapt my original version, one that worked with a ng-repeat that didn't use $data, but I made no progress. Eventually I gave into starting with the example code, and working my details, specifically the dataFactor.getListScores service, into the example:</p>
-<div class="highlight"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">tableParams</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NgTableParams</span><span class="p">(</span><span class="nx">tabParams</span><span class="p">,</span> <span class="p">{</span>
-  <span class="nx">getData</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ajax request to api</span>
-    <span class="k">return</span> <span class="nx">dataFactory</span><span class="p">.</span><span class="nx">getListScores</span><span class="p">(</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">year</span><span class="p">,</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">grade</span><span class="p">,</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">subject</span><span class="p">,</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">subset</span>
-      <span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">params</span><span class="p">.</span><span class="nx">total</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">inlineCount</span><span class="p">);</span> <span class="c1">// recal. page nav controls</span>
-          <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">];</span>
-      <span class="p">});</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-
-<p>This code successfully rendered the table, so ngTableParams populated $data successfully, but again the built-in sorting tools did not work. </p>
-<p>ng-Table provides examples and API comments as documentation. If you were struggling, like I was, you might find these docs sparse. While you can see how getData is used in the example above, there's no supporting details to help the novice understand how this work. The best I can glean from Stackoverflow is that getData overrides something in the code about how the $data gets handled. The result is that the AJAX service gets called every time a sort control is used. I expect more of the right code could ask provide arguments for the AJAX code to require the sort. From other examples, it was clear that client-side data data was being sorted by ng-Table perfectly.</p>
-<p>@ How To Get Server JSON Once And Have ng-Table Sort It locally</p>
-<p>I opted not to delve more about how ngTableParam might inform AJAX calls of sorting requests. Instead, I was determined to detach the ngTableParam definition from the server AJAX call service.</p>
-<div class="highlight"><pre><span></span><span class="nx">$scope</span><span class="p">.</span><span class="nx">getListScores</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">dataFactory</span><span class="p">.</span><span class="nx">getListScores</span><span class="p">(</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">year</span><span class="p">,</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">grade</span><span class="p">,</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">subject</span><span class="p">,</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">pssa</span><span class="p">.</span><span class="nx">subset</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
-      <span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="s1">&#39;Retrieved score!&#39;</span><span class="p">;</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">scores</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">theData</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">scores</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]);</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">tableParams</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NgTableParams</span><span class="p">(</span>
-            <span class="nx">tabParams</span><span class="p">,</span> <span class="p">{</span><span class="nx">dataset</span><span class="o">:</span> <span class="nx">theData</span><span class="p">});</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;theData&quot;</span> <span class="o">+</span> <span class="nx">theData</span><span class="p">)</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;scores[data]&quot;</span> <span class="o">+</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">scores</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span>
-      <span class="p">}</span>
-    <span class="p">)</span>
-<span class="p">};</span>
-</pre></div>
-
-
-<p>Here I use a function to call the service and upon receiving the response, defining ngTableParam. By using the angular.copy, I make a deep copy of the response so ngTableParam can modify the response independently. Credit goes to <a href="https://stackoverflow.com/questions/24079612/angularjs-ng-table-with-ajax-data-source-sorting-and-filtering">this Stackoverflow entry</a>.</p>
-		</div> <!--/#entry-content-->
-    		<span class="tag-links"><strong>Tagged</strong>
- <a href="/tag/python.html" rel="tag">python</a>,  <a href="/tag/supervisor.html" rel="tag">supervisor</a>    		</span>
-	</div> <!--/#main-->
-</div>  <!--/#post--><div class="post type-post status-publish format-standard hentry category-general" id="post">
-	<div class="entry-meta">
 		<div class="date"><a href="/restarting-supervisor-locally.html">Fri 08 September 2017</a></div>
 		<span class="byline">By <a href="/author/greg-quinlan.html">Greg Quinlan</a></span>
 			<div class="comments"><a href="/restarting-supervisor-locally.html#disqus_thread" title="Comment on Restarting Supervisor Locally">comments</a></div>
@@ -156,7 +87,7 @@
 					
 					<p>Powered by <a href="http://getpelican.com">Pelican</a>, theme by <a href="http://bunnyman.info">tBunnyMan</a>.</p>
 <script type="text/javascript">
-    var disqus_shortname = 'gregquinlan-work';
+    var disqus_shortname = 'https://gregquinlan-work.disqus.com/';
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
