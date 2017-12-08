@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Greg Quinlan Work &mdash; Articles tagged supervisor</title>
+	<title>Greg Quinlan Work &mdash; ng-Table, AJAX api calls and sorting</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -43,14 +43,12 @@
 				</div><!-- /#menu -->
 				
 				<div class="page-title">
-<div class="page-title">
-	<h2>Tagged with <span>supervisor</span> &hellip;</h2>
-</div>
 				</div>
 			</div><!--col12-->
 		</div><!--row-->
 	
 		<div id="contents">
+
 <div class="post type-post status-publish format-standard hentry category-general" id="post">
 	<div class="entry-meta">
 		<div class="date"><a href="/ng-Table-AJAX-and-sorting.html">Fri 08 December 2017</a></div>
@@ -120,33 +118,25 @@
     		<span class="tag-links"><strong>Tagged</strong>
  <a href="/tag/python.html" rel="tag">python</a>,  <a href="/tag/supervisor.html" rel="tag">supervisor</a>    		</span>
 	</div> <!--/#main-->
-</div>  <!--/#post--><div class="post type-post status-publish format-standard hentry category-general" id="post">
-	<div class="entry-meta">
-		<div class="date"><a href="/restarting-supervisor-locally.html">Fri 08 September 2017</a></div>
-		<span class="byline">By <a href="/author/greg-quinlan.html">Greg Quinlan</a></span>
-			<div class="comments"><a href="/restarting-supervisor-locally.html#disqus_thread" title="Comment on Restarting Supervisor Locally">comments</a></div>
-	</div> <!-- /#entry-meta -->
-	<div class="main">
-		<h2 class="entry-title">
-			<a href="/restarting-supervisor-locally.html" title="Permalink to Restarting Supervisor Locally" rel="bookmark">Restarting Supervisor Locally</a>
-		</h2>
-		<div class="entry-content">
-			<p>You are developing your program, running it through a daemon via <code>supervisor</code>, serving it locally and testing it on your web browser. When you look at the status of your program, you find it is <code>FATAL</code>. Zip over to your editor, fix the bug, and you come back to restart your program and you get this error.</p>
-<p><code>socket.error: [Errno 98] Address already in use</code></p>
-<p>You've got to stop and start <code>supervisor</code>, but before you're done, you've got to hand kill a process. Stop supervisor:</p>
-<p><code>sudo service supervisor stop</code></p>
-<p>Get the process id of the remaining program:</p>
-<p><code>ps -fA | grep python</code></p>
-<p>Kill the process:</p>
-<p><code>sudo kill &lt;id&gt;</code></p>
-<p>Restart supervisor:</p>
-<p><code>sudo service supervisor start</code></p>
-		</div> <!--/#entry-content-->
-    		<span class="tag-links"><strong>Tagged</strong>
- <a href="/tag/python.html" rel="tag">python</a>,  <a href="/tag/supervisor.html" rel="tag">supervisor</a>    		</span>
-	</div> <!--/#main-->
-</div>  <!--/#post--><div class="navigation">
-</div>
+</div>  <!--/#post-->
+	<div id="comments">
+		<div id="respond">
+			<div id="disqus_thread"></div>
+	        <script type="text/javascript">
+	            var disqus_shortname = 'gregquinlan-work';
+	
+	            /* * * DON'T EDIT BELOW THIS LINE * * */
+	            (function() {
+	                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+	                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	            })();
+	        </script>
+	        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		</div><!-- #respond -->					
+</div><!-- #comments -->
+
 		</div>
 
 		<div class="row">
