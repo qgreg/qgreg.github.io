@@ -846,50 +846,23 @@ article.comment {
 }
 
 /* Homepage refresh */
-.menu-inline {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px 18px;
-	justify-content: flex-end;
+.homepage-header {
+	min-height: 0 !important;
+	padding-top: 56px !important;
 }
-.menu-inline li {
-	float: none !important;
-}
-.profile-rail {
-	padding: 32px 18px 0 0;
-}
-.profile-label {
-	color: #000;
-	font-family: 'Oswald', Helvetica, Arial, sans-serif;
-	font-size: 17px;
-	letter-spacing: 0.5px;
-	margin-bottom: 4px;
-	text-transform: uppercase;
-}
-.profile-copy {
-	font-size: 14px;
-	line-height: 1.7;
-	margin-bottom: 24px;
+.homepage-contents {
+	border-left: none !important;
+	padding-bottom: 40px;
 }
 .hero-section {
-	padding: 26px 0 20px;
-}
-.hero-title {
-	color: #000;
-	font-family: 'Oswald', Helvetica, Arial, sans-serif;
-	font-size: 42px;
-	line-height: 1.15;
-	margin-bottom: 18px;
-	text-transform: uppercase;
+	padding: 20px 0 10px;
 }
 .hero-summary {
-	font-size: 18px;
-	line-height: 1.8;
-	margin-bottom: 20px;
-	max-width: 900px;
-}
-.hero-actions {
-	margin-bottom: 0;
+	color: #222;
+	font-size: 21px;
+	line-height: 1.65;
+	margin-bottom: 12px;
+	max-width: 860px;
 }
 .button-link {
 	background: #36bcab;
@@ -909,7 +882,7 @@ article.comment {
 	text-decoration: none;
 }
 .content-section {
-	padding-bottom: 24px;
+	padding-bottom: 18px;
 }
 .skills-list {
 	display: flex;
@@ -932,7 +905,7 @@ article.comment {
 .project-card,
 .resume-item {
 	border-top: 1px solid #ddd;
-	padding: 18px 0 14px;
+	padding: 16px 0 12px;
 }
 .project-card h3,
 .resume-item h3 {
@@ -945,43 +918,42 @@ article.comment {
 .project-card p,
 .resume-item p {
 	font-size: 16px;
-	line-height: 1.75;
-	margin-bottom: 10px;
+	line-height: 1.7;
+	margin-bottom: 0;
 }
-.project-card-muted {
-	opacity: 0.8;
+.links-section {
+	padding-top: 8px;
+}
+.links-list {
+	margin-bottom: 0;
+}
+.experimental-card p {
+	color: #444;
 }
 
 @media (max-width: 767px) {
-	#header {
-		min-height: 0;
-		padding-top: 40px;
-	}
 	#site-title {
-		font-size: 50px;
-	}
-	#menu {
-		padding: 10px 0;
-		text-align: left;
-	}
-	.menu-inline {
-		justify-content: flex-start;
-	}
-	#contents {
-		border-left: none;
-	}
-	.profile-rail {
-		padding: 10px 0 0;
-	}
-	.hero-title {
-		font-size: 30px;
+		font-size: 44px;
 	}
 	.hero-summary {
-		font-size: 16px;
+		font-size: 18px;
+		line-height: 1.6;
 	}
 	.project-card h3,
 	.resume-item h3 {
 		font-size: 22px;
+	}
+	.skills-list {
+		gap: 10px;
+	}
+	.skills-list li {
+		font-size: 14px;
+		width: 100%;
+	}
+	.button-link {
+		display: block;
+		margin-right: 0;
+		text-align: center;
 	}
 }
 
