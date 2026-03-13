@@ -864,6 +864,9 @@ article.comment {
 	margin-bottom: 12px;
 	max-width: 860px;
 }
+.hero-actions {
+	margin-bottom: 0;
+}
 .button-link {
 	background: #36bcab;
 	border-radius: 3px;
@@ -875,6 +878,15 @@ article.comment {
 	padding: 10px 14px;
 	text-decoration: none;
 	text-transform: uppercase;
+}
+.button-link-primary {
+	background: #36bcab;
+	color: #fff;
+}
+.button-link-secondary {
+	background: transparent;
+	border: 1px solid #bbb;
+	color: #222;
 }
 .button-link:hover {
 	background: #222;
@@ -911,9 +923,9 @@ article.comment {
 .resume-item h3 {
 	color: #000;
 	font-family: 'Oswald', Helvetica, Arial, sans-serif;
-	font-size: 28px;
+	font-size: 24px;
 	margin-bottom: 12px;
-	text-transform: uppercase;
+	text-transform: none;
 }
 .project-card p,
 .resume-item p {
@@ -921,11 +933,19 @@ article.comment {
 	line-height: 1.7;
 	margin-bottom: 0;
 }
-.links-section {
+.content-section-experimental {
+	margin-top: 8px;
 	padding-top: 8px;
 }
-.links-list {
-	margin-bottom: 0;
+.content-section-experimental .entry-title {
+	color: #777;
+	font-size: 20px;
+}
+.experimental-card {
+	opacity: 0.88;
+}
+.experimental-card h3 {
+	font-size: 20px;
 }
 .experimental-card p {
 	color: #444;
@@ -942,6 +962,9 @@ article.comment {
 	.project-card h3,
 	.resume-item h3 {
 		font-size: 22px;
+	}
+	.experimental-card h3 {
+		font-size: 19px;
 	}
 	.skills-list {
 		gap: 10px;
