@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoPaylot — Medical Copayment Submitter</title>
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <!-- React & Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Emotion & MUI -->
+  <script src="https://unpkg.com/@emotion/react@11/umd/emotion-react.umd.min.js"></script>
+  <script src="https://unpkg.com/@emotion/styled@11/umd/emotion-styled.umd.min.js"></script>
+  <script src="https://unpkg.com/@mui/material@5/umd/material-ui.production.min.js" crossorigin></script>
+</head>
+<body style="margin: 0; background-color: #0f172a;">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const { 
+      Box, Button, Card, CardContent, Container, TextField, 
+      Typography, Alert, CircularProgress 
+    } = MaterialUI;
+
+    function CoPaylotApp() {
+      const [vendor, setVendor] = useState('');
+      const [amount, setAmount] = useState('');
+      const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+      const [file, setFile] = useState(null);
+      const [loading, setLoading] = useState(false);
+      const [status, setStatus] = useState(null);
+
+      const BACKEND_URL = 'https://YOUR_CLOUD_RUN_SERVICE_URL/api/receipts';
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!file) {
+          setStatus({ type: 'error', message: 'Please attach or snap a receipt photo.' });
+          return;
+        }
+
+        setLoading(true);
+        setStatus(null);
+
+        const reader = new FileReader();
+        reader.onload = async function() {
+          const base64String = reader.result.split(',')[1];
+          const payload = {
+            vendor,
+            amount,
+            date,
+            imageBase64: base64String,
+            mimeType: file.type
+          };
+
+          try {
+            const response = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+              setStatus({ type: 'success', message: 'Receipt sent successfully to CoPaylot pipeline!' });
+              setVendor('');
+              setAmount('');
+              setDate(new Date().toISOString().split('T')[0]);
+              setFile(null);
+              document.getElementById('camera-input').value = '';
+            } else {
+              throw new Error(result.error || 'Failed to submit');
+            }
+          } catch (err) {
+            setStatus({ type: 'error', message: 'Error: ' + err.message + ' (Note: Update BACKEND_URL)' });
+          } finally {
+            setLoading(false);
+          }
+        };
+        reader.readAsDataURL(file);
+      };
+
+      return (
+        <Container maxWidth="xs" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+          <Card sx={{ width: '100%', bgcolor: '#1e293b', color: '#f8fafc', boxShadow: 6, borderRadius: 3, p: 2 }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Typography variant="h5" component="h1" sx={{ fontWeight: 'bold', color: '#38bdf8' }}>
+                  CoPaylot
+                </Typography>
+                <Typography variant="caption" sx={{ bgcolor: '#0369a1', color: '#bae6fd', px: 1.5, py: 0.5, borderRadius: 2, fontWeight: 500 }}>
+                  MUI Edition
+                </Typography>
+              </Box>
+
+              <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+                <TextField
+                  label="Provider / Vendor"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={vendor}
+                  onChange={(e) => setVendor(e.target.value)}
+                  placeholder="e.g., UPMC, Dental Clinic"
+                  InputLabelProps={{ style: { color: '#94a3b8' } }}
+                  InputProps={{ style: { color: '#f8fafc', backgroundColor: '#0f172a', borderRadius: '8px' } }}
+                  sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#475569' }, '&:hover fieldset': { borderColor: '#38bdf8' }, '&.Mui-focused fieldset': { borderColor: '#38bdf8' } } }}
+                />
+
+                <TextField
+                  label="Amount ($)"
+                  type="number"
+                  inputProps={{ step: '0.01' }}
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0.00"
+                  InputLabelProps={{ style: { color: '#94a3b8' } }}
+                  InputProps={{ style: { color: '#f8fafc', backgroundColor: '#0f172a', borderRadius: '8px' } }}
+                  sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#475569' }, '&:hover fieldset': { borderColor: '#38bdf8' }, '&.Mui-focused fieldset': { borderColor: '#38bdf8' } } }}
+                />
+
+                <TextField
+                  label="Date of Service"
+                  type="date"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  InputLabelProps={{ shrink: true, style: { color: '#94a3b8' } }}
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  InputProps={{ style: { color: '#f8fafc', backgroundColor: '#0f172a', borderRadius: '8px' } }}
+                  sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#475569' }, '&:hover fieldset': { borderColor: '#38bdf8' }, '&.Mui-focused fieldset': { borderColor: '#38bdf8' } } }}
+                />
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Typography variant="body2" sx={{ color: '#94a3b8' }}>Receipt Photo</Typography>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    sx={{ bgcolor: '#0284c7', '&:hover': { bgcolor: '#0ea5e9' }, textTransform: 'none', py: 1.5, borderRadius: '8px', fontWeight: 'bold' }}
+                  >
+                    {file ? file.name : 'Take Photo / Choose File'}
+                    <input
+                      id="camera-input"
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      hidden
+                      required
+                      onChange={(e) => setFile(e.target.files[0])}
+                    />
+                  </Button>
+                </Box>
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={loading}
+                  sx={{ bgcolor: '#0284c7', '&:hover': { bgcolor: '#0ea5e9' }, textTransform: 'none', py: 1.5, borderRadius: '8px', fontWeight: 'bold', fontSize: '1rem', mt: 1 }}
+                >
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Send for Approval'}
+                </Button>
+              </Box>
+
+              {status && (
+                <Alert severity={status.type} sx={{ mt: 3, bgcolor: status.type === 'success' ? '#064e3b' : '#7f1d1d', color: '#f8fafc', '& .MuiAlert-icon': { color: status.type === 'success' ? '#34d399' : '#f87171' } }}>
+                  {status.message}
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+        </Container>
+      );
+    }
+
+    ReactDOM.render(<CoPaylotApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>
