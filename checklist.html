@@ -26,7 +26,6 @@
   body{
     margin:0;
     background:var(--paper);
-    /* ruled paper */
     background-image:linear-gradient(var(--rule) 1px, transparent 1px);
     background-size:100% 32px;
     color:var(--ink);
@@ -46,56 +45,30 @@
   }
   .sheet::before{
     content:"";
-    position:absolute;
-    top:0;bottom:0;left:26px;
-    width:1px;
-    background:var(--margin-line);
-    opacity:.55;
+    position:absolute;top:0;bottom:0;left:26px;width:1px;
+    background:var(--margin-line);opacity:.55;
   }
 
   h1{
     font-family:Fraunces, Georgia, serif;
     font-weight:600;
     font-size:clamp(28px,6vw,40px);
-    line-height:1.15;
-    margin:0;
-    outline:none;
+    line-height:1.15;margin:0;outline:none;
   }
   h1:empty::before{content:attr(data-placeholder);color:#B9B1A3}
   h1:focus-visible{background:linear-gradient(transparent 62%, var(--highlighter) 62%)}
-  .today{
-    margin:6px 0 0;
-    font-size:14px;
-    color:var(--ink-soft);
-  }
+  .today{margin:6px 0 0;font-size:14px;color:var(--ink-soft)}
   .title-hint{margin:2px 0 0;font-size:13px;color:#948C7E}
 
-  /* last seven days */
-  .week{
-    display:flex;
-    gap:10px;
-    margin:22px 0 0;
-    padding:0;
-    list-style:none;
-  }
+  .week{display:flex;gap:10px;margin:22px 0 0;padding:0;list-style:none}
   .week li{
-    flex:1 1 0;
-    text-align:center;
-    font-size:11px;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    color:#A79E90;
-    border:0;
-    padding:0;
-    display:block;
+    flex:1 1 0;text-align:center;
+    font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+    color:#A79E90;border:0;padding:0;display:block;
   }
   .week .dot{
-    display:block;
-    height:26px;
-    margin:4px 0 0;
-    border:2px solid var(--rule);
-    border-radius:3px;
-    background:#fff;
+    display:block;height:26px;margin:4px 0 0;
+    border:2px solid var(--rule);border-radius:3px;background:#fff;
   }
   .week .dot.partial{
     border-color:var(--done);
@@ -106,126 +79,103 @@
   .week li.is-today .dot{box-shadow:0 0 0 2px rgba(57,57,123,.25)}
 
   .count{
-    margin:22px 0 0;
-    font-size:13px;
-    font-weight:500;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--indigo);
+    margin:22px 0 0;font-size:13px;font-weight:500;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--indigo);
   }
   .streak{color:var(--ink-soft);text-transform:none;letter-spacing:0;font-weight:400}
-  .bar{height:4px;background:var(--rule);margin:8px 0 22px;overflow:hidden}
+  .bar{height:4px;background:var(--rule);margin:8px 0 26px;overflow:hidden}
   .bar span{display:block;height:100%;width:0;background:var(--done);transition:width .25s ease}
+
+  /* sections */
+  .section{margin-bottom:26px}
+  .section-head{
+    display:flex;align-items:baseline;gap:10px;
+    margin:0 0 2px;
+  }
+  .section-head h2{
+    font-family:Fraunces, Georgia, serif;
+    font-weight:600;font-size:17px;margin:0;outline:none;
+    flex:0 1 auto;
+  }
+  .section-head .tally{
+    font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+    color:#A79E90;flex:0 0 auto;
+  }
+  .section.complete .section-head .tally{color:var(--done)}
+  .section-head h2:focus-visible{background:linear-gradient(transparent 66%, var(--highlighter) 66%)}
 
   ul.items{list-style:none;margin:0;padding:0}
   ul.items li{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    padding:10px 0;
-    border-bottom:1px solid var(--rule);
+    display:flex;align-items:flex-start;gap:12px;
+    padding:10px 0;border-bottom:1px solid var(--rule);
   }
   ul.items li:first-child{border-top:1px solid var(--rule)}
 
   input[type=checkbox]{
     appearance:none;-webkit-appearance:none;
-    flex:0 0 auto;
-    width:20px;height:20px;
-    margin:3px 0 0;
-    border:2px solid var(--indigo);
-    border-radius:3px;
-    background:#fff;
-    cursor:pointer;
-    position:relative;
+    flex:0 0 auto;width:20px;height:20px;margin:3px 0 0;
+    border:2px solid var(--indigo);border-radius:3px;background:#fff;
+    cursor:pointer;position:relative;
     transition:background-color .15s ease, border-color .15s ease;
   }
   input[type=checkbox]:checked{background:var(--done);border-color:var(--done)}
   input[type=checkbox]:checked::after{
-    content:"";
-    position:absolute;
-    left:5px;top:1px;
-    width:6px;height:11px;
-    border:solid #fff;
-    border-width:0 2.5px 2.5px 0;
+    content:"";position:absolute;left:5px;top:1px;
+    width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;
     transform:rotate(42deg);
   }
   input[type=checkbox]:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
 
   .body{flex:1 1 auto;min-width:0}
-  .name{
-    display:block;
-    font-size:16px;
-    word-break:break-word;
-    outline:none;
-    padding:1px 2px;
-    border-radius:2px;
-  }
-  .detail{
-    display:block;
-    font-size:13px;
-    color:var(--ink-soft);
-    word-break:break-word;
-    outline:none;
-    padding:1px 2px;
-    border-radius:2px;
-  }
+  .name{display:block;font-size:16px;word-break:break-word;outline:none;padding:1px 2px;border-radius:2px}
+  .detail{display:block;font-size:13px;color:var(--ink-soft);word-break:break-word;outline:none;padding:1px 2px;border-radius:2px}
   .detail:empty::before{content:attr(data-placeholder);color:#C3BBAC}
   .name:focus-visible,.detail:focus-visible{background:linear-gradient(transparent 66%, var(--highlighter) 66%)}
   ul.items li.done .name{
-    color:var(--ink-soft);
-    text-decoration:line-through;
-    text-decoration-color:var(--done);
-    text-decoration-thickness:2px;
+    color:var(--ink-soft);text-decoration:line-through;
+    text-decoration-color:var(--done);text-decoration-thickness:2px;
   }
 
   .remove{
-    flex:0 0 auto;
-    border:0;background:none;
-    color:#C3BBAC;
-    font-size:20px;line-height:1;
-    padding:2px 4px;cursor:pointer;border-radius:3px;
+    flex:0 0 auto;border:0;background:none;color:#C3BBAC;
+    font-size:20px;line-height:1;padding:2px 4px;cursor:pointer;border-radius:3px;
   }
   .remove:hover,.remove:focus-visible{color:var(--margin-line)}
   .remove:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
 
   .empty{
-    margin:0;padding:26px 0;
-    color:var(--ink-soft);font-size:15px;
-    border-top:1px solid var(--rule);
-    border-bottom:1px solid var(--rule);
+    margin:0;padding:26px 0;color:var(--ink-soft);font-size:15px;
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
   }
 
   form{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
   form input[type=text]{
-    font:inherit;font-size:16px;
-    padding:11px 12px;
+    font:inherit;font-size:16px;padding:11px 12px;
     color:var(--ink);background:#fff;
     border:1px solid var(--rule);border-radius:3px;
   }
-  #new-name{flex:2 1 220px;min-width:0}
-  #new-detail{flex:1 1 130px;min-width:0}
+  #new-name{flex:3 1 190px;min-width:0}
+  #new-detail{flex:2 1 130px;min-width:0}
+  #new-group{flex:2 1 130px;min-width:0}
   form input::placeholder{color:#B9B1A3}
   form input:focus-visible{outline:2px solid var(--indigo);outline-offset:-1px;border-color:var(--indigo)}
   button.add{
-    flex:0 0 auto;
-    font:inherit;font-weight:600;font-size:14px;
+    flex:0 0 auto;font:inherit;font-weight:600;font-size:14px;
     letter-spacing:.04em;text-transform:uppercase;
-    color:#fff;background:var(--indigo);
-    border:0;border-radius:3px;padding:11px 18px;cursor:pointer;
+    color:#fff;background:var(--indigo);border:0;border-radius:3px;
+    padding:11px 18px;cursor:pointer;
   }
   button.add:hover{background:#2C2C63}
   button.add:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
 
   .tools{
     display:flex;flex-wrap:wrap;gap:18px;
-    margin-top:20px;padding-top:16px;
-    border-top:1px dashed var(--rule);
+    margin-top:20px;padding-top:16px;border-top:1px dashed var(--rule);
   }
   .tools button{
     font:inherit;font-size:13px;font-weight:500;
-    color:var(--indigo);background:none;border:0;
-    padding:2px 0;cursor:pointer;
-    border-bottom:2px solid var(--highlighter);
+    color:var(--indigo);background:none;border:0;padding:2px 0;
+    cursor:pointer;border-bottom:2px solid var(--highlighter);
   }
   .tools button:hover{color:var(--margin-line);border-bottom-color:var(--margin-line)}
   .tools button:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
@@ -248,26 +198,30 @@
     <h1 id="list-title" contenteditable="true" spellcheck="false"
         data-placeholder="Untitled" aria-label="List title, editable">PT Checklist</h1>
     <p class="today" id="today-line"></p>
-    <p class="title-hint">Click the title, an exercise, or its sets and reps to edit.</p>
+    <p class="title-hint">Click the title, a section, an exercise, or its sets and reps to edit.</p>
 
     <ul class="week" id="week" aria-label="Last seven days"></ul>
 
     <p class="count" id="count" aria-live="polite">0 of 0 done today</p>
     <div class="bar" aria-hidden="true"><span id="bar-fill"></span></div>
 
-    <ul class="items" id="items"></ul>
+    <div id="program"></div>
     <p class="empty" id="empty">No exercises yet. Add the first one below.</p>
 
     <form id="add-form">
       <label for="new-name" style="position:absolute;left:-9999px">Exercise</label>
       <input id="new-name" type="text" placeholder="Exercise" autocomplete="off">
       <label for="new-detail" style="position:absolute;left:-9999px">Sets and reps</label>
-      <input id="new-detail" type="text" placeholder="3 × 10 each side" autocomplete="off">
+      <input id="new-detail" type="text" placeholder="3 × 10" autocomplete="off">
+      <label for="new-group" style="position:absolute;left:-9999px">Section</label>
+      <input id="new-group" type="text" placeholder="Section" autocomplete="off" list="group-names">
+      <datalist id="group-names"></datalist>
       <button class="add" type="submit">Add</button>
     </form>
 
     <div class="tools">
       <button type="button" id="reset-today">Uncheck today</button>
+      <button type="button" id="restore">Restore my program</button>
       <button type="button" id="clear-history">Clear history</button>
       <button type="button" id="start-over">Start over</button>
     </div>
@@ -283,22 +237,40 @@
   var KEEP_DAYS = 120;
   var DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  // The starting program. "Restore my program" puts these back.
+  var PROGRAM = [
+    { group: 'Standing',        name: 'Wall slides',             detail: '2 × 10' },
+    { group: 'Standing',        name: 'Ankle ball raises',       detail: '3 × 10' },
+    { group: 'Balance circuit', name: 'Tandem stance',           detail: '2 × 30 sec' },
+    { group: 'Balance circuit', name: 'Single-leg balance',      detail: '2 × 30 sec' },
+    { group: 'Balance circuit', name: 'Ball against wall, one foot', detail: '2 × 30 sec each side' },
+    { group: 'Floor circuit',   name: 'Supine arm arcs',         detail: '3 × 10' },
+    { group: 'Floor circuit',   name: 'Open book',               detail: '3 × 10 per side' },
+    { group: 'Floor circuit',   name: 'Side-lying leg lifts',    detail: '3 × 10 per side' },
+    { group: 'Floor circuit',   name: 'Bridges',                 detail: '3 × 10' },
+    { group: 'Floor circuit',   name: 'Chest opener',            detail: '3 × 30 sec' },
+    { group: 'Floor circuit',   name: 'Chin tucks',              detail: '10 × 10' }
+  ];
+
   var titleEl = document.getElementById('list-title');
   var todayLineEl = document.getElementById('today-line');
   var weekEl = document.getElementById('week');
-  var listEl = document.getElementById('items');
+  var programEl = document.getElementById('program');
   var emptyEl = document.getElementById('empty');
   var countEl = document.getElementById('count');
   var fillEl = document.getElementById('bar-fill');
   var formEl = document.getElementById('add-form');
   var nameInput = document.getElementById('new-name');
   var detailInput = document.getElementById('new-detail');
+  var groupInput = document.getElementById('new-group');
+  var groupList = document.getElementById('group-names');
   var noteEl = document.getElementById('storage-note');
   var resetBtn = document.getElementById('reset-today');
+  var restoreBtn = document.getElementById('restore');
   var clearHistoryBtn = document.getElementById('clear-history');
   var startOverBtn = document.getElementById('start-over');
 
-  // exercises: [{id, name, detail}]
+  // exercises: [{id, group, name, detail}]
   // log: { 'YYYY-MM-DD': { ids: [...], total: n } }
   var state = { title: 'PT Checklist', exercises: [], log: {}, nextId: 1 };
   var canStore = true;
@@ -323,7 +295,6 @@
     return state.log[k];
   }
   function isChecked(id) { return todayEntry().ids.indexOf(id) !== -1; }
-
   function setChecked(id, on) {
     var entry = todayEntry();
     var at = entry.ids.indexOf(id);
@@ -331,20 +302,29 @@
     if (!on && at !== -1) entry.ids.splice(at, 1);
   }
 
+  function seed() {
+    state.exercises = PROGRAM.map(function (ex) {
+      return { id: state.nextId++, group: ex.group, name: ex.name, detail: ex.detail };
+    });
+  }
+
   function migrate() {
     try {
       var raw = window.localStorage.getItem(OLD_KEY);
-      if (!raw) return;
+      if (!raw) return false;
       var old = JSON.parse(raw);
+      var moved = false;
       if (old && Array.isArray(old.items)) {
         old.items.forEach(function (it) {
           if (it && typeof it.text === 'string' && it.text.trim()) {
-            state.exercises.push({ id: state.nextId++, name: it.text, detail: '' });
+            state.exercises.push({ id: state.nextId++, group: '', name: it.text, detail: '' });
+            moved = true;
           }
         });
       }
       window.localStorage.removeItem(OLD_KEY);
-    } catch (e) { /* nothing worth keeping */ }
+      return moved;
+    } catch (e) { return false; }
   }
 
   function load() {
@@ -353,9 +333,13 @@
       raw = window.localStorage.getItem(KEY);
     } catch (e) {
       canStore = false;
+      seed();
       return;
     }
-    if (!raw) { migrate(); return; }
+    if (!raw) {
+      if (!migrate()) seed();
+      return;
+    }
     try {
       var saved = JSON.parse(raw);
       if (!saved || typeof saved !== 'object') return;
@@ -366,6 +350,7 @@
           .map(function (ex) {
             return {
               id: Number(ex.id) || state.nextId++,
+              group: typeof ex.group === 'string' ? ex.group : '',
               name: ex.name,
               detail: typeof ex.detail === 'string' ? ex.detail : ''
             };
@@ -383,12 +368,11 @@
         Number(saved.nextId) || 1,
         state.exercises.reduce(function (m, ex) { return Math.max(m, ex.id + 1); }, 1)
       );
-    } catch (e) { /* unreadable; start fresh */ }
+    } catch (e) { /* unreadable; leave as-is */ }
   }
 
   function save() {
     if (!canStore) return;
-    // today's total always tracks the current program
     todayEntry().total = state.exercises.length;
     var cutoff = dayKey(daysAgo(KEEP_DAYS));
     Object.keys(state.log).forEach(function (k) {
@@ -424,11 +408,11 @@
     for (var i = 6; i >= 0; i--) {
       var d = daysAgo(i);
       var key = dayKey(d);
-      var status = dayStatus(key);
       var li = document.createElement('li');
       if (i === 0) li.className = 'is-today';
       li.textContent = i === 0 ? 'Today' : DAY_LABELS[d.getDay()];
       var dot = document.createElement('span');
+      var status = dayStatus(key);
       dot.className = 'dot' + (status === 'none' ? '' : ' ' + status);
       var e = state.log[key];
       dot.title = key + ': ' + (e ? e.ids.length + ' of ' + e.total : 'nothing logged');
@@ -439,9 +423,7 @@
 
   function updateProgress() {
     var total = state.exercises.length;
-    var done = todayEntry().ids.filter(function (id) {
-      return state.exercises.some(function (ex) { return ex.id === id; });
-    }).length;
+    var done = state.exercises.filter(function (ex) { return isChecked(ex.id); }).length;
 
     countEl.textContent = done + ' of ' + total + ' done today';
     var run = streak();
@@ -476,70 +458,134 @@
     });
   }
 
+  function groupNames() {
+    var seen = [];
+    state.exercises.forEach(function (ex) {
+      if (seen.indexOf(ex.group) === -1) seen.push(ex.group);
+    });
+    return seen;
+  }
+
+  function renderRow(ex, sectionEl) {
+    var li = document.createElement('li');
+    var checked = isChecked(ex.id);
+    if (checked) li.className = 'done';
+
+    var box = document.createElement('input');
+    box.type = 'checkbox';
+    box.checked = checked;
+    box.setAttribute('aria-label', ex.name);
+    box.addEventListener('change', function () {
+      setChecked(ex.id, box.checked);
+      li.classList.toggle('done', box.checked);
+      save();
+      updateProgress();
+      retally();
+    });
+
+    var body = document.createElement('div');
+    body.className = 'body';
+
+    var name = document.createElement('span');
+    name.className = 'name';
+    name.textContent = ex.name;
+    editable(name,
+      function () { return ex.name; },
+      function (v) { if (v) { ex.name = v; box.setAttribute('aria-label', v); } });
+
+    var detail = document.createElement('span');
+    detail.className = 'detail';
+    detail.textContent = ex.detail;
+    detail.setAttribute('data-placeholder', 'sets and reps');
+    editable(detail,
+      function () { return ex.detail; },
+      function (v) { ex.detail = v; });
+
+    body.appendChild(name);
+    body.appendChild(detail);
+
+    var remove = document.createElement('button');
+    remove.className = 'remove';
+    remove.type = 'button';
+    remove.textContent = '×';
+    remove.setAttribute('aria-label', 'Remove ' + ex.name);
+    remove.addEventListener('click', function () {
+      var at = state.exercises.indexOf(ex);
+      if (at !== -1) state.exercises.splice(at, 1);
+      setChecked(ex.id, false);
+      render();
+      save();
+    });
+
+    li.appendChild(box);
+    li.appendChild(body);
+    li.appendChild(remove);
+    sectionEl.appendChild(li);
+  }
+
+  function retally() {
+    Array.prototype.forEach.call(programEl.children, function (section) {
+      var boxes = section.querySelectorAll('input[type=checkbox]');
+      var done = section.querySelectorAll('input[type=checkbox]:checked').length;
+      var tally = section.querySelector('.tally');
+      if (tally) tally.textContent = done + '/' + boxes.length;
+      section.classList.toggle('complete', boxes.length > 0 && done === boxes.length);
+    });
+  }
+
   function render() {
     titleEl.textContent = state.title;
     todayLineEl.textContent = daysAgo(0).toLocaleDateString(undefined, {
       weekday: 'long', month: 'long', day: 'numeric'
     });
-    listEl.textContent = '';
 
-    state.exercises.forEach(function (ex) {
-      var li = document.createElement('li');
-      var checked = isChecked(ex.id);
-      if (checked) li.className = 'done';
+    programEl.textContent = '';
+    groupList.textContent = '';
 
-      var box = document.createElement('input');
-      box.type = 'checkbox';
-      box.checked = checked;
-      box.setAttribute('aria-label', ex.name);
-      box.addEventListener('change', function () {
-        setChecked(ex.id, box.checked);
-        li.classList.toggle('done', box.checked);
-        save();
-        updateProgress();
+    groupNames().forEach(function (group) {
+      var section = document.createElement('div');
+      section.className = 'section';
+
+      if (group) {
+        var head = document.createElement('div');
+        head.className = 'section-head';
+
+        var h2 = document.createElement('h2');
+        h2.textContent = group;
+        editable(h2,
+          function () { return group; },
+          function (v) {
+            if (!v || v === group) return;
+            state.exercises.forEach(function (ex) {
+              if (ex.group === group) ex.group = v;
+            });
+            group = v;
+            render();
+          });
+
+        var tally = document.createElement('span');
+        tally.className = 'tally';
+
+        head.appendChild(h2);
+        head.appendChild(tally);
+        section.appendChild(head);
+
+        var option = document.createElement('option');
+        option.value = group;
+        groupList.appendChild(option);
+      }
+
+      var ul = document.createElement('ul');
+      ul.className = 'items';
+      state.exercises.forEach(function (ex) {
+        if (ex.group === group) renderRow(ex, ul);
       });
-
-      var body = document.createElement('div');
-      body.className = 'body';
-
-      var name = document.createElement('span');
-      name.className = 'name';
-      name.textContent = ex.name;
-      editable(name,
-        function () { return ex.name; },
-        function (v) { if (v) { ex.name = v; box.setAttribute('aria-label', v); } });
-
-      var detail = document.createElement('span');
-      detail.className = 'detail';
-      detail.textContent = ex.detail;
-      detail.setAttribute('data-placeholder', 'sets and reps');
-      editable(detail,
-        function () { return ex.detail; },
-        function (v) { ex.detail = v; });
-
-      body.appendChild(name);
-      body.appendChild(detail);
-
-      var remove = document.createElement('button');
-      remove.className = 'remove';
-      remove.type = 'button';
-      remove.textContent = '×';
-      remove.setAttribute('aria-label', 'Remove ' + ex.name);
-      remove.addEventListener('click', function () {
-        var at = state.exercises.indexOf(ex);
-        if (at !== -1) state.exercises.splice(at, 1);
-        setChecked(ex.id, false);
-        render();
-        save();
-      });
-
-      li.appendChild(box);
-      li.appendChild(body);
-      li.appendChild(remove);
-      listEl.appendChild(li);
+      section.appendChild(ul);
+      programEl.appendChild(section);
     });
 
     updateProgress();
+    retally();
   }
 
   editable(titleEl,
@@ -552,17 +598,29 @@
     if (!name) return;
     state.exercises.push({
       id: state.nextId++,
+      group: groupInput.value.trim(),
       name: name,
       detail: detailInput.value.trim()
     });
     nameInput.value = '';
     detailInput.value = '';
+    // the section stays, so several exercises can be added to it in a row
     render();
     save();
     nameInput.focus();
   });
 
   resetBtn.addEventListener('click', function () {
+    todayEntry().ids = [];
+    render();
+    save();
+  });
+
+  restoreBtn.addEventListener('click', function () {
+    if (state.exercises.length &&
+        !window.confirm('Replace the current exercises with the original program?')) return;
+    state.exercises = [];
+    seed();
     todayEntry().ids = [];
     render();
     save();
@@ -590,6 +648,7 @@
     noteEl.textContent = 'This browser is not saving anything, so the list resets when you leave the page.';
   }
   render();
+  save();
 })();
 </script>
 </body>
