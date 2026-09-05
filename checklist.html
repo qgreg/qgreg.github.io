@@ -33,7 +33,7 @@
     line-height:1.6;
     -webkit-text-size-adjust:100%;
   }
-  .wrap{max-width:640px;margin:0 auto;padding:48px 20px 96px}
+  .wrap{max-width:620px;margin:0 auto;padding:48px 20px 96px}
 
   /* Signature: the red margin rule down the left of the sheet */
   .sheet{
@@ -53,18 +53,15 @@
     font-family:Fraunces, Georgia, serif;
     font-weight:600;
     font-size:clamp(28px,6vw,40px);
-    line-height:1.15;margin:0;outline:none;
+    line-height:1.15;margin:0;
   }
-  h1:empty::before{content:attr(data-placeholder);color:#B9B1A3}
-  h1:focus-visible{background:linear-gradient(transparent 62%, var(--highlighter) 62%)}
   .today{margin:6px 0 0;font-size:14px;color:var(--ink-soft)}
-  .title-hint{margin:2px 0 0;font-size:13px;color:#948C7E}
 
-  .week{display:flex;gap:10px;margin:22px 0 0;padding:0;list-style:none}
+  .week{display:flex;gap:10px;margin:24px 0 0;padding:0;list-style:none}
   .week li{
     flex:1 1 0;text-align:center;
     font-size:11px;letter-spacing:.04em;text-transform:uppercase;
-    color:#A79E90;border:0;padding:0;display:block;
+    color:#A79E90;
   }
   .week .dot{
     display:block;height:26px;margin:4px 0 0;
@@ -86,91 +83,55 @@
   .bar{height:4px;background:var(--rule);margin:8px 0 26px;overflow:hidden}
   .bar span{display:block;height:100%;width:0;background:var(--done);transition:width .25s ease}
 
-  /* sections */
   .section{margin-bottom:26px}
-  .section-head{
-    display:flex;align-items:baseline;gap:10px;
-    margin:0 0 2px;
-  }
+  .section:last-child{margin-bottom:0}
+  .section-head{display:flex;align-items:baseline;gap:10px;margin:0 0 2px}
   .section-head h2{
     font-family:Fraunces, Georgia, serif;
-    font-weight:600;font-size:17px;margin:0;outline:none;
-    flex:0 1 auto;
+    font-weight:600;font-size:17px;margin:0;
   }
   .section-head .tally{
-    font-size:12px;letter-spacing:.04em;text-transform:uppercase;
-    color:#A79E90;flex:0 0 auto;
+    font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#A79E90;
   }
   .section.complete .section-head .tally{color:var(--done)}
-  .section-head h2:focus-visible{background:linear-gradient(transparent 66%, var(--highlighter) 66%)}
 
   ul.items{list-style:none;margin:0;padding:0}
-  ul.items li{
-    display:flex;align-items:flex-start;gap:12px;
-    padding:10px 0;border-bottom:1px solid var(--rule);
-  }
+  ul.items li{border-bottom:1px solid var(--rule)}
   ul.items li:first-child{border-top:1px solid var(--rule)}
+
+  /* the whole row is the target, so it is easy to tap mid-exercise */
+  ul.items label{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:11px 4px 11px 0;cursor:pointer;
+  }
+  ul.items label:hover .name{color:var(--indigo)}
 
   input[type=checkbox]{
     appearance:none;-webkit-appearance:none;
-    flex:0 0 auto;width:20px;height:20px;margin:3px 0 0;
+    flex:0 0 auto;width:22px;height:22px;margin:2px 0 0;
     border:2px solid var(--indigo);border-radius:3px;background:#fff;
     cursor:pointer;position:relative;
     transition:background-color .15s ease, border-color .15s ease;
   }
   input[type=checkbox]:checked{background:var(--done);border-color:var(--done)}
   input[type=checkbox]:checked::after{
-    content:"";position:absolute;left:5px;top:1px;
-    width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;
+    content:"";position:absolute;left:6px;top:2px;
+    width:6px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;
     transform:rotate(42deg);
   }
   input[type=checkbox]:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
 
   .body{flex:1 1 auto;min-width:0}
-  .name{display:block;font-size:16px;word-break:break-word;outline:none;padding:1px 2px;border-radius:2px}
-  .detail{display:block;font-size:13px;color:var(--ink-soft);word-break:break-word;outline:none;padding:1px 2px;border-radius:2px}
-  .detail:empty::before{content:attr(data-placeholder);color:#C3BBAC}
-  .name:focus-visible,.detail:focus-visible{background:linear-gradient(transparent 66%, var(--highlighter) 66%)}
-  ul.items li.done .name{
+  .name{display:block;font-size:16px}
+  .detail{display:block;font-size:13px;color:var(--ink-soft)}
+  li.done .name{
     color:var(--ink-soft);text-decoration:line-through;
     text-decoration-color:var(--done);text-decoration-thickness:2px;
   }
 
-  .remove{
-    flex:0 0 auto;border:0;background:none;color:#C3BBAC;
-    font-size:20px;line-height:1;padding:2px 4px;cursor:pointer;border-radius:3px;
-  }
-  .remove:hover,.remove:focus-visible{color:var(--margin-line)}
-  .remove:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
-
-  .empty{
-    margin:0;padding:26px 0;color:var(--ink-soft);font-size:15px;
-    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  }
-
-  form{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-  form input[type=text]{
-    font:inherit;font-size:16px;padding:11px 12px;
-    color:var(--ink);background:#fff;
-    border:1px solid var(--rule);border-radius:3px;
-  }
-  #new-name{flex:3 1 190px;min-width:0}
-  #new-detail{flex:2 1 130px;min-width:0}
-  #new-group{flex:2 1 130px;min-width:0}
-  form input::placeholder{color:#B9B1A3}
-  form input:focus-visible{outline:2px solid var(--indigo);outline-offset:-1px;border-color:var(--indigo)}
-  button.add{
-    flex:0 0 auto;font:inherit;font-weight:600;font-size:14px;
-    letter-spacing:.04em;text-transform:uppercase;
-    color:#fff;background:var(--indigo);border:0;border-radius:3px;
-    padding:11px 18px;cursor:pointer;
-  }
-  button.add:hover{background:#2C2C63}
-  button.add:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
-
   .tools{
     display:flex;flex-wrap:wrap;gap:18px;
-    margin-top:20px;padding-top:16px;border-top:1px dashed var(--rule);
+    margin-top:26px;padding-top:16px;border-top:1px dashed var(--rule);
   }
   .tools button{
     font:inherit;font-size:13px;font-weight:500;
@@ -195,35 +156,19 @@
 <div class="wrap">
   <div class="sheet">
 
-    <h1 id="list-title" contenteditable="true" spellcheck="false"
-        data-placeholder="Untitled" aria-label="List title, editable">PT Checklist</h1>
+    <h1>PT Checklist</h1>
     <p class="today" id="today-line"></p>
-    <p class="title-hint">Click the title, a section, an exercise, or its sets and reps to edit.</p>
 
     <ul class="week" id="week" aria-label="Last seven days"></ul>
 
-    <p class="count" id="count" aria-live="polite">0 of 0 done today</p>
+    <p class="count" id="count" aria-live="polite">0 of 11 done today</p>
     <div class="bar" aria-hidden="true"><span id="bar-fill"></span></div>
 
     <div id="program"></div>
-    <p class="empty" id="empty">No exercises yet. Add the first one below.</p>
-
-    <form id="add-form">
-      <label for="new-name" style="position:absolute;left:-9999px">Exercise</label>
-      <input id="new-name" type="text" placeholder="Exercise" autocomplete="off">
-      <label for="new-detail" style="position:absolute;left:-9999px">Sets and reps</label>
-      <input id="new-detail" type="text" placeholder="3 × 10" autocomplete="off">
-      <label for="new-group" style="position:absolute;left:-9999px">Section</label>
-      <input id="new-group" type="text" placeholder="Section" autocomplete="off" list="group-names">
-      <datalist id="group-names"></datalist>
-      <button class="add" type="submit">Add</button>
-    </form>
 
     <div class="tools">
       <button type="button" id="reset-today">Uncheck today</button>
-      <button type="button" id="restore">Restore my program</button>
       <button type="button" id="clear-history">Clear history</button>
-      <button type="button" id="start-over">Start over</button>
     </div>
 
   </div>
@@ -232,47 +177,44 @@
 
 <script>
 (function () {
-  var KEY = 'qgreg.ptchecklist.v2';
-  var OLD_KEY = 'qgreg.checklist.v1';
+  var KEY = 'qgreg.ptchecklist.v3';
   var KEEP_DAYS = 120;
   var DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  // The starting program. "Restore my program" puts these back.
+  // The program. Ids are fixed so history survives changes to this list.
   var PROGRAM = [
-    { group: 'Standing',        name: 'Wall slides',             detail: '2 × 10' },
-    { group: 'Standing',        name: 'Ankle ball raises',       detail: '3 × 10' },
-    { group: 'Balance circuit', name: 'Tandem stance',           detail: '2 × 30 sec' },
-    { group: 'Balance circuit', name: 'Single-leg balance',      detail: '2 × 30 sec' },
-    { group: 'Balance circuit', name: 'Ball against wall, one foot', detail: '2 × 30 sec each side' },
-    { group: 'Floor circuit',   name: 'Supine arm arcs',         detail: '3 × 10' },
-    { group: 'Floor circuit',   name: 'Open book',               detail: '3 × 10 per side' },
-    { group: 'Floor circuit',   name: 'Side-lying leg lifts',    detail: '3 × 10 per side' },
-    { group: 'Floor circuit',   name: 'Bridges',                 detail: '3 × 10' },
-    { group: 'Floor circuit',   name: 'Chest opener',            detail: '3 × 30 sec' },
-    { group: 'Floor circuit',   name: 'Chin tucks',              detail: '10 × 10' }
+    { group: 'Standing', items: [
+      { id: 'wall-slides',         name: 'Wall slides',                 detail: '2 × 10' },
+      { id: 'ankle-ball-raises',   name: 'Ankle ball raises',           detail: '3 × 10' }
+    ]},
+    { group: 'Balance circuit', items: [
+      { id: 'tandem-stance',       name: 'Tandem stance',               detail: '2 × 30 sec' },
+      { id: 'single-leg-balance',  name: 'Single-leg balance',          detail: '2 × 30 sec' },
+      { id: 'ball-wall-one-foot',  name: 'Ball against wall, one foot', detail: '2 × 30 sec each side' }
+    ]},
+    { group: 'Floor circuit', items: [
+      { id: 'supine-arm-arcs',     name: 'Supine arm arcs',             detail: '3 × 10' },
+      { id: 'open-book',           name: 'Open book',                   detail: '3 × 10 per side' },
+      { id: 'side-lying-leg-lifts',name: 'Side-lying leg lifts',        detail: '3 × 10 per side' },
+      { id: 'bridges',             name: 'Bridges',                     detail: '3 × 10' },
+      { id: 'chest-opener',        name: 'Chest opener',                detail: '3 × 30 sec' },
+      { id: 'chin-tucks',          name: 'Chin tucks',                  detail: '10 reps, 10 sec hold' }
+    ]}
   ];
 
-  var titleEl = document.getElementById('list-title');
+  var TOTAL = PROGRAM.reduce(function (n, s) { return n + s.items.length; }, 0);
+
   var todayLineEl = document.getElementById('today-line');
   var weekEl = document.getElementById('week');
   var programEl = document.getElementById('program');
-  var emptyEl = document.getElementById('empty');
   var countEl = document.getElementById('count');
   var fillEl = document.getElementById('bar-fill');
-  var formEl = document.getElementById('add-form');
-  var nameInput = document.getElementById('new-name');
-  var detailInput = document.getElementById('new-detail');
-  var groupInput = document.getElementById('new-group');
-  var groupList = document.getElementById('group-names');
   var noteEl = document.getElementById('storage-note');
   var resetBtn = document.getElementById('reset-today');
-  var restoreBtn = document.getElementById('restore');
   var clearHistoryBtn = document.getElementById('clear-history');
-  var startOverBtn = document.getElementById('start-over');
 
-  // exercises: [{id, group, name, detail}]
   // log: { 'YYYY-MM-DD': { ids: [...], total: n } }
-  var state = { title: 'PT Checklist', exercises: [], log: {}, nextId: 1 };
+  var log = {};
   var canStore = true;
 
   function dayKey(d) {
@@ -291,8 +233,8 @@
 
   function todayEntry() {
     var k = today();
-    if (!state.log[k]) state.log[k] = { ids: [], total: state.exercises.length };
-    return state.log[k];
+    if (!log[k]) log[k] = { ids: [], total: TOTAL };
+    return log[k];
   }
   function isChecked(id) { return todayEntry().ids.indexOf(id) !== -1; }
   function setChecked(id, on) {
@@ -302,92 +244,47 @@
     if (!on && at !== -1) entry.ids.splice(at, 1);
   }
 
-  function seed() {
-    state.exercises = PROGRAM.map(function (ex) {
-      return { id: state.nextId++, group: ex.group, name: ex.name, detail: ex.detail };
-    });
-  }
-
-  function migrate() {
-    try {
-      var raw = window.localStorage.getItem(OLD_KEY);
-      if (!raw) return false;
-      var old = JSON.parse(raw);
-      var moved = false;
-      if (old && Array.isArray(old.items)) {
-        old.items.forEach(function (it) {
-          if (it && typeof it.text === 'string' && it.text.trim()) {
-            state.exercises.push({ id: state.nextId++, group: '', name: it.text, detail: '' });
-            moved = true;
-          }
-        });
-      }
-      window.localStorage.removeItem(OLD_KEY);
-      return moved;
-    } catch (e) { return false; }
-  }
-
   function load() {
     var raw;
     try {
       raw = window.localStorage.getItem(KEY);
     } catch (e) {
       canStore = false;
-      seed();
       return;
     }
-    if (!raw) {
-      if (!migrate()) seed();
-      return;
-    }
+    if (!raw) return;
     try {
       var saved = JSON.parse(raw);
-      if (!saved || typeof saved !== 'object') return;
-      if (typeof saved.title === 'string') state.title = saved.title;
-      if (Array.isArray(saved.exercises)) {
-        state.exercises = saved.exercises
-          .filter(function (ex) { return ex && typeof ex.name === 'string'; })
-          .map(function (ex) {
-            return {
-              id: Number(ex.id) || state.nextId++,
-              group: typeof ex.group === 'string' ? ex.group : '',
-              name: ex.name,
-              detail: typeof ex.detail === 'string' ? ex.detail : ''
-            };
-          });
-      }
-      if (saved.log && typeof saved.log === 'object') {
-        Object.keys(saved.log).forEach(function (k) {
-          var e = saved.log[k];
-          if (e && Array.isArray(e.ids)) {
-            state.log[k] = { ids: e.ids.slice(), total: Number(e.total) || 0 };
-          }
-        });
-      }
-      state.nextId = Math.max(
-        Number(saved.nextId) || 1,
-        state.exercises.reduce(function (m, ex) { return Math.max(m, ex.id + 1); }, 1)
-      );
-    } catch (e) { /* unreadable; leave as-is */ }
+      if (!saved || typeof saved !== 'object' || !saved.log) return;
+      Object.keys(saved.log).forEach(function (k) {
+        var e = saved.log[k];
+        if (e && Array.isArray(e.ids)) {
+          log[k] = {
+            ids: e.ids.filter(function (id) { return typeof id === 'string'; }),
+            total: Number(e.total) || 0
+          };
+        }
+      });
+    } catch (e) { /* unreadable; start with an empty history */ }
   }
 
   function save() {
     if (!canStore) return;
-    todayEntry().total = state.exercises.length;
+    todayEntry().total = TOTAL;
     var cutoff = dayKey(daysAgo(KEEP_DAYS));
-    Object.keys(state.log).forEach(function (k) {
-      if (k < cutoff) delete state.log[k];
+    Object.keys(log).forEach(function (k) {
+      if (k < cutoff) delete log[k];
     });
     try {
-      window.localStorage.setItem(KEY, JSON.stringify(state));
+      window.localStorage.setItem(KEY, JSON.stringify({ log: log }));
     } catch (e) {
       canStore = false;
-      noteEl.textContent = 'This browser is not saving anything, so the list resets when you leave the page.';
+      noteEl.textContent = 'This browser is not saving anything, so the checkmarks clear when you leave the page.';
     }
   }
 
   function dayStatus(key) {
-    var e = state.log[key];
+    var e = log[key];
     if (!e || !e.total || !e.ids.length) return 'none';
     return e.ids.length >= e.total ? 'full' : 'partial';
   }
@@ -414,18 +311,17 @@
       var dot = document.createElement('span');
       var status = dayStatus(key);
       dot.className = 'dot' + (status === 'none' ? '' : ' ' + status);
-      var e = state.log[key];
+      var e = log[key];
       dot.title = key + ': ' + (e ? e.ids.length + ' of ' + e.total : 'nothing logged');
       li.appendChild(dot);
       weekEl.appendChild(li);
     }
   }
 
-  function updateProgress() {
-    var total = state.exercises.length;
-    var done = state.exercises.filter(function (ex) { return isChecked(ex.id); }).length;
+  function update() {
+    var done = todayEntry().ids.length;
 
-    countEl.textContent = done + ' of ' + total + ' done today';
+    countEl.textContent = done + ' of ' + TOTAL + ' done today';
     var run = streak();
     if (run > 1) {
       var span = document.createElement('span');
@@ -433,222 +329,114 @@
       span.textContent = ' · ' + run + ' days in a row';
       countEl.appendChild(span);
     }
+    fillEl.style.width = (done / TOTAL * 100) + '%';
 
-    fillEl.style.width = total ? (done / total * 100) + '%' : '0%';
-    emptyEl.hidden = total > 0;
+    Array.prototype.forEach.call(programEl.children, function (section) {
+      var boxes = section.querySelectorAll('input[type=checkbox]');
+      var checked = section.querySelectorAll('input[type=checkbox]:checked').length;
+      section.querySelector('.tally').textContent = checked + '/' + boxes.length;
+      section.classList.toggle('complete', checked === boxes.length);
+    });
+
     resetBtn.disabled = done === 0;
-    startOverBtn.disabled = total === 0 && !Object.keys(state.log).length;
-    clearHistoryBtn.disabled = !Object.keys(state.log).some(function (k) {
-      return k !== today() && state.log[k].ids.length;
+    clearHistoryBtn.disabled = !Object.keys(log).some(function (k) {
+      return k !== today() && log[k].ids.length;
     });
     renderWeek();
   }
 
-  function editable(el, get, set) {
-    el.contentEditable = 'true';
-    el.spellcheck = false;
-    el.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
-    });
-    el.addEventListener('blur', function () {
-      set(el.textContent.trim());
-      el.textContent = get();
-      save();
-      updateProgress();
-    });
-  }
-
-  function groupNames() {
-    var seen = [];
-    state.exercises.forEach(function (ex) {
-      if (seen.indexOf(ex.group) === -1) seen.push(ex.group);
-    });
-    return seen;
-  }
-
-  function renderRow(ex, sectionEl) {
-    var li = document.createElement('li');
-    var checked = isChecked(ex.id);
-    if (checked) li.className = 'done';
-
-    var box = document.createElement('input');
-    box.type = 'checkbox';
-    box.checked = checked;
-    box.setAttribute('aria-label', ex.name);
-    box.addEventListener('change', function () {
-      setChecked(ex.id, box.checked);
-      li.classList.toggle('done', box.checked);
-      save();
-      updateProgress();
-      retally();
-    });
-
-    var body = document.createElement('div');
-    body.className = 'body';
-
-    var name = document.createElement('span');
-    name.className = 'name';
-    name.textContent = ex.name;
-    editable(name,
-      function () { return ex.name; },
-      function (v) { if (v) { ex.name = v; box.setAttribute('aria-label', v); } });
-
-    var detail = document.createElement('span');
-    detail.className = 'detail';
-    detail.textContent = ex.detail;
-    detail.setAttribute('data-placeholder', 'sets and reps');
-    editable(detail,
-      function () { return ex.detail; },
-      function (v) { ex.detail = v; });
-
-    body.appendChild(name);
-    body.appendChild(detail);
-
-    var remove = document.createElement('button');
-    remove.className = 'remove';
-    remove.type = 'button';
-    remove.textContent = '×';
-    remove.setAttribute('aria-label', 'Remove ' + ex.name);
-    remove.addEventListener('click', function () {
-      var at = state.exercises.indexOf(ex);
-      if (at !== -1) state.exercises.splice(at, 1);
-      setChecked(ex.id, false);
-      render();
-      save();
-    });
-
-    li.appendChild(box);
-    li.appendChild(body);
-    li.appendChild(remove);
-    sectionEl.appendChild(li);
-  }
-
-  function retally() {
-    Array.prototype.forEach.call(programEl.children, function (section) {
-      var boxes = section.querySelectorAll('input[type=checkbox]');
-      var done = section.querySelectorAll('input[type=checkbox]:checked').length;
-      var tally = section.querySelector('.tally');
-      if (tally) tally.textContent = done + '/' + boxes.length;
-      section.classList.toggle('complete', boxes.length > 0 && done === boxes.length);
-    });
-  }
-
-  function render() {
-    titleEl.textContent = state.title;
-    todayLineEl.textContent = daysAgo(0).toLocaleDateString(undefined, {
-      weekday: 'long', month: 'long', day: 'numeric'
-    });
-
+  function build() {
     programEl.textContent = '';
-    groupList.textContent = '';
-
-    groupNames().forEach(function (group) {
+    PROGRAM.forEach(function (group) {
       var section = document.createElement('div');
       section.className = 'section';
 
-      if (group) {
-        var head = document.createElement('div');
-        head.className = 'section-head';
-
-        var h2 = document.createElement('h2');
-        h2.textContent = group;
-        editable(h2,
-          function () { return group; },
-          function (v) {
-            if (!v || v === group) return;
-            state.exercises.forEach(function (ex) {
-              if (ex.group === group) ex.group = v;
-            });
-            group = v;
-            render();
-          });
-
-        var tally = document.createElement('span');
-        tally.className = 'tally';
-
-        head.appendChild(h2);
-        head.appendChild(tally);
-        section.appendChild(head);
-
-        var option = document.createElement('option');
-        option.value = group;
-        groupList.appendChild(option);
-      }
+      var head = document.createElement('div');
+      head.className = 'section-head';
+      var h2 = document.createElement('h2');
+      h2.textContent = group.group;
+      var tally = document.createElement('span');
+      tally.className = 'tally';
+      head.appendChild(h2);
+      head.appendChild(tally);
+      section.appendChild(head);
 
       var ul = document.createElement('ul');
       ul.className = 'items';
-      state.exercises.forEach(function (ex) {
-        if (ex.group === group) renderRow(ex, ul);
+
+      group.items.forEach(function (ex) {
+        var li = document.createElement('li');
+        var label = document.createElement('label');
+
+        var box = document.createElement('input');
+        box.type = 'checkbox';
+        box.checked = isChecked(ex.id);
+        li.classList.toggle('done', box.checked);
+        box.addEventListener('change', function () {
+          setChecked(ex.id, box.checked);
+          li.classList.toggle('done', box.checked);
+          save();
+          update();
+        });
+
+        var body = document.createElement('div');
+        body.className = 'body';
+        var name = document.createElement('span');
+        name.className = 'name';
+        name.textContent = ex.name;
+        var detail = document.createElement('span');
+        detail.className = 'detail';
+        detail.textContent = ex.detail;
+        body.appendChild(name);
+        body.appendChild(detail);
+
+        label.appendChild(box);
+        label.appendChild(body);
+        li.appendChild(label);
+        ul.appendChild(li);
       });
+
       section.appendChild(ul);
       programEl.appendChild(section);
     });
-
-    updateProgress();
-    retally();
   }
 
-  editable(titleEl,
-    function () { return state.title; },
-    function (v) { state.title = v || 'Untitled'; });
-
-  formEl.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var name = nameInput.value.trim();
-    if (!name) return;
-    state.exercises.push({
-      id: state.nextId++,
-      group: groupInput.value.trim(),
-      name: name,
-      detail: detailInput.value.trim()
+  function refreshBoxes() {
+    var boxes = programEl.querySelectorAll('input[type=checkbox]');
+    var flat = [];
+    PROGRAM.forEach(function (g) { flat = flat.concat(g.items); });
+    Array.prototype.forEach.call(boxes, function (box, i) {
+      box.checked = isChecked(flat[i].id);
+      box.closest('li').classList.toggle('done', box.checked);
     });
-    nameInput.value = '';
-    detailInput.value = '';
-    // the section stays, so several exercises can be added to it in a row
-    render();
-    save();
-    nameInput.focus();
-  });
+  }
 
   resetBtn.addEventListener('click', function () {
     todayEntry().ids = [];
-    render();
+    refreshBoxes();
     save();
-  });
-
-  restoreBtn.addEventListener('click', function () {
-    if (state.exercises.length &&
-        !window.confirm('Replace the current exercises with the original program?')) return;
-    state.exercises = [];
-    seed();
-    todayEntry().ids = [];
-    render();
-    save();
+    update();
   });
 
   clearHistoryBtn.addEventListener('click', function () {
     if (!window.confirm('Clear every day except today?')) return;
-    var keep = state.log[today()];
-    state.log = {};
-    if (keep) state.log[today()] = keep;
-    render();
+    var keep = log[today()];
+    log = {};
+    if (keep) log[today()] = keep;
     save();
+    update();
   });
 
-  startOverBtn.addEventListener('click', function () {
-    if (!window.confirm('Remove every exercise and the whole history?')) return;
-    state.exercises = [];
-    state.log = {};
-    render();
-    save();
+  todayLineEl.textContent = daysAgo(0).toLocaleDateString(undefined, {
+    weekday: 'long', month: 'long', day: 'numeric'
   });
 
   load();
   if (!canStore) {
-    noteEl.textContent = 'This browser is not saving anything, so the list resets when you leave the page.';
+    noteEl.textContent = 'This browser is not saving anything, so the checkmarks clear when you leave the page.';
   }
-  render();
-  save();
+  build();
+  update();
 })();
 </script>
 </body>
