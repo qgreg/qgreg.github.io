@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Checklist</title>
+<title>PT Checklist</title>
 <!-- Unlisted: nothing on the site links here, and search engines are asked to
      stay away. The URL still works for anyone it is handed to. -->
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="A checklist you can write and tick off. Saved in your own browser.">
+<meta name="description" content="A daily physical therapy exercise checklist. Resets each morning and keeps a short history. Saved in your own browser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -34,11 +34,7 @@
     line-height:1.6;
     -webkit-text-size-adjust:100%;
   }
-  .wrap{
-    max-width:640px;
-    margin:0 auto;
-    padding:48px 20px 96px;
-  }
+  .wrap{max-width:640px;margin:0 auto;padding:48px 20px 96px}
 
   /* Signature: the red margin rule down the left of the sheet */
   .sheet{
@@ -65,52 +61,72 @@
     margin:0;
     outline:none;
   }
-  h1:empty::before{
-    content:attr(data-placeholder);
-    color:#B9B1A3;
-  }
-  h1:focus-visible{
-    background:linear-gradient(transparent 62%, var(--highlighter) 62%);
-  }
-  .title-hint{
+  h1:empty::before{content:attr(data-placeholder);color:#B9B1A3}
+  h1:focus-visible{background:linear-gradient(transparent 62%, var(--highlighter) 62%)}
+  .today{
     margin:6px 0 0;
-    font-size:13px;
+    font-size:14px;
     color:var(--ink-soft);
   }
+  .title-hint{margin:2px 0 0;font-size:13px;color:#948C7E}
+
+  /* last seven days */
+  .week{
+    display:flex;
+    gap:10px;
+    margin:22px 0 0;
+    padding:0;
+    list-style:none;
+  }
+  .week li{
+    flex:1 1 0;
+    text-align:center;
+    font-size:11px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:#A79E90;
+    border:0;
+    padding:0;
+    display:block;
+  }
+  .week .dot{
+    display:block;
+    height:26px;
+    margin:4px 0 0;
+    border:2px solid var(--rule);
+    border-radius:3px;
+    background:#fff;
+  }
+  .week .dot.partial{
+    border-color:var(--done);
+    background:linear-gradient(to top, rgba(92,138,94,.35) 50%, #fff 50%);
+  }
+  .week .dot.full{border-color:var(--done);background:var(--done)}
+  .week li.is-today{color:var(--indigo);font-weight:600}
+  .week li.is-today .dot{box-shadow:0 0 0 2px rgba(57,57,123,.25)}
 
   .count{
-    margin:20px 0 0;
+    margin:22px 0 0;
     font-size:13px;
     font-weight:500;
     letter-spacing:.06em;
     text-transform:uppercase;
     color:var(--indigo);
   }
-  .bar{
-    height:4px;
-    background:var(--rule);
-    margin:8px 0 22px;
-    overflow:hidden;
-  }
-  .bar span{
-    display:block;
-    height:100%;
-    width:0;
-    background:var(--done);
-    transition:width .25s ease;
-  }
+  .streak{color:var(--ink-soft);text-transform:none;letter-spacing:0;font-weight:400}
+  .bar{height:4px;background:var(--rule);margin:8px 0 22px;overflow:hidden}
+  .bar span{display:block;height:100%;width:0;background:var(--done);transition:width .25s ease}
 
-  ul{list-style:none;margin:0;padding:0}
-  li{
+  ul.items{list-style:none;margin:0;padding:0}
+  ul.items li{
     display:flex;
     align-items:flex-start;
     gap:12px;
-    padding:9px 0;
+    padding:10px 0;
     border-bottom:1px solid var(--rule);
   }
-  li:first-child{border-top:1px solid var(--rule)}
+  ul.items li:first-child{border-top:1px solid var(--rule)}
 
-  /* hand-drawn-ish checkbox */
   input[type=checkbox]{
     appearance:none;-webkit-appearance:none;
     flex:0 0 auto;
@@ -123,10 +139,7 @@
     position:relative;
     transition:background-color .15s ease, border-color .15s ease;
   }
-  input[type=checkbox]:checked{
-    background:var(--done);
-    border-color:var(--done);
-  }
+  input[type=checkbox]:checked{background:var(--done);border-color:var(--done)}
   input[type=checkbox]:checked::after{
     content:"";
     position:absolute;
@@ -136,24 +149,29 @@
     border-width:0 2.5px 2.5px 0;
     transform:rotate(42deg);
   }
-  input[type=checkbox]:focus-visible{
-    outline:2px solid var(--indigo);
-    outline-offset:3px;
-  }
+  input[type=checkbox]:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
 
-  .item-text{
-    flex:1 1 auto;
-    min-width:0;
+  .body{flex:1 1 auto;min-width:0}
+  .name{
+    display:block;
     font-size:16px;
     word-break:break-word;
     outline:none;
     padding:1px 2px;
     border-radius:2px;
   }
-  .item-text:focus-visible{
-    background:linear-gradient(transparent 66%, var(--highlighter) 66%);
+  .detail{
+    display:block;
+    font-size:13px;
+    color:var(--ink-soft);
+    word-break:break-word;
+    outline:none;
+    padding:1px 2px;
+    border-radius:2px;
   }
-  li.done .item-text{
+  .detail:empty::before{content:attr(data-placeholder);color:#C3BBAC}
+  .name:focus-visible,.detail:focus-visible{background:linear-gradient(transparent 66%, var(--highlighter) 66%)}
+  ul.items li.done .name{
     color:var(--ink-soft);
     text-decoration:line-through;
     text-decoration-color:var(--done);
@@ -162,98 +180,64 @@
 
   .remove{
     flex:0 0 auto;
-    border:0;
-    background:none;
+    border:0;background:none;
     color:#C3BBAC;
-    font-size:20px;
-    line-height:1;
-    padding:2px 4px;
-    cursor:pointer;
-    border-radius:3px;
+    font-size:20px;line-height:1;
+    padding:2px 4px;cursor:pointer;border-radius:3px;
   }
   .remove:hover,.remove:focus-visible{color:var(--margin-line)}
   .remove:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
 
   .empty{
-    margin:0;
-    padding:26px 0;
-    color:var(--ink-soft);
-    font-size:15px;
+    margin:0;padding:26px 0;
+    color:var(--ink-soft);font-size:15px;
     border-top:1px solid var(--rule);
     border-bottom:1px solid var(--rule);
   }
 
-  form{display:flex;gap:10px;margin-top:22px}
-  #new-item{
-    flex:1 1 auto;
-    min-width:0;
-    font:inherit;
-    font-size:16px;
+  form{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  form input[type=text]{
+    font:inherit;font-size:16px;
     padding:11px 12px;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--rule);
-    border-radius:3px;
+    color:var(--ink);background:#fff;
+    border:1px solid var(--rule);border-radius:3px;
   }
-  #new-item::placeholder{color:#B9B1A3}
-  #new-item:focus-visible{outline:2px solid var(--indigo);outline-offset:-1px;border-color:var(--indigo)}
+  #new-name{flex:2 1 220px;min-width:0}
+  #new-detail{flex:1 1 130px;min-width:0}
+  form input::placeholder{color:#B9B1A3}
+  form input:focus-visible{outline:2px solid var(--indigo);outline-offset:-1px;border-color:var(--indigo)}
   button.add{
     flex:0 0 auto;
-    font:inherit;
-    font-weight:600;
-    font-size:14px;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    color:#fff;
-    background:var(--indigo);
-    border:0;
-    border-radius:3px;
-    padding:11px 18px;
-    cursor:pointer;
+    font:inherit;font-weight:600;font-size:14px;
+    letter-spacing:.04em;text-transform:uppercase;
+    color:#fff;background:var(--indigo);
+    border:0;border-radius:3px;padding:11px 18px;cursor:pointer;
   }
   button.add:hover{background:#2C2C63}
   button.add:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
 
   .tools{
-    display:flex;
-    flex-wrap:wrap;
-    gap:18px;
-    margin-top:20px;
-    padding-top:16px;
+    display:flex;flex-wrap:wrap;gap:18px;
+    margin-top:20px;padding-top:16px;
     border-top:1px dashed var(--rule);
   }
   .tools button{
-    font:inherit;
-    font-size:13px;
-    font-weight:500;
-    color:var(--indigo);
-    background:none;
-    border:0;
-    padding:2px 0;
-    cursor:pointer;
+    font:inherit;font-size:13px;font-weight:500;
+    color:var(--indigo);background:none;border:0;
+    padding:2px 0;cursor:pointer;
     border-bottom:2px solid var(--highlighter);
   }
   .tools button:hover{color:var(--margin-line);border-bottom-color:var(--margin-line)}
   .tools button:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
-  .tools button[disabled]{
-    color:#B9B1A3;
-    border-bottom-color:var(--rule);
-    cursor:default;
-  }
+  .tools button[disabled]{color:#B9B1A3;border-bottom-color:var(--rule);cursor:default}
 
-  .note{
-    margin-top:28px;
-    font-size:13px;
-    color:var(--ink-soft);
-    text-align:center;
-  }
+  .note{margin-top:28px;font-size:13px;color:var(--ink-soft);text-align:center}
 
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important}
-  }
+  @media (prefers-reduced-motion: reduce){*{transition:none !important}}
   @media (max-width:480px){
     .sheet{padding:24px 18px 22px 34px}
     .sheet::before{left:18px}
+    .week{gap:6px}
   }
 </style>
 </head>
@@ -262,138 +246,295 @@
   <div class="sheet">
 
     <h1 id="list-title" contenteditable="true" spellcheck="false"
-        data-placeholder="Untitled list"
-        aria-label="List title, editable">Checklist</h1>
-    <p class="title-hint">Click the title to rename it. Click any item to edit the wording.</p>
+        data-placeholder="Untitled" aria-label="List title, editable">PT Checklist</h1>
+    <p class="today" id="today-line"></p>
+    <p class="title-hint">Click the title, an exercise, or its sets and reps to edit.</p>
 
-    <p class="count" id="count">0 of 0 done</p>
+    <ul class="week" id="week" aria-label="Last seven days"></ul>
+
+    <p class="count" id="count" aria-live="polite">0 of 0 done today</p>
     <div class="bar" aria-hidden="true"><span id="bar-fill"></span></div>
 
-    <ul id="items" aria-live="polite"></ul>
-    <p class="empty" id="empty">Nothing on the list yet. Add the first thing below.</p>
+    <ul class="items" id="items"></ul>
+    <p class="empty" id="empty">No exercises yet. Add the first one below.</p>
 
     <form id="add-form">
-      <label class="visually-hidden" for="new-item" style="position:absolute;left:-9999px">New item</label>
-      <input id="new-item" type="text" placeholder="Add an item and press Enter" autocomplete="off">
+      <label for="new-name" style="position:absolute;left:-9999px">Exercise</label>
+      <input id="new-name" type="text" placeholder="Exercise" autocomplete="off">
+      <label for="new-detail" style="position:absolute;left:-9999px">Sets and reps</label>
+      <input id="new-detail" type="text" placeholder="3 × 10 each side" autocomplete="off">
       <button class="add" type="submit">Add</button>
     </form>
 
     <div class="tools">
-      <button type="button" id="uncheck-all">Uncheck everything</button>
-      <button type="button" id="clear-done">Clear checked items</button>
-      <button type="button" id="clear-all">Start over</button>
+      <button type="button" id="reset-today">Uncheck today</button>
+      <button type="button" id="clear-history">Clear history</button>
+      <button type="button" id="start-over">Start over</button>
     </div>
 
   </div>
-  <p class="note" id="storage-note">Saved in this browser only — the list stays on this device and is not sent anywhere.</p>
+  <p class="note" id="storage-note">Saved in this browser only — nothing is sent anywhere. The checkmarks clear on their own each morning.</p>
 </div>
 
 <script>
 (function () {
-  var KEY = 'qgreg.checklist.v1';
+  var KEY = 'qgreg.ptchecklist.v2';
+  var OLD_KEY = 'qgreg.checklist.v1';
+  var KEEP_DAYS = 120;
+  var DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   var titleEl = document.getElementById('list-title');
+  var todayLineEl = document.getElementById('today-line');
+  var weekEl = document.getElementById('week');
   var listEl = document.getElementById('items');
   var emptyEl = document.getElementById('empty');
   var countEl = document.getElementById('count');
   var fillEl = document.getElementById('bar-fill');
   var formEl = document.getElementById('add-form');
-  var inputEl = document.getElementById('new-item');
+  var nameInput = document.getElementById('new-name');
+  var detailInput = document.getElementById('new-detail');
   var noteEl = document.getElementById('storage-note');
+  var resetBtn = document.getElementById('reset-today');
+  var clearHistoryBtn = document.getElementById('clear-history');
+  var startOverBtn = document.getElementById('start-over');
 
-  var state = { title: 'Checklist', items: [] };
+  // exercises: [{id, name, detail}]
+  // log: { 'YYYY-MM-DD': { ids: [...], total: n } }
+  var state = { title: 'PT Checklist', exercises: [], log: {}, nextId: 1 };
   var canStore = true;
 
-  function load() {
+  function dayKey(d) {
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+  function daysAgo(n) {
+    // noon local, so DST shifts cannot roll the date over
+    var d = new Date();
+    d.setHours(12, 0, 0, 0);
+    d.setDate(d.getDate() - n);
+    return d;
+  }
+  function today() { return dayKey(daysAgo(0)); }
+
+  function todayEntry() {
+    var k = today();
+    if (!state.log[k]) state.log[k] = { ids: [], total: state.exercises.length };
+    return state.log[k];
+  }
+  function isChecked(id) { return todayEntry().ids.indexOf(id) !== -1; }
+
+  function setChecked(id, on) {
+    var entry = todayEntry();
+    var at = entry.ids.indexOf(id);
+    if (on && at === -1) entry.ids.push(id);
+    if (!on && at !== -1) entry.ids.splice(at, 1);
+  }
+
+  function migrate() {
     try {
-      var raw = window.localStorage.getItem(KEY);
+      var raw = window.localStorage.getItem(OLD_KEY);
       if (!raw) return;
-      var saved = JSON.parse(raw);
-      if (saved && typeof saved === 'object') {
-        if (typeof saved.title === 'string') state.title = saved.title;
-        if (Array.isArray(saved.items)) {
-          state.items = saved.items
-            .filter(function (it) { return it && typeof it.text === 'string'; })
-            .map(function (it) { return { text: it.text, done: !!it.done }; });
-        }
+      var old = JSON.parse(raw);
+      if (old && Array.isArray(old.items)) {
+        old.items.forEach(function (it) {
+          if (it && typeof it.text === 'string' && it.text.trim()) {
+            state.exercises.push({ id: state.nextId++, name: it.text, detail: '' });
+          }
+        });
       }
+      window.localStorage.removeItem(OLD_KEY);
+    } catch (e) { /* nothing worth keeping */ }
+  }
+
+  function load() {
+    var raw;
+    try {
+      raw = window.localStorage.getItem(KEY);
     } catch (e) {
       canStore = false;
+      return;
     }
+    if (!raw) { migrate(); return; }
+    try {
+      var saved = JSON.parse(raw);
+      if (!saved || typeof saved !== 'object') return;
+      if (typeof saved.title === 'string') state.title = saved.title;
+      if (Array.isArray(saved.exercises)) {
+        state.exercises = saved.exercises
+          .filter(function (ex) { return ex && typeof ex.name === 'string'; })
+          .map(function (ex) {
+            return {
+              id: Number(ex.id) || state.nextId++,
+              name: ex.name,
+              detail: typeof ex.detail === 'string' ? ex.detail : ''
+            };
+          });
+      }
+      if (saved.log && typeof saved.log === 'object') {
+        Object.keys(saved.log).forEach(function (k) {
+          var e = saved.log[k];
+          if (e && Array.isArray(e.ids)) {
+            state.log[k] = { ids: e.ids.slice(), total: Number(e.total) || 0 };
+          }
+        });
+      }
+      state.nextId = Math.max(
+        Number(saved.nextId) || 1,
+        state.exercises.reduce(function (m, ex) { return Math.max(m, ex.id + 1); }, 1)
+      );
+    } catch (e) { /* unreadable; start fresh */ }
   }
 
   function save() {
     if (!canStore) return;
+    // today's total always tracks the current program
+    todayEntry().total = state.exercises.length;
+    var cutoff = dayKey(daysAgo(KEEP_DAYS));
+    Object.keys(state.log).forEach(function (k) {
+      if (k < cutoff) delete state.log[k];
+    });
     try {
       window.localStorage.setItem(KEY, JSON.stringify(state));
     } catch (e) {
       canStore = false;
-      noteEl.textContent = 'This browser is not saving the list, so it will reset when you leave the page.';
+      noteEl.textContent = 'This browser is not saving anything, so the list resets when you leave the page.';
+    }
+  }
+
+  function dayStatus(key) {
+    var e = state.log[key];
+    if (!e || !e.total || !e.ids.length) return 'none';
+    return e.ids.length >= e.total ? 'full' : 'partial';
+  }
+
+  function streak() {
+    var n = 0;
+    // today not finished yet does not break a run built up to yesterday
+    var start = dayStatus(today()) === 'full' ? 0 : 1;
+    for (var i = start; i < KEEP_DAYS; i++) {
+      if (dayStatus(dayKey(daysAgo(i))) !== 'full') break;
+      n++;
+    }
+    return n;
+  }
+
+  function renderWeek() {
+    weekEl.textContent = '';
+    for (var i = 6; i >= 0; i--) {
+      var d = daysAgo(i);
+      var key = dayKey(d);
+      var status = dayStatus(key);
+      var li = document.createElement('li');
+      if (i === 0) li.className = 'is-today';
+      li.textContent = i === 0 ? 'Today' : DAY_LABELS[d.getDay()];
+      var dot = document.createElement('span');
+      dot.className = 'dot' + (status === 'none' ? '' : ' ' + status);
+      var e = state.log[key];
+      dot.title = key + ': ' + (e ? e.ids.length + ' of ' + e.total : 'nothing logged');
+      li.appendChild(dot);
+      weekEl.appendChild(li);
     }
   }
 
   function updateProgress() {
-    var total = state.items.length;
-    var done = state.items.filter(function (it) { return it.done; }).length;
-    countEl.textContent = done + ' of ' + total + ' done';
+    var total = state.exercises.length;
+    var done = todayEntry().ids.filter(function (id) {
+      return state.exercises.some(function (ex) { return ex.id === id; });
+    }).length;
+
+    countEl.textContent = done + ' of ' + total + ' done today';
+    var run = streak();
+    if (run > 1) {
+      var span = document.createElement('span');
+      span.className = 'streak';
+      span.textContent = ' · ' + run + ' days in a row';
+      countEl.appendChild(span);
+    }
+
     fillEl.style.width = total ? (done / total * 100) + '%' : '0%';
     emptyEl.hidden = total > 0;
-    document.getElementById('uncheck-all').disabled = done === 0;
-    document.getElementById('clear-done').disabled = done === 0;
-    document.getElementById('clear-all').disabled = total === 0;
+    resetBtn.disabled = done === 0;
+    startOverBtn.disabled = total === 0 && !Object.keys(state.log).length;
+    clearHistoryBtn.disabled = !Object.keys(state.log).some(function (k) {
+      return k !== today() && state.log[k].ids.length;
+    });
+    renderWeek();
+  }
+
+  function editable(el, get, set) {
+    el.contentEditable = 'true';
+    el.spellcheck = false;
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
+    });
+    el.addEventListener('blur', function () {
+      set(el.textContent.trim());
+      el.textContent = get();
+      save();
+      updateProgress();
+    });
   }
 
   function render() {
     titleEl.textContent = state.title;
+    todayLineEl.textContent = daysAgo(0).toLocaleDateString(undefined, {
+      weekday: 'long', month: 'long', day: 'numeric'
+    });
     listEl.textContent = '';
 
-    state.items.forEach(function (item, index) {
+    state.exercises.forEach(function (ex) {
       var li = document.createElement('li');
-      if (item.done) li.className = 'done';
+      var checked = isChecked(ex.id);
+      if (checked) li.className = 'done';
 
       var box = document.createElement('input');
       box.type = 'checkbox';
-      box.checked = item.done;
-      box.setAttribute('aria-label', item.text);
+      box.checked = checked;
+      box.setAttribute('aria-label', ex.name);
       box.addEventListener('change', function () {
-        state.items[index].done = box.checked;
+        setChecked(ex.id, box.checked);
         li.classList.toggle('done', box.checked);
-        updateProgress();
         save();
+        updateProgress();
       });
 
-      var text = document.createElement('span');
-      text.className = 'item-text';
-      text.textContent = item.text;
-      text.contentEditable = 'true';
-      text.spellcheck = false;
-      text.addEventListener('blur', function () {
-        var next = text.textContent.trim();
-        if (next) {
-          state.items[index].text = next;
-          box.setAttribute('aria-label', next);
-        } else {
-          text.textContent = state.items[index].text;
-        }
-        save();
-      });
-      text.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') { e.preventDefault(); text.blur(); }
-      });
+      var body = document.createElement('div');
+      body.className = 'body';
+
+      var name = document.createElement('span');
+      name.className = 'name';
+      name.textContent = ex.name;
+      editable(name,
+        function () { return ex.name; },
+        function (v) { if (v) { ex.name = v; box.setAttribute('aria-label', v); } });
+
+      var detail = document.createElement('span');
+      detail.className = 'detail';
+      detail.textContent = ex.detail;
+      detail.setAttribute('data-placeholder', 'sets and reps');
+      editable(detail,
+        function () { return ex.detail; },
+        function (v) { ex.detail = v; });
+
+      body.appendChild(name);
+      body.appendChild(detail);
 
       var remove = document.createElement('button');
       remove.className = 'remove';
       remove.type = 'button';
       remove.textContent = '×';
-      remove.setAttribute('aria-label', 'Remove ' + item.text);
+      remove.setAttribute('aria-label', 'Remove ' + ex.name);
       remove.addEventListener('click', function () {
-        state.items.splice(index, 1);
+        var at = state.exercises.indexOf(ex);
+        if (at !== -1) state.exercises.splice(at, 1);
+        setChecked(ex.id, false);
         render();
         save();
       });
 
       li.appendChild(box);
-      li.appendChild(text);
+      li.appendChild(body);
       li.appendChild(remove);
       listEl.appendChild(li);
     });
@@ -401,50 +542,52 @@
     updateProgress();
   }
 
-  titleEl.addEventListener('blur', function () {
-    var next = titleEl.textContent.trim();
-    state.title = next || 'Untitled list';
-    titleEl.textContent = state.title;
-    save();
-  });
-  titleEl.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') { e.preventDefault(); titleEl.blur(); }
-  });
+  editable(titleEl,
+    function () { return state.title; },
+    function (v) { state.title = v || 'Untitled'; });
 
   formEl.addEventListener('submit', function (e) {
     e.preventDefault();
-    var value = inputEl.value.trim();
-    if (!value) return;
-    state.items.push({ text: value, done: false });
-    inputEl.value = '';
+    var name = nameInput.value.trim();
+    if (!name) return;
+    state.exercises.push({
+      id: state.nextId++,
+      name: name,
+      detail: detailInput.value.trim()
+    });
+    nameInput.value = '';
+    detailInput.value = '';
     render();
     save();
-    inputEl.focus();
+    nameInput.focus();
   });
 
-  document.getElementById('uncheck-all').addEventListener('click', function () {
-    state.items.forEach(function (it) { it.done = false; });
+  resetBtn.addEventListener('click', function () {
+    todayEntry().ids = [];
     render();
     save();
   });
 
-  document.getElementById('clear-done').addEventListener('click', function () {
-    state.items = state.items.filter(function (it) { return !it.done; });
+  clearHistoryBtn.addEventListener('click', function () {
+    if (!window.confirm('Clear every day except today?')) return;
+    var keep = state.log[today()];
+    state.log = {};
+    if (keep) state.log[today()] = keep;
     render();
     save();
   });
 
-  document.getElementById('clear-all').addEventListener('click', function () {
-    if (!state.items.length) return;
-    if (!window.confirm('Remove every item from this list?')) return;
-    state.items = [];
+  startOverBtn.addEventListener('click', function () {
+    if (!window.confirm('Remove every exercise and the whole history?')) return;
+    state.exercises = [];
+    state.log = {};
     render();
     save();
   });
 
   load();
   if (!canStore) {
-    noteEl.textContent = 'This browser is not saving the list, so it will reset when you leave the page.';
+    noteEl.textContent = 'This browser is not saving anything, so the list resets when you leave the page.';
   }
   render();
 })();
