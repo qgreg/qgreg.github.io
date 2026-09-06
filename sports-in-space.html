@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sports in Space — Interactive Reference Matrix</title>
 <meta name="description" content="How the Big Five team sports adapt to off-world environments: an interactive matrix of gravity, inertia, aerodynamics and pressurized volume across planetary surfaces and orbital habitats.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
     --court:#FF8A3D; --plasma:#5BE3C4; --violet:#9E8CFF;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%}
   body{
     margin:0; background:var(--void); color:var(--chalk);
     font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
@@ -36,7 +36,10 @@
       radial-gradient(1200px 700px at 78% -10%,rgba(91,227,196,.10),transparent 70%),
       radial-gradient(900px 600px at 8% 105%,rgba(255,138,61,.09),transparent 70%);
   }
-  .wrap{position:relative; z-index:1; max-width:1140px; margin:0 auto; padding:52px 20px 90px}
+  .wrap{
+    position:relative; z-index:1; max-width:1140px; margin:0 auto;
+    padding:52px max(20px, env(safe-area-inset-right)) 90px max(20px, env(safe-area-inset-left));
+  }
 
   h1{font-size:clamp(30px,6vw,50px); line-height:1.05; font-weight:700; margin:0 0 14px; letter-spacing:-.02em}
   h1 em{font-style:normal; color:var(--court)}
@@ -83,6 +86,15 @@
     background:var(--void); color:var(--chalk); border:1px solid var(--line2);
     border-radius:9px; padding:9px 11px; font-family:inherit; font-size:14.5px; width:100%;
   }
+  /* Coarse pointers: 16px stops iOS Safari zooming the page on focus, and the
+     range thumbs grow to a thumb-sized target. */
+  @media (pointer:coarse){
+    select,input[type=text],input[type=number]{font-size:16px; padding:11px}
+    .btn{padding:11px 15px}
+    input[type=range]{height:34px}
+    input[type=range]::-webkit-slider-thumb{width:26px; height:26px}
+    tbody td{padding-top:14px; padding-bottom:14px}
+  }
   select:focus,input:focus{outline:2px solid var(--plasma); outline-offset:1px; border-color:var(--plasma)}
   .btn{
     background:var(--panel2); color:var(--chalk); border:1px solid var(--line2);
@@ -95,9 +107,25 @@
     font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--faint);
     margin:0 0 14px; padding-left:2px;
   }
+  .taphint{display:none}
+  /* The card layout hides thead, which is where sorting lives. This select is
+     the same sort, exposed for the layouts that have no column headers. */
+  .sortctl{display:none}
+  .sortrow{display:flex; gap:6px}
+  .sortrow select{flex:1 1 auto; min-width:0}
+  .sortrow .btn{flex:0 0 auto}
+  @media (pointer:coarse){
+    .count{margin-bottom:5px}
+    .taphint{
+      display:block; margin:0 0 12px; padding-left:2px;
+      font-size:12.5px; color:var(--plasma); opacity:.85;
+    }
+  }
 
   /* ---------- matrix ---------- */
-  .tablewrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--panel)}
+  /* overflow:hidden would make this a scroll container and break the sticky
+     header; overflow:clip clips the rounded corners without doing that. */
+  .tablewrap{border:1px solid var(--line); border-radius:14px; overflow:clip; background:var(--panel)}
   table{width:100%; border-collapse:collapse; font-size:14.5px; table-layout:fixed}
   /* Fixed proportions: the long free-text columns get the room, and nothing
      overflows the rounded container on the right. */
@@ -233,7 +261,7 @@
   }
   /* Below 760px the matrix restacks into cards: each row is a block, each cell
      labelled by its column so nothing depends on horizontal scrolling. */
-  @media (max-width:760px){
+  @media (max-width:760px) and (orientation:portrait){
     .wrap{padding:36px 14px 70px}
     .tablewrap{border:0; background:none; overflow:visible}
     table,tbody,tr,td{display:block; width:100% !important}
@@ -251,6 +279,7 @@
     }
     tbody td.sportcell{text-align:left; font-size:17px; border-bottom:1px solid var(--line); padding-bottom:10px}
     tbody td.sportcell::before{content:none}
+    .sortctl{display:flex}
     tr.detail>td{
       border:1px solid var(--court); border-top:0; border-radius:0 0 13px 13px;
       margin-bottom:10px; display:block; text-align:left;
@@ -259,6 +288,85 @@
     .detailinner{padding:16px 14px 20px}
     .out{grid-template-columns:1fr 1fr}
   }
+
+  /* ---------- landscape phone ----------
+     Wide but very short (844x390 on an iPhone 14; 667x375 on an SE). Vertical
+     space is the scarce resource and horizontal space is plentiful, so the
+     header collapses, the chrome tightens, and the two-column layouts come
+     back to halve the scroll length. */
+  @media (orientation:landscape) and (max-height:520px){
+    .wrap{padding-top:16px; padding-bottom:44px}
+    h1{font-size:26px; margin-bottom:6px}
+    .lede{font-size:13px; line-height:1.45; margin-bottom:12px; max-width:none}
+    h2{margin:14px 0 9px; font-size:11.5px}
+    /* Two stacked status lines cost 60px of a 390px screen; one line does not. */
+    .countrow{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; margin-bottom:9px}
+    .count,.taphint{margin:0}
+    h3{font-size:16px}
+
+    /* The banner was taking 69% of the screen. A strip still sets the scene. */
+    /* The banner is decorative, and above the fold it was the least valuable
+       76px on a 390px-tall screen. Reordering (not hiding) drops it just below
+       the matrix, so the table is reachable immediately and the art still
+       shows. Only the intro pair stays above it. */
+    .wrap{display:flex; flex-direction:column}
+    .wrap>*{order:2}
+    /* Every reorder selector must outrank .wrap>* (0,1,0), or the element
+       silently falls back into the order:2 group. */
+    .wrap>h1,.wrap>#intro{order:0}
+    .wrap>#matrixHead,.wrap>.controls,.wrap>.countrow,.wrap>.tablewrap{order:1}
+    #banner{aspect-ratio:auto; height:70px; margin:18px 0 0}
+    #banner .ph{padding:10px 14px; gap:3px}
+    #banner .ph .hint{font-size:11.5px}
+
+    .controls{padding:10px 12px; gap:8px}
+    .ctl{flex:1 1 130px}
+    .count{margin-bottom:10px; font-size:11.5px}
+
+    /* Column labels stay visible while the rows scroll under them. */
+    thead th{position:sticky; top:0}
+    thead button{padding:9px 10px; font-size:9.5px; letter-spacing:.08em}
+    tbody td{padding:9px 10px; font-size:13px}
+    .num{font-size:12px}
+    .chip{font-size:10px; padding:1px 7px}
+    .sportcell{font-size:13.5px}
+
+    /* Setting duplicates what Environment and Gravity already say; dropping it
+       gives the remaining columns room at 667px. */
+    thead th:nth-child(3),tbody td:nth-child(3){display:none}
+    thead th:nth-child(1),tbody td:nth-child(1){width:17%}
+    thead th:nth-child(2),tbody td:nth-child(2){width:23%}
+    thead th:nth-child(4),tbody td:nth-child(4){width:14%}
+    thead th:nth-child(5),tbody td:nth-child(5){width:29%}
+    thead th:nth-child(6),tbody td:nth-child(6){width:17%}
+
+    /* Use the width instead of the height everywhere it is offered. */
+    .calc{grid-template-columns:1fr 1fr; gap:12px}
+    .card{padding:14px}
+    .card p.note{font-size:12.5px; margin-bottom:12px}
+    .detailinner{grid-template-columns:1.3fr 1fr; padding:14px 12px 16px; gap:14px}
+    .prompts{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr)); gap:10px}
+    .prompt{padding:13px 15px}
+    .prompt p.body{font-size:13px}
+    .slider{margin-bottom:11px}
+    .out{gap:8px}
+    .out .o{padding:9px 11px}
+    .out .ov{font-size:19px}
+    .notes{font-size:13.5px}
+    .detail .slot{aspect-ratio:16/9}
+    footer{margin-top:34px}
+    .tip{max-width:min(340px,72vw); font-size:12.5px; padding:10px 12px}
+  }
+
+  /* Very narrow landscape (small phones, split view): drop the environment
+     chip too rather than crushing every column. */
+  @media (orientation:landscape) and (max-height:520px) and (max-width:600px){
+    thead th:nth-child(2),tbody td:nth-child(2){display:none}
+    thead th:nth-child(1),tbody td:nth-child(1){width:22%}
+    thead th:nth-child(4),tbody td:nth-child(4){width:18%}
+    thead th:nth-child(5),tbody td:nth-child(5){width:38%}
+    thead th:nth-child(6),tbody td:nth-child(6){width:22%}
+  }
 </style>
 </head>
 <body>
@@ -266,14 +374,14 @@
 <div class="wrap">
 
   <h1>Sports in <em>Space</em></h1>
-  <p class="lede">The Big Five team sports were tuned, over a century, to one gravitational
+  <p class="lede" id="intro">The Big Five team sports were tuned, over a century, to one gravitational
   constant and one atmosphere. Move them off Earth and the rules break before the athletes do.
   This is a reference matrix for where they break, and what each sport becomes on the other side
   &mdash; across planetary gravity wells and engineered orbital habitats.</p>
 
   <div class="slot" id="banner" data-asset="header_banner"></div>
 
-  <h2>The matrix</h2>
+  <h2 id="matrixHead">The matrix</h2>
   <div class="controls">
     <div class="ctl">
       <label for="fSport">Sport</label>
@@ -291,9 +399,27 @@
       <label for="fSearch">Search constraints &amp; adaptations</label>
       <input type="text" id="fSearch" placeholder="e.g. traction, Coriolis, pressurization" autocomplete="off">
     </div>
+    <div class="ctl sortctl">
+      <label for="fSortBy">Sort by</label>
+      <div class="sortrow">
+        <select id="fSortBy">
+          <option value="">Default order</option>
+          <option value="sport">Sport</option>
+          <option value="environment_type">Environment</option>
+          <option value="setting_example">Setting</option>
+          <option value="gravity_g">Gravity</option>
+          <option value="apex_value">Apex &times;</option>
+          <option value="clearance_value">Clearance</option>
+        </select>
+        <button class="btn" id="fSortDir" type="button" aria-label="Toggle sort direction" title="Toggle sort direction">&#9650;</button>
+      </div>
+    </div>
     <button class="btn" id="fReset" type="button">Reset</button>
   </div>
-  <p class="count" id="count"></p>
+  <div class="countrow">
+    <p class="count" id="count"></p>
+    <p class="taphint">Tap any gravity, apex or clearance figure to see the physics behind it.</p>
+  </div>
 
   <div class="tablewrap">
     <table>
@@ -502,7 +628,7 @@
   }
 
   // ---------- tooltip ----------
-  var tip = $("#tip");
+  var tip = $("#tip"), activeTip = null;
   function showTip(el, html){
     tip.innerHTML = html;
     tip.classList.add("on");
@@ -511,6 +637,11 @@
     var left = Math.min(Math.max(8, r.left), window.innerWidth - t.width - 8);
     var top = r.top - t.height - 10;
     if (top < 8) top = r.bottom + 10;
+    // A short landscape viewport can fit the tip neither above nor below the
+    // target, so clamp it into view rather than letting it run off-screen.
+    if (top + t.height > window.innerHeight - 8){
+      top = Math.max(8, window.innerHeight - t.height - 8);
+    }
     tip.style.left = left + "px";
     tip.style.top = top + "px";
   }
@@ -542,7 +673,10 @@
   }
   function clearTip(row){
     var v = row.clearance_value * 4000;
-    return '<div class="th">' + esc(String(row.clearance_required_m)) + '</div>' +
+    // Numeric clearances carry their unit in the cell; the tooltip must match.
+    var label = String(row.clearance_required_m) +
+      (typeof row.clearance_required_m === "number" ? " m" : "");
+    return '<div class="th">' + esc(label) + '</div>' +
       "Roofing a 4,000 m&#178; playing area to this clearance encloses:" +
       '<span class="eq">V = 4,000 &times; ' + fmt(row.clearance_value,0) + ' = ' + fmt(v,0) + ' m&#179;<br>' +
       'air = V &times; 1.2 = ' + fmt(v*AIR_DENSITY/1000,1) + ' tonnes @ 1 atm</span>' +
@@ -766,22 +900,50 @@
     $("#fSearch").addEventListener("input", applyFilters);
     $("#fReset").addEventListener("click", function(){
       $("#fSport").value = ""; $("#fFamily").value = ""; $("#fSearch").value = "";
-      sortKey = null; openId = null;
-      document.querySelectorAll("thead th").forEach(function(th){ th.removeAttribute("aria-sort"); });
+      sortKey = null; sortDir = 1; openId = null;
+      syncSortUI();
       view = DATA.slice();
       render();
     });
+
+    // One sort state, two front ends: column headers and the select. Each
+    // updates the other so they can never disagree.
+    function syncSortUI(){
+      document.querySelectorAll("thead th").forEach(function(o){
+        o.removeAttribute("aria-sort");
+        o.querySelector(".arw").textContent = "";
+        if (o.dataset.key === sortKey){
+          o.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
+          o.querySelector(".arw").textContent = sortDir === 1 ? "▲" : "▼";
+        }
+      });
+      $("#fSortBy").value = sortKey || "";
+      $("#fSortDir").innerHTML = sortDir === 1 ? "&#9650;" : "&#9660;";
+      $("#fSortDir").disabled = !sortKey;
+    }
 
     document.querySelectorAll("thead th").forEach(function(th){
       th.querySelector("button").addEventListener("click", function(){
         var key = th.dataset.key;
         if (sortKey === key) { sortDir = -sortDir; } else { sortKey = key; sortDir = 1; }
-        document.querySelectorAll("thead th").forEach(function(o){ o.removeAttribute("aria-sort"); });
-        th.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
-        th.querySelector(".arw").textContent = sortDir === 1 ? "▲" : "▼";
+        syncSortUI();
         sortView();
         render();
       });
+    });
+
+    $("#fSortBy").addEventListener("change", function(){
+      sortKey = this.value || null;
+      sortDir = 1;
+      syncSortUI();
+      if (sortKey) { sortView(); render(); } else { applyFilters(); }
+    });
+    $("#fSortDir").addEventListener("click", function(){
+      if (!sortKey) return;
+      sortDir = -sortDir;
+      syncSortUI();
+      sortView();
+      render();
     });
 
     // Row expand: click or keyboard.
@@ -795,19 +957,44 @@
       if (tr && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); toggleRow(tr.dataset.id, true); }
     });
 
-    // Tooltips, delegated so they survive re-renders.
-    document.addEventListener("mouseover", function(e){
-      var el = e.target.closest(".hasTip");
-      if (!el) return;
+    // Tooltips are delegated so they survive re-renders. Hover devices get
+    // hover; touch devices get tap-to-toggle, because hover never fires there
+    // and the working would otherwise be unreachable on a phone.
+    function tipFor(el){
       var tr = el.closest("tr.row");
+      if (!tr) return "";
       var row = DATA.filter(function(r){ return r.id === tr.dataset.id; })[0];
-      var kind = el.dataset.tip;
-      showTip(el, kind === "g" ? gravityTip(row) : kind === "a" ? apexTip(row) : clearTip(row));
-    });
-    document.addEventListener("mouseout", function(e){
-      if (e.target.closest(".hasTip")) hideTip();
-    });
-    window.addEventListener("scroll", hideTip, { passive:true });
+      if (!row) return "";
+      var k = el.dataset.tip;
+      return k === "g" ? gravityTip(row) : k === "a" ? apexTip(row) : clearTip(row);
+    }
+
+    if (window.matchMedia && window.matchMedia("(hover: hover)").matches){
+      document.addEventListener("mouseover", function(e){
+        var el = e.target.closest(".hasTip");
+        if (el) showTip(el, tipFor(el));
+      });
+      document.addEventListener("mouseout", function(e){
+        if (e.target.closest(".hasTip")) hideTip();
+      });
+    } else {
+      // Capture phase: tapping a figure must show its working, not also expand
+      // the row it sits in.
+      document.addEventListener("click", function(e){
+        var el = e.target.closest(".hasTip");
+        if (el){
+          e.stopPropagation();
+          e.preventDefault();
+          if (activeTip === el){ hideTip(); activeTip = null; }
+          else { showTip(el, tipFor(el)); activeTip = el; }
+        } else if (activeTip){
+          hideTip(); activeTip = null;
+        }
+      }, true);
+    }
+    window.addEventListener("scroll", function(){
+      hideTip(); activeTip = null;
+    }, { passive:true });
 
     // Copy buttons, delegated for the same reason.
     document.addEventListener("click", function(e){
@@ -827,6 +1014,7 @@
     ["#sG","#sV","#sA"].forEach(function(s){ $(s).addEventListener("input", runCalc); });
     ["#pA","#pH","#sP"].forEach(function(s){ $(s).addEventListener("input", runPress); });
 
+    syncSortUI();
     render();
     runCalc();
     runPress();
