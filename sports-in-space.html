@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Volume Problem — Sports in Space</title>
+<title>Sports in Space — The Volume Problem</title>
 <meta name="description" content="How much pressurized volume each of the Big Five team sports needs to be playable off Earth, computed from real ball flight and regulation field size.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0E1A%22%2F%3E%3Cpath%20d%3D%22M4%2026%20L28%2026%22%20stroke%3D%22%2328324F%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5%2026%20Q16%202%2027%2026%22%20fill%3D%22none%22%20stroke%3D%22%23FF8A3D%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-dasharray%3D%220.1%204.6%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%227%22%20r%3D%222.6%22%20fill%3D%22%23EEF2FB%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preload" as="image" href="/theme/images/sports-in-space/baseball_lunar_dome.jpg">
@@ -61,17 +61,17 @@
       linear-gradient(135deg,var(--deep),var(--panel));
   }
   .herotext{position:relative; padding:26px 28px; width:100%}
-  .kicker{
-    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.22em;
-    text-transform:uppercase; color:var(--plasma); margin:0 0 8px;
-  }
   h1{
-    font-size:clamp(30px,6vw,50px); line-height:1.02; font-weight:700;
-    margin:0 0 8px; letter-spacing:-.025em;
+    font-size:clamp(34px,6.6vw,58px); line-height:1.0; font-weight:700;
+    margin:0 0 10px; letter-spacing:-.03em;
     text-shadow:0 2px 24px rgba(0,0,0,.6);
   }
   h1 em{font-style:normal; color:var(--court)}
-  .tagline{margin:0; font-size:clamp(15px,2vw,18px); color:var(--chalk); opacity:.88; max-width:60ch; text-wrap:balance}
+  .tagline{
+    margin:0; font-size:clamp(15px,2.05vw,19px); color:var(--chalk); opacity:.9;
+    max-width:62ch; text-wrap:balance;
+  }
+  .tagline b{color:var(--plasma); font-weight:600}
   .lede{color:var(--dim); max-width:66ch; margin:0 0 30px; font-size:16px}
   h2{
     font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--plasma);
@@ -238,7 +238,6 @@
     .hero{height:148px}
     .herotext{padding:14px 16px 16px}
     .headline{font-size:15px; padding:11px 13px}
-    .kicker{font-size:10px; margin-bottom:5px}
     h2{margin:26px 0 12px}
   }
 
@@ -248,7 +247,6 @@
     /* A 390px-tall screen cannot spare a picture above the fold. */
     .hero{height:112px; margin-bottom:14px}
     .herotext{padding:12px 16px}
-    .kicker{font-size:9.5px; margin-bottom:4px}
     .tagline{font-size:13px}
     h1{font-size:25px; margin-bottom:4px}
     .headline{font-size:14px; padding:10px 13px; margin-bottom:12px}
@@ -276,9 +274,9 @@
   <header class="hero">
     <div class="heroimg" aria-hidden="true"></div>
     <div class="herotext">
-      <p class="kicker">Sports in Space</p>
-      <h1>The <em>volume</em> problem</h1>
-      <p class="tagline">Which of the Big Five can you actually afford to enclose off Earth?</p>
+      <h1>Sports in <em>Space</em></h1>
+      <p class="tagline"><b>The volume problem:</b> which of the Big Five can you actually
+      afford to enclose off Earth?</p>
     </div>
   </header>
 
