@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Volume Problem — Sports in Space</title>
 <meta name="description" content="How much pressurized volume each of the Big Five team sports needs to be playable off Earth, computed from real ball flight and regulation field size.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230B0E1A%22%2F%3E%3Cpath%20d%3D%22M4%2026%20L28%2026%22%20stroke%3D%22%2328324F%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5%2026%20Q16%202%2027%2026%22%20fill%3D%22none%22%20stroke%3D%22%23FF8A3D%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20stroke-dasharray%3D%220.1%204.6%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%227%22%20r%3D%222.6%22%20fill%3D%22%23EEF2FB%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preload" as="image" href="/theme/images/sports-in-space/baseball_lunar_dome.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -40,9 +42,37 @@
     position:relative; z-index:1; max-width:940px; margin:0 auto;
     padding:52px max(20px,env(safe-area-inset-right)) 90px max(20px,env(safe-area-inset-left));
   }
-  h1{font-size:clamp(30px,6vw,48px); line-height:1.05; font-weight:700; margin:0 0 14px; letter-spacing:-.02em}
+  /* ---------- hero ----------
+     The image is a layered background so a missing file degrades to the dark
+     gradient instead of a broken element, same philosophy as the art slots. */
+  .hero{
+    position:relative; border-radius:16px; overflow:hidden;
+    height:clamp(230px,34vh,360px); margin-bottom:22px;
+    border:1px solid var(--line); display:flex; align-items:flex-end;
+  }
+  .heroimg{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(to right, rgba(8,11,22,.93) 0%, rgba(8,11,22,.74) 32%,
+                      rgba(8,11,22,.22) 68%, rgba(8,11,22,.06) 100%),
+      linear-gradient(to top, rgba(8,11,22,.86) 0%, rgba(8,11,22,.30) 46%,
+                      rgba(8,11,22,0) 78%),
+      url("/theme/images/sports-in-space/baseball_lunar_dome.jpg") center 38%/cover no-repeat,
+      linear-gradient(135deg,var(--deep),var(--panel));
+  }
+  .herotext{position:relative; padding:26px 28px; width:100%}
+  .kicker{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--plasma); margin:0 0 8px;
+  }
+  h1{
+    font-size:clamp(30px,6vw,50px); line-height:1.02; font-weight:700;
+    margin:0 0 8px; letter-spacing:-.025em;
+    text-shadow:0 2px 24px rgba(0,0,0,.6);
+  }
   h1 em{font-style:normal; color:var(--court)}
-  .lede{color:var(--dim); max-width:64ch; margin:0 0 32px; font-size:17px}
+  .tagline{margin:0; font-size:clamp(15px,2vw,18px); color:var(--chalk); opacity:.88; max-width:60ch; text-wrap:balance}
+  .lede{color:var(--dim); max-width:66ch; margin:0 0 30px; font-size:16px}
   h2{
     font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--plasma);
     font-family:"IBM Plex Mono",monospace; font-weight:600;
@@ -72,10 +102,12 @@
 
   /* ---------- headline ---------- */
   .headline{
-    margin:22px 0 0; font-size:19px; line-height:1.5; color:var(--chalk);
-    border-left:3px solid var(--court); padding:2px 0 2px 16px;
+    margin:0 0 16px; font-size:clamp(17px,2.1vw,22px); line-height:1.45; color:var(--chalk);
+    background:linear-gradient(90deg,rgba(255,138,61,.10),rgba(255,138,61,0));
+    border-left:3px solid var(--court); border-radius:0 12px 12px 0;
+    padding:15px 20px 15px 17px;
   }
-  .headline b{color:var(--court); font-variant-numeric:tabular-nums; font-weight:700}
+  .headline b{color:var(--court); font-variant-numeric:tabular-nums; font-weight:700; white-space:nowrap}
 
   /* ---------- chart ---------- */
   .chart{margin-top:8px}
@@ -166,16 +198,61 @@
     input[type=range]{height:34px}
     input[type=range]::-webkit-slider-thumb{width:26px; height:26px}
   }
+  /* Short desktop/laptop viewports (a 1280x720 laptop is the common worst case):
+     the hero must not spend the vertical budget the chart needs. */
+  @media (min-width:621px) and (max-height:820px){
+    .hero{height:clamp(165px,25vh,225px)}
+    .herotext{padding:20px 24px}
+    .lede{margin-bottom:20px; font-size:15.5px}
+    h2{margin:26px 0 12px}
+    .headline{margin-bottom:13px}
+  }
   @media (max-width:620px){
+    /* On a phone the explanatory lede costs four lines above the chart. Move it
+       below, so the finding and the bars land together. Every selector here is
+       class-based so it outranks .wrap>* (0,1,0). */
+    .wrap{display:flex; flex-direction:column}
+    .wrap>*{order:3}
+    .wrap>.hero{order:0}
+    .wrap>.headline{order:1}
+    .wrap>.stage{order:2}
+    .lede{margin:20px 0 0}
+
+    .hero{height:190px; border-radius:14px}
+    .heroimg{
+      background:
+        linear-gradient(to top, rgba(8,11,22,.95) 0%, rgba(8,11,22,.72) 42%,
+                        rgba(8,11,22,.22) 78%, rgba(8,11,22,.10) 100%),
+        url("/theme/images/sports-in-space/baseball_lunar_dome.jpg") center 38%/cover no-repeat,
+        linear-gradient(135deg,var(--deep),var(--panel));
+    }
+    .herotext{padding:18px 18px 20px}
+    .headline{font-size:16.5px; padding:13px 15px 13px 14px}
     .row{flex-wrap:wrap; gap:4px 10px; margin-bottom:14px}
     .row .name{flex:1 1 100%; text-align:left; font-size:13.5px}
     .track{flex:1 1 100%}
   }
+  /* Small phones (SE-class, 667px tall): every pixel above the chart counts. */
+  @media (max-width:620px) and (max-height:700px){
+    .wrap{padding-top:24px}
+    .hero{height:148px}
+    .herotext{padding:14px 16px 16px}
+    .headline{font-size:15px; padding:11px 13px}
+    .kicker{font-size:10px; margin-bottom:5px}
+    h2{margin:26px 0 12px}
+  }
+
   /* Landscape phone: short and wide. Trim the header, keep everything else. */
   @media (orientation:landscape) and (max-height:520px){
-    .wrap{padding-top:16px; padding-bottom:44px}
-    h1{font-size:25px; margin-bottom:6px}
-    .lede{font-size:13.5px; margin-bottom:14px; max-width:none}
+    .wrap{padding-top:14px; padding-bottom:44px}
+    /* A 390px-tall screen cannot spare a picture above the fold. */
+    .hero{height:112px; margin-bottom:14px}
+    .herotext{padding:12px 16px}
+    .kicker{font-size:9.5px; margin-bottom:4px}
+    .tagline{font-size:13px}
+    h1{font-size:25px; margin-bottom:4px}
+    .headline{font-size:14px; padding:10px 13px; margin-bottom:12px}
+    .lede{display:none}
     h2{margin:0 0 9px; font-size:11.5px}
     .headline{font-size:14.5px; padding-left:13px}
     .control{padding:13px 15px}
@@ -183,7 +260,7 @@
     .btn{padding:8px 12px; font-size:13px}
     /* Width is the plentiful axis here: pair the control with the chart so both
        land on the first screen instead of stacking past it. */
-    .stage{display:grid; grid-template-columns:minmax(250px,300px) 1fr; gap:20px; align-items:start}
+    .stage{display:grid; grid-template-columns:1fr minmax(215px,255px); gap:20px; align-items:start}
     .chart .cap{margin-bottom:12px}
     .row{margin-bottom:7px}
     .track{height:26px}
@@ -196,28 +273,35 @@
 <div class="sky" aria-hidden="true"></div>
 <div class="wrap">
 
-  <h1>The <em>volume</em> problem</h1>
-  <p class="lede">Every off-world sport has to be played inside something you paid to build,
-  pressurize and heat. Gravity sets how high the ball goes; the rulebook sets how wide the
-  field is. Multiply the two and you get the real cost of playing each of the Big Five off
-  Earth &mdash; and the answers are not close together.</p>
+  <header class="hero">
+    <div class="heroimg" aria-hidden="true"></div>
+    <div class="herotext">
+      <p class="kicker">Sports in Space</p>
+      <h1>The <em>volume</em> problem</h1>
+      <p class="tagline">Which of the Big Five can you actually afford to enclose off Earth?</p>
+    </div>
+  </header>
+
+  <p class="headline" id="headline"></p>
+  <p class="lede">Gravity sets how high the ball goes; the rulebook sets how wide the field is.
+  Volume is the product of the two &mdash; and volume is what you pay to build, pressurize and
+  heat, forever.</p>
 
   <div class="stage">
-   <div class="stagecol">
-  <h2>Set the gravity</h2>
-  <div class="control">
-    <div class="presets" id="presets"></div>
-    <div class="slab"><span>Surface gravity</span><output id="gOut"></output></div>
-    <input type="range" id="gIn" min="0.05" max="2" step="0.005" value="0.166" aria-label="Surface gravity, in g">
-  </div>
-  <p class="headline" id="headline"></p>
-   </div>
    <div class="stagecol">
   <h2>Pressurized volume required</h2>
   <div class="chart">
     <p class="cap" id="cap"></p>
     <div class="vabwrap"><div class="vab" id="vab" hidden><span class="vablab">Vehicle Assembly Building</span></div></div>
     <div id="bars"></div>
+  </div>
+   </div>
+   <div class="stagecol">
+  <h2>Set the gravity</h2>
+  <div class="control">
+    <div class="presets" id="presets"></div>
+    <div class="slab"><span>Surface gravity</span><output id="gOut"></output></div>
+    <input type="range" id="gIn" min="0.05" max="2" step="0.005" value="0.166" aria-label="Surface gravity, in g">
   </div>
    </div>
   </div>
@@ -275,8 +359,12 @@
   var VAB = 3664883;             // m^3, largest single-storey building on Earth
   var IMG = "/theme/images/sports-in-space/";
   var PRESETS = [
-    { n:"Earth", g:1 }, { n:"Mars", g:0.38 }, { n:"Moon", g:0.166 },
-    { n:"Titan", g:0.14 }, { n:"Ceres", g:0.03 }, { n:"High-g world", g:1.8 }
+    { n:"Earth", g:1,     p:"On Earth" },
+    { n:"Mars",  g:0.38,  p:"On Mars" },
+    { n:"Moon",  g:0.166, p:"On the Moon" },
+    { n:"Titan", g:0.14,  p:"On Titan" },
+    { n:"Ceres", g:0.03,  p:"On Ceres" },
+    { n:"High-g world", g:1.8, p:"On a high-gravity world" }
   ];
 
   var DATA = [], g = 0.166;
@@ -323,8 +411,14 @@
 
     // Headline: the spread is the story, so lead with it.
     var big = rows[0], small = rows[rows.length-1];
+    // The control now sits below this line, so say which world we are on rather
+    // than "at this gravity". Derived from g, so dragging the slider onto a
+    // preset value still names it.
+    var here = PRESETS.filter(function(w){ return Math.abs(w.g - g) < 0.0001; })[0];
+    var where = here ? here.p + " (" + $("#gOut").textContent + ")" : "At " + $("#gOut").textContent;
+
     $("#headline").innerHTML =
-      "At this gravity, <b>" + esc(big.r.sport) + "</b> needs <b>" + vol(big.v) +
+      where + ", <b>" + esc(big.r.sport) + "</b> needs <b>" + vol(big.v) +
       "</b> of pressurized volume &mdash; <b>" + n0(big.v/small.v) + "&times;</b> what <b>" +
       esc(small.r.sport) + "</b> needs, and <b>" + n0(big.iss) +
       "&times;</b> the pressurized volume of the ISS." +
