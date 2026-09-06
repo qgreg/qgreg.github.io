@@ -3,20 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sports in Space — Interactive Reference Matrix</title>
-<meta name="description" content="How the Big Five team sports adapt to off-world environments: an interactive matrix of gravity, inertia, aerodynamics and pressurized volume across planetary surfaces and orbital habitats.">
+<title>The Volume Problem — Sports in Space</title>
+<meta name="description" content="How much pressurized volume each of the Big Five team sports needs to be playable off Earth, computed from real ball flight and regulation field size.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#080B16; --deep:#111729; --panel:#161E36; --panel2:#1B2440;
-    --line:#28324F; --line2:#3A4770;
+    --void:#080B16; --deep:#111729; --panel:#161E36; --line:#28324F; --line2:#3A4770;
     --chalk:#EEF2FB; --dim:#94A0BE; --faint:#6C7898;
-    --court:#FF8A3D; --plasma:#5BE3C4; --violet:#9E8CFF;
+    --court:#FF8A3D;            /* page accent: text and rules */
+    --plasma:#5BE3C4;
+    --series:#d95926;           /* chart fill: validated for this dark surface */
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%}
   body{
     margin:0; background:var(--void); color:var(--chalk);
     font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
@@ -32,340 +33,162 @@
       radial-gradient(1px 1px at 25% 81%,#fff,transparent),
       radial-gradient(1px 1px at 62% 33%,#bcd4ff,transparent),
       radial-gradient(1px 1px at 94% 74%,#fff,transparent),
-      radial-gradient(1px 1px at 6% 52%,#fff,transparent),
       radial-gradient(1200px 700px at 78% -10%,rgba(91,227,196,.10),transparent 70%),
       radial-gradient(900px 600px at 8% 105%,rgba(255,138,61,.09),transparent 70%);
   }
   .wrap{
-    position:relative; z-index:1; max-width:1140px; margin:0 auto;
-    padding:52px max(20px, env(safe-area-inset-right)) 90px max(20px, env(safe-area-inset-left));
+    position:relative; z-index:1; max-width:940px; margin:0 auto;
+    padding:52px max(20px,env(safe-area-inset-right)) 90px max(20px,env(safe-area-inset-left));
   }
-
-  h1{font-size:clamp(30px,6vw,50px); line-height:1.05; font-weight:700; margin:0 0 14px; letter-spacing:-.02em}
+  h1{font-size:clamp(30px,6vw,48px); line-height:1.05; font-weight:700; margin:0 0 14px; letter-spacing:-.02em}
   h1 em{font-style:normal; color:var(--court)}
-  .lede{color:var(--dim); max-width:66ch; margin:0 0 30px; font-size:17px}
+  .lede{color:var(--dim); max-width:64ch; margin:0 0 32px; font-size:17px}
   h2{
     font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--plasma);
     font-family:"IBM Plex Mono",monospace; font-weight:600;
-    margin:54px 0 16px; display:flex; align-items:center; gap:14px;
+    margin:52px 0 16px; display:flex; align-items:center; gap:14px;
   }
   h2::after{content:""; flex:1; height:1px; background:var(--line)}
-  h3{margin:0 0 6px; font-size:18px; font-weight:700}
 
-  /* ---------- asset slots ---------- */
-  .slot{
-    position:relative; border:1px dashed var(--line2); border-radius:14px;
-    background:linear-gradient(135deg,var(--deep),var(--panel));
-    overflow:hidden; display:block;
-  }
-  .slot img{display:block; width:100%; height:100%; object-fit:cover}
-  .slot .ph{
-    display:flex; flex-direction:column; justify-content:center; align-items:flex-start;
-    gap:8px; padding:20px; min-height:100%;
-  }
-  .slot .ph .tag{
-    font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.06em;
-    color:var(--court); word-break:break-all;
-  }
-  .slot .ph .hint{font-size:13px; color:var(--faint); max-width:52ch}
-  #banner{aspect-ratio:21/7; margin-bottom:34px}
-  #banner .ph{min-height:0; height:100%}
-
-  /* ---------- controls ---------- */
-  .controls{
-    display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
-    background:var(--panel); border:1px solid var(--line); border-radius:14px;
-    padding:14px 16px; margin-bottom:8px;
-  }
-  .ctl{display:flex; flex-direction:column; gap:5px; flex:1 1 168px}
-  .ctl label{
-    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
-    text-transform:uppercase; color:var(--dim);
-  }
-  select,input[type=text],input[type=number]{
-    background:var(--void); color:var(--chalk); border:1px solid var(--line2);
-    border-radius:9px; padding:9px 11px; font-family:inherit; font-size:14.5px; width:100%;
-  }
-  /* Coarse pointers: 16px stops iOS Safari zooming the page on focus, and the
-     range thumbs grow to a thumb-sized target. */
-  @media (pointer:coarse){
-    select,input[type=text],input[type=number]{font-size:16px; padding:11px}
-    .btn{padding:11px 15px}
-    input[type=range]{height:34px}
-    input[type=range]::-webkit-slider-thumb{width:26px; height:26px}
-    tbody td{padding-top:14px; padding-bottom:14px}
-  }
-  select:focus,input:focus{outline:2px solid var(--plasma); outline-offset:1px; border-color:var(--plasma)}
+  /* ---------- the one control ---------- */
+  .control{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px}
+  .presets{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px}
   .btn{
-    background:var(--panel2); color:var(--chalk); border:1px solid var(--line2);
-    border-radius:9px; padding:9px 14px; font-family:inherit; font-size:14px;
+    background:var(--deep); color:var(--chalk); border:1px solid var(--line2);
+    border-radius:99px; padding:7px 14px; font-family:inherit; font-size:13.5px;
     cursor:pointer; transition:border-color .15s,background .15s;
   }
-  .btn:hover{border-color:var(--court); background:rgba(255,138,61,.10)}
+  .btn:hover{border-color:var(--court)}
+  .btn[aria-pressed="true"]{background:rgba(255,138,61,.14); border-color:var(--court); color:var(--court)}
   .btn:focus-visible{outline:2px solid var(--plasma); outline-offset:2px}
-  .count{
-    font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--faint);
-    margin:0 0 14px; padding-left:2px;
-  }
-  .taphint{display:none}
-  /* The card layout hides thead, which is where sorting lives. This select is
-     the same sort, exposed for the layouts that have no column headers. */
-  .sortctl{display:none}
-  .sortrow{display:flex; gap:6px}
-  .sortrow select{flex:1 1 auto; min-width:0}
-  .sortrow .btn{flex:0 0 auto}
-  @media (pointer:coarse){
-    .count{margin-bottom:5px}
-    .taphint{
-      display:block; margin:0 0 12px; padding-left:2px;
-      font-size:12.5px; color:var(--plasma); opacity:.85;
-    }
-  }
-
-  /* ---------- matrix ---------- */
-  /* overflow:hidden would make this a scroll container and break the sticky
-     header; overflow:clip clips the rounded corners without doing that. */
-  .tablewrap{border:1px solid var(--line); border-radius:14px; overflow:clip; background:var(--panel)}
-  table{width:100%; border-collapse:collapse; font-size:14.5px; table-layout:fixed}
-  /* Fixed proportions: the long free-text columns get the room, and nothing
-     overflows the rounded container on the right. */
-  thead th:nth-child(1),tbody td:nth-child(1){width:14%}
-  thead th:nth-child(2),tbody td:nth-child(2){width:19%}
-  thead th:nth-child(3),tbody td:nth-child(3){width:20%}
-  thead th:nth-child(4),tbody td:nth-child(4){width:12%}
-  thead th:nth-child(5),tbody td:nth-child(5){width:21%}
-  thead th:nth-child(6),tbody td:nth-child(6){width:14%}
-  thead th{
-    background:var(--deep); text-align:left; padding:0; border-bottom:1px solid var(--line);
-    position:sticky; top:0; z-index:2;
-  }
-  thead button{
-    width:100%; text-align:left; background:none; border:0; color:var(--dim); cursor:pointer;
-    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.11em;
-    text-transform:uppercase; padding:13px 14px; display:flex; align-items:center; gap:6px;
-  }
-  thead button:hover{color:var(--chalk)}
-  thead button:focus-visible{outline:2px solid var(--plasma); outline-offset:-2px}
-  thead button .arw{color:var(--court); font-size:11px; opacity:0}
-  thead th[aria-sort] button{color:var(--chalk)}
-  thead th[aria-sort] button .arw{opacity:1}
-  tbody tr.row{border-bottom:1px solid var(--line); cursor:pointer; transition:background .12s}
-  tbody tr.row:hover{background:var(--panel2)}
-  tbody tr.row.open{background:var(--panel2)}
-  tbody td{padding:13px 14px; vertical-align:top}
-  .sportcell{font-weight:700; white-space:nowrap}
-  .envcell{color:var(--dim); font-size:13.5px}
-  .num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:13px}
-  .chip{
-    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px;
-    padding:2px 8px; border-radius:99px; border:1px solid; line-height:1.45;
-  }
-  .chip.planetary{color:var(--court); border-color:rgba(255,138,61,.45); background:rgba(255,138,61,.10)}
-  .chip.station{color:var(--plasma); border-color:rgba(91,227,196,.45); background:rgba(91,227,196,.10)}
-  .caret{color:var(--faint); font-size:12px; transition:transform .15s; display:inline-block}
-  tr.row.open .caret{transform:rotate(90deg); color:var(--court)}
-
-  /* expanded detail */
-  tr.detail>td{padding:0; background:var(--void); border-bottom:1px solid var(--line)}
-  .detailinner{padding:20px 16px 24px; display:grid; gap:18px; grid-template-columns:1.35fr .95fr}
-  .field{margin-bottom:16px}
-  .field:last-child{margin-bottom:0}
-  .field .k{
-    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
-    text-transform:uppercase; color:var(--plasma); margin:0 0 5px;
-  }
-  .field .v{margin:0; color:var(--dim); font-size:15px}
-  .readout{
-    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px;
-  }
-  .readout .rrow{display:flex; justify-content:space-between; gap:14px; padding:5px 0; font-size:14px}
-  .readout .rrow + .rrow{border-top:1px solid var(--line)}
-  .readout .rk{color:var(--dim)}
-  .readout .rv{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--chalk)}
-  .detail .slot{aspect-ratio:16/10; margin-bottom:12px}
-  .empty{padding:34px 16px; text-align:center; color:var(--dim)}
-
-  /* ---------- tooltip ---------- */
-  .tip{
-    position:fixed; z-index:60; max-width:310px; pointer-events:none; opacity:0;
-    transition:opacity .12s; background:#050810; border:1px solid var(--line2);
-    border-radius:11px; padding:12px 14px; font-size:13.5px; color:var(--dim);
-    box-shadow:0 14px 40px rgba(0,0,0,.6);
-  }
-  .tip.on{opacity:1}
-  .tip .th{color:var(--chalk); font-weight:700; font-size:14px; margin-bottom:6px}
-  .tip .eq{
-    font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--plasma);
-    background:rgba(91,227,196,.08); border:1px solid rgba(91,227,196,.25);
-    border-radius:6px; padding:5px 8px; margin:7px 0; display:block;
-  }
-  .hasTip{border-bottom:1px dotted var(--line2); cursor:help}
-
-  /* ---------- calculator ---------- */
-  .calc{display:grid; gap:16px; grid-template-columns:1fr 1fr}
-  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px}
-  .card p.note{color:var(--faint); font-size:13.5px; margin:0 0 16px}
-  .slider{margin-bottom:16px}
-  .slider .lab{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px}
-  .slider .lab span:first-child{
+  .slab{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px}
+  .slab span{
     font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
     text-transform:uppercase; color:var(--dim);
   }
-  .slider .lab output{
-    font-family:"IBM Plex Mono",monospace; font-size:14px; color:var(--court);
-    font-variant-numeric:tabular-nums;
-  }
+  .slab output{font-family:"IBM Plex Mono",monospace; font-size:16px; color:var(--court); font-variant-numeric:tabular-nums}
   input[type=range]{width:100%; accent-color:var(--court); background:transparent}
   input[type=range]:focus-visible{outline:2px solid var(--plasma); outline-offset:3px}
-  .presets{display:flex; flex-wrap:wrap; gap:6px; margin:-4px 0 18px}
-  .presets .btn{padding:5px 10px; font-size:12.5px; border-radius:99px}
-  .out{display:grid; gap:10px; grid-template-columns:1fr 1fr; margin-top:4px}
-  .out .o{background:var(--void); border:1px solid var(--line); border-radius:11px; padding:12px 14px}
-  .out .ok{
-    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.11em;
-    text-transform:uppercase; color:var(--dim); margin:0 0 3px;
-  }
-  .out .ov{font-size:23px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.15}
-  .out .ov .u{font-size:13px; font-weight:400; color:var(--dim); margin-left:3px}
-  .eqline{
-    font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--plasma);
-    background:rgba(91,227,196,.07); border:1px solid rgba(91,227,196,.24);
-    border-radius:8px; padding:9px 11px; margin-top:14px; overflow-x:auto; white-space:nowrap;
-  }
-  .grid2{display:grid; gap:10px; grid-template-columns:1fr 1fr; margin-bottom:14px}
-  /* Grid items default to min-width:auto, so a nowrap .eqline would otherwise
-     push its whole column wider than the viewport. */
-  .calc>*,.detailinner>*,.out>*,.prompts>*,.grid2>*{min-width:0}
-  .eqline{max-width:100%}
 
-  /* ---------- asset prompts ---------- */
-  .prompts{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr))}
-  .prompt{background:var(--deep); border:1px solid var(--line); border-radius:13px; padding:16px 18px}
-  .prompt .pt{
-    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.07em;
-    color:var(--court); margin:0 0 8px; word-break:break-all;
+  /* ---------- headline ---------- */
+  .headline{
+    margin:22px 0 0; font-size:19px; line-height:1.5; color:var(--chalk);
+    border-left:3px solid var(--court); padding:2px 0 2px 16px;
   }
-  .prompt p.body{font-size:14px; color:var(--dim); margin:0 0 12px}
-  .notes{color:var(--dim); font-size:15px}
-  .notes li{margin-bottom:9px}
+  .headline b{color:var(--court); font-variant-numeric:tabular-nums; font-weight:700}
+
+  /* ---------- chart ---------- */
+  .chart{margin-top:8px}
+  .chart .cap{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--dim); margin:0 0 14px;
+  }
+  .row{display:flex; align-items:center; gap:12px; margin-bottom:9px}
+  .row .name{
+    flex:0 0 130px; text-align:right; font-size:14px; font-weight:500;
+    overflow-wrap:anywhere;
+  }
+  .track{
+    position:relative; flex:1 1 auto; min-width:0; height:30px;
+    background:rgba(255,255,255,.035); border-radius:5px;
+  }
+  .fill{
+    position:absolute; left:0; top:0; bottom:0; background:var(--series);
+    border-radius:0 4px 4px 0; transition:width .28s ease;
+  }
+  .val{
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-variant-numeric:tabular-nums;
+    white-space:nowrap; color:var(--chalk); transition:left .28s ease;
+  }
+  .val.inside{color:#160A03; font-weight:600}
+  .vab{
+    position:absolute; top:-6px; bottom:-6px; width:0;
+    border-left:1px dashed var(--line2); pointer-events:none;
+  }
+  .vablab{
+    position:absolute; top:-30px; font-family:"IBM Plex Mono",monospace;
+    font-size:10.5px; color:var(--faint); white-space:nowrap; transform:translateX(-50%);
+  }
+  .vabwrap{position:relative; margin-left:142px; height:0}
+  @media (max-width:620px){ .vabwrap{margin-left:0} }
+
+  /* ---------- table ---------- */
+  .tablewrap{border:1px solid var(--line); border-radius:14px; overflow-x:auto; background:var(--panel); margin-top:8px}
+  table{width:100%; border-collapse:collapse; font-size:14px}
+  th,td{padding:11px 14px; text-align:right; white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  thead th{
+    background:var(--deep); color:var(--dim); border-bottom:1px solid var(--line);
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; font-weight:600;
+  }
+  tbody tr+tr td{border-top:1px solid var(--line)}
+  tbody td{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--dim)}
+  tbody td:first-child{font-family:inherit; color:var(--chalk); font-weight:500}
+
+  /* ---------- per-sport notes ---------- */
+  .notecards{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))}
+  .note{background:var(--deep); border:1px solid var(--line); border-radius:14px; overflow:hidden}
+  .note .slot{
+    aspect-ratio:16/9; border-bottom:1px solid var(--line); display:block;
+    background:linear-gradient(135deg,var(--deep),var(--panel));
+  }
+  .note .slot img{display:block; width:100%; height:100%; object-fit:cover}
+  .note .ph{
+    height:100%; display:flex; flex-direction:column; justify-content:center; padding:16px; gap:4px;
+  }
+  .note .ph .tag{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--court); word-break:break-all}
+  .note .ph .hint{font-size:12px; color:var(--faint)}
+  .note .body{padding:16px 18px 18px}
+  .note h3{margin:0 0 4px; font-size:18px}
+  .note .k{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--plasma); margin:12px 0 4px;
+  }
+  .note p{margin:0; font-size:14.5px; color:var(--dim)}
+  .note .earthref{
+    margin-top:12px; padding-top:11px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--faint);
+  }
+
+  ul.caveats{color:var(--dim); font-size:15px; padding-left:20px}
+  ul.caveats li{margin-bottom:10px}
   code{
     font-family:"IBM Plex Mono",monospace; font-size:13px; background:var(--panel);
     border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:var(--chalk);
   }
-  footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); color:var(--faint); font-size:13.5px; text-align:center}
+  footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); color:var(--faint); font-size:13.5px; text-align:center}
   footer a{color:var(--dim)}
-  .vh{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
 
-  @media (max-width:900px){
-    .calc,.detailinner{grid-template-columns:1fr}
+  @media (pointer:coarse){
+    .btn{padding:10px 16px; font-size:14px}
+    input[type=range]{height:34px}
+    input[type=range]::-webkit-slider-thumb{width:26px; height:26px}
   }
-  /* Below 760px the matrix restacks into cards: each row is a block, each cell
-     labelled by its column so nothing depends on horizontal scrolling. */
-  @media (max-width:760px) and (orientation:portrait){
-    .wrap{padding:36px 14px 70px}
-    .tablewrap{border:0; background:none; overflow:visible}
-    table,tbody,tr,td{display:block; width:100% !important}
-    thead{display:none}
-    tbody tr.row{
-      background:var(--panel); border:1px solid var(--line); border-radius:13px;
-      margin-bottom:10px; padding:6px 4px;
-    }
-    tbody tr.row.open{border-color:var(--court); margin-bottom:0; border-radius:13px 13px 0 0}
-    tbody td{padding:7px 14px; display:flex; justify-content:space-between; gap:16px; text-align:right}
-    tbody td::before{
-      content:attr(data-label); text-align:left; flex:0 0 auto;
-      font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em;
-      text-transform:uppercase; color:var(--dim); padding-top:3px;
-    }
-    tbody td.sportcell{text-align:left; font-size:17px; border-bottom:1px solid var(--line); padding-bottom:10px}
-    tbody td.sportcell::before{content:none}
-    .sortctl{display:flex}
-    tr.detail>td{
-      border:1px solid var(--court); border-top:0; border-radius:0 0 13px 13px;
-      margin-bottom:10px; display:block; text-align:left;
-    }
-    tr.detail>td::before{content:none}
-    .detailinner{padding:16px 14px 20px}
-    .out{grid-template-columns:1fr 1fr}
+  @media (max-width:620px){
+    .row{flex-wrap:wrap; gap:4px 10px; margin-bottom:14px}
+    .row .name{flex:1 1 100%; text-align:left; font-size:13.5px}
+    .track{flex:1 1 100%}
   }
-
-  /* ---------- landscape phone ----------
-     Wide but very short (844x390 on an iPhone 14; 667x375 on an SE). Vertical
-     space is the scarce resource and horizontal space is plentiful, so the
-     header collapses, the chrome tightens, and the two-column layouts come
-     back to halve the scroll length. */
+  /* Landscape phone: short and wide. Trim the header, keep everything else. */
   @media (orientation:landscape) and (max-height:520px){
     .wrap{padding-top:16px; padding-bottom:44px}
-    h1{font-size:26px; margin-bottom:6px}
-    .lede{font-size:13px; line-height:1.45; margin-bottom:12px; max-width:none}
-    h2{margin:14px 0 9px; font-size:11.5px}
-    /* Two stacked status lines cost 60px of a 390px screen; one line does not. */
-    .countrow{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; margin-bottom:9px}
-    .count,.taphint{margin:0}
-    h3{font-size:16px}
-
-    /* The banner was taking 69% of the screen. A strip still sets the scene. */
-    /* The banner is decorative, and above the fold it was the least valuable
-       76px on a 390px-tall screen. Reordering (not hiding) drops it just below
-       the matrix, so the table is reachable immediately and the art still
-       shows. Only the intro pair stays above it. */
-    .wrap{display:flex; flex-direction:column}
-    .wrap>*{order:2}
-    /* Every reorder selector must outrank .wrap>* (0,1,0), or the element
-       silently falls back into the order:2 group. */
-    .wrap>h1,.wrap>#intro{order:0}
-    .wrap>#matrixHead,.wrap>.controls,.wrap>.countrow,.wrap>.tablewrap{order:1}
-    #banner{aspect-ratio:auto; height:70px; margin:18px 0 0}
-    #banner .ph{padding:10px 14px; gap:3px}
-    #banner .ph .hint{font-size:11.5px}
-
-    .controls{padding:10px 12px; gap:8px}
-    .ctl{flex:1 1 130px}
-    .count{margin-bottom:10px; font-size:11.5px}
-
-    /* Column labels stay visible while the rows scroll under them. */
-    thead th{position:sticky; top:0}
-    thead button{padding:9px 10px; font-size:9.5px; letter-spacing:.08em}
-    tbody td{padding:9px 10px; font-size:13px}
-    .num{font-size:12px}
-    .chip{font-size:10px; padding:1px 7px}
-    .sportcell{font-size:13.5px}
-
-    /* Setting duplicates what Environment and Gravity already say; dropping it
-       gives the remaining columns room at 667px. */
-    thead th:nth-child(3),tbody td:nth-child(3){display:none}
-    thead th:nth-child(1),tbody td:nth-child(1){width:17%}
-    thead th:nth-child(2),tbody td:nth-child(2){width:23%}
-    thead th:nth-child(4),tbody td:nth-child(4){width:14%}
-    thead th:nth-child(5),tbody td:nth-child(5){width:29%}
-    thead th:nth-child(6),tbody td:nth-child(6){width:17%}
-
-    /* Use the width instead of the height everywhere it is offered. */
-    .calc{grid-template-columns:1fr 1fr; gap:12px}
-    .card{padding:14px}
-    .card p.note{font-size:12.5px; margin-bottom:12px}
-    .detailinner{grid-template-columns:1.3fr 1fr; padding:14px 12px 16px; gap:14px}
-    .prompts{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr)); gap:10px}
-    .prompt{padding:13px 15px}
-    .prompt p.body{font-size:13px}
-    .slider{margin-bottom:11px}
-    .out{gap:8px}
-    .out .o{padding:9px 11px}
-    .out .ov{font-size:19px}
-    .notes{font-size:13.5px}
-    .detail .slot{aspect-ratio:16/9}
-    footer{margin-top:34px}
-    .tip{max-width:min(340px,72vw); font-size:12.5px; padding:10px 12px}
-  }
-
-  /* Very narrow landscape (small phones, split view): drop the environment
-     chip too rather than crushing every column. */
-  @media (orientation:landscape) and (max-height:520px) and (max-width:600px){
-    thead th:nth-child(2),tbody td:nth-child(2){display:none}
-    thead th:nth-child(1),tbody td:nth-child(1){width:22%}
-    thead th:nth-child(4),tbody td:nth-child(4){width:18%}
-    thead th:nth-child(5),tbody td:nth-child(5){width:38%}
-    thead th:nth-child(6),tbody td:nth-child(6){width:22%}
+    h1{font-size:25px; margin-bottom:6px}
+    .lede{font-size:13.5px; margin-bottom:14px; max-width:none}
+    h2{margin:0 0 9px; font-size:11.5px}
+    .headline{font-size:14.5px; padding-left:13px}
+    .control{padding:13px 15px}
+    .presets{margin-bottom:12px; gap:6px}
+    .btn{padding:8px 12px; font-size:13px}
+    /* Width is the plentiful axis here: pair the control with the chart so both
+       land on the first screen instead of stacking past it. */
+    .stage{display:grid; grid-template-columns:minmax(250px,300px) 1fr; gap:20px; align-items:start}
+    .chart .cap{margin-bottom:12px}
+    .row{margin-bottom:7px}
+    .track{height:26px}
+    .row .name{flex-basis:104px; font-size:13px}
+    .vabwrap{margin-left:116px}
   }
 </style>
 </head>
@@ -373,671 +196,225 @@
 <div class="sky" aria-hidden="true"></div>
 <div class="wrap">
 
-  <h1>Sports in <em>Space</em></h1>
-  <p class="lede" id="intro">The Big Five team sports were tuned, over a century, to one gravitational
-  constant and one atmosphere. Move them off Earth and the rules break before the athletes do.
-  This is a reference matrix for where they break, and what each sport becomes on the other side
-  &mdash; across planetary gravity wells and engineered orbital habitats.</p>
+  <h1>The <em>volume</em> problem</h1>
+  <p class="lede">Every off-world sport has to be played inside something you paid to build,
+  pressurize and heat. Gravity sets how high the ball goes; the rulebook sets how wide the
+  field is. Multiply the two and you get the real cost of playing each of the Big Five off
+  Earth &mdash; and the answers are not close together.</p>
 
-  <div class="slot" id="banner" data-asset="header_banner"></div>
-
-  <h2 id="matrixHead">The matrix</h2>
-  <div class="controls">
-    <div class="ctl">
-      <label for="fSport">Sport</label>
-      <select id="fSport"><option value="">All sports</option></select>
-    </div>
-    <div class="ctl">
-      <label for="fFamily">Environment family</label>
-      <select id="fFamily">
-        <option value="">All environments</option>
-        <option value="Planetary">Planetary (gravity well)</option>
-        <option value="Station">Station / orbital</option>
-      </select>
-    </div>
-    <div class="ctl" style="flex:2 1 240px">
-      <label for="fSearch">Search constraints &amp; adaptations</label>
-      <input type="text" id="fSearch" placeholder="e.g. traction, Coriolis, pressurization" autocomplete="off">
-    </div>
-    <div class="ctl sortctl">
-      <label for="fSortBy">Sort by</label>
-      <div class="sortrow">
-        <select id="fSortBy">
-          <option value="">Default order</option>
-          <option value="sport">Sport</option>
-          <option value="environment_type">Environment</option>
-          <option value="setting_example">Setting</option>
-          <option value="gravity_g">Gravity</option>
-          <option value="apex_value">Apex &times;</option>
-          <option value="clearance_value">Clearance</option>
-        </select>
-        <button class="btn" id="fSortDir" type="button" aria-label="Toggle sort direction" title="Toggle sort direction">&#9650;</button>
-      </div>
-    </div>
-    <button class="btn" id="fReset" type="button">Reset</button>
+  <div class="stage">
+   <div class="stagecol">
+  <h2>Set the gravity</h2>
+  <div class="control">
+    <div class="presets" id="presets"></div>
+    <div class="slab"><span>Surface gravity</span><output id="gOut"></output></div>
+    <input type="range" id="gIn" min="0.05" max="2" step="0.005" value="0.166" aria-label="Surface gravity, in g">
   </div>
-  <div class="countrow">
-    <p class="count" id="count"></p>
-    <p class="taphint">Tap any gravity, apex or clearance figure to see the physics behind it.</p>
+  <p class="headline" id="headline"></p>
+   </div>
+   <div class="stagecol">
+  <h2>Pressurized volume required</h2>
+  <div class="chart">
+    <p class="cap" id="cap"></p>
+    <div class="vabwrap"><div class="vab" id="vab" hidden><span class="vablab">Vehicle Assembly Building</span></div></div>
+    <div id="bars"></div>
+  </div>
+   </div>
   </div>
 
+  <h2>The numbers</h2>
   <div class="tablewrap">
     <table>
-      <caption class="vh">Big Five sports compared across off-world environments. Select a column header to sort; select a row to expand its full constraint, adaptation and trajectory readout.</caption>
       <thead>
         <tr>
-          <th data-key="sport"><button type="button">Sport <span class="arw"></span></button></th>
-          <th data-key="environment_type"><button type="button">Environment <span class="arw"></span></button></th>
-          <th data-key="setting_example"><button type="button">Setting <span class="arw"></span></button></th>
-          <th data-key="gravity_g"><button type="button">Gravity <span class="arw"></span></button></th>
-          <th data-key="apex_value"><button type="button">Apex &times; <span class="arw"></span></button></th>
-          <th data-key="clearance_value"><button type="button">Clearance <span class="arw"></span></button></th>
+          <th>Sport</th><th>Footprint</th><th>Clearance</th>
+          <th>Volume</th><th>&times; ISS</th><th>Air mass</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
 
-  <h2>Parametric trajectory calculator</h2>
-  <div class="calc">
-    <div class="card">
-      <h3>Ballistics</h3>
-      <p class="note">Vacuum ballistics for a point mass. Honest on thin-atmosphere worlds;
-      on dense-atmosphere and pressurized venues, drag and lift dominate and these are ceilings,
-      not predictions.</p>
-      <div class="presets" id="presets"></div>
-      <div class="slider">
-        <div class="lab"><span>Gravity</span><output id="oG"></output></div>
-        <input type="range" id="sG" min="0" max="2" step="0.005" value="0.38" aria-label="Gravity in g">
-      </div>
-      <div class="slider">
-        <div class="lab"><span>Launch velocity v</span><output id="oV"></output></div>
-        <input type="range" id="sV" min="1" max="40" step="0.5" value="9" aria-label="Launch velocity, metres per second">
-      </div>
-      <div class="slider">
-        <div class="lab"><span>Launch angle &theta;</span><output id="oA"></output></div>
-        <input type="range" id="sA" min="5" max="85" step="1" value="45" aria-label="Launch angle in degrees">
-      </div>
-      <div class="out">
-        <div class="o"><p class="ok">Apex height h</p><div class="ov" id="rH"></div></div>
-        <div class="o"><p class="ok">Hang time</p><div class="ov" id="rT"></div></div>
-        <div class="o"><p class="ok">Range</p><div class="ov" id="rR"></div></div>
-        <div class="o"><p class="ok">vs. Earth apex</p><div class="ov" id="rM"></div></div>
-      </div>
-      <div class="eqline" id="eqH"></div>
-    </div>
-
-    <div class="card">
-      <h3>Pressurization load</h3>
-      <p class="note">Clearance is not free. Every metre of headroom a sport demands is
-      volume that must be filled with breathable air, held by structure and scrubbed forever.
-      Air mass at 1 atm is taken as 1.2 kg/m&sup3;.</p>
-      <div class="grid2">
-        <div class="ctl">
-          <label for="pA">Playing area (m&sup2;)</label>
-          <input type="number" id="pA" value="4000" min="1" step="100">
-        </div>
-        <div class="ctl">
-          <label for="pH">Clearance (m)</label>
-          <input type="number" id="pH" value="25" min="1" step="1">
-        </div>
-      </div>
-      <div class="slider">
-        <div class="lab"><span>Pressure</span><output id="oP"></output></div>
-        <input type="range" id="sP" min="0.3" max="2" step="0.05" value="1" aria-label="Pressure in atmospheres">
-      </div>
-      <div class="out">
-        <div class="o"><p class="ok">Enclosed volume</p><div class="ov" id="rV"></div></div>
-        <div class="o"><p class="ok">Air mass to lift</p><div class="ov" id="rKg"></div></div>
-      </div>
-      <div class="eqline" id="eqP"></div>
-      <p class="note" style="margin:14px 0 0">Sorting the matrix by clearance ranks the
-      Big Five by how expensive they are to host. Soccer under a dense atmosphere and football
-      in a canyon dome are, structurally, the two hardest sports to put off Earth.</p>
-    </div>
-  </div>
-
-  <h2>Visual asset pipeline</h2>
-  <p class="lede" style="margin-bottom:20px">Each matrix row reserves an image slot keyed to its
-  <code>asset_tag</code>. Drop a file at <code>/theme/images/sports-in-space/&lt;asset_tag&gt;.jpg</code>
-  and the slot fills automatically &mdash; no code change. Until then the slot shows the tag and
-  its generation prompt. Prompts are written standalone for ChatGPT / DALL&middot;E and share one
-  house style: hard sci-fi architectural realism, real structural scale, cinematic stadium
-  lighting, no cartooning or neon.</p>
-  <div class="prompts" id="prompts"></div>
+  <h2>Why each ceiling is where it is</h2>
+  <div class="notecards" id="notes"></div>
 
   <h2>Method &amp; caveats</h2>
-  <ul class="notes">
-    <li>The matrix is a <strong>design reference, not a simulation</strong>. Gravity, apex and
-      clearance figures are physical; constraints and adaptations are engineering judgement about
-      what a sport becomes once those figures bind.</li>
-    <li>Apex multipliers are <code>1/g</code> relative to Earth, which is exact for vacuum
-      ballistics. The soccer row deliberately breaks from that &mdash; at 0.15&nbsp;g under
-      1.5&nbsp;atm, aerodynamic stall cuts the ideal 6.7&times; back toward 6&times;, and drag,
-      not gravity, is writing the rules.</li>
-    <li><strong>Jumping and throwing scale cleanly with gravity. Running does not.</strong>
-      Sprinting depends on the normal force gravity supplies; below roughly half a <em>g</em>
-      athletes bounce instead of stride and get slower, not faster. That is why the constraint
-      column keeps returning to traction rather than speed.</li>
-    <li>Zero-g rows have no apex at all &mdash; flight is linear, so the ballistics half of the
-      calculator does not apply to them. Their limit is Newton's third law: every action a player
-      takes moves the player.</li>
-    <li>Bodies are the unmodelled variable. Months at low gravity thin bone and shrink cardiac
-      muscle, so off-world leagues would likely be contested by residents, not visiting Earth
-      athletes &mdash; and the two could not safely share a field.</li>
+  <ul class="caveats">
+    <li>Clearance is <code>structural margin + Earth ball apex ÷ g</code>. Apex scales as the
+      inverse of gravity, which is exact for vacuum ballistics. Volume is that clearance times
+      the enclosure footprint; air mass is volume &times; 1.2 kg/m&sup3; at 1 atm.</li>
+    <li><strong>The model is calibrated against buildings that exist.</strong> At 1 g it returns
+      7 m of clearance for basketball, which is exactly what FIBA mandates, and 8 m for a hockey
+      rink, which is what rinks are built to. That agreement at 1 g is the reason to trust the
+      ratios everywhere else.</li>
+    <li>These are <strong>floors, not designs</strong>. A real roof spanning 150 m has structural
+      depth of its own, which is why domed stadiums run 46&ndash;82 m where this model says 35.
+      Real enclosures are larger than these numbers, never smaller.</li>
+    <li>Footprints are held at regulation size. If you also widen the field so athletes can use
+      the longer strides low gravity allows, volume grows faster still &mdash; so treat every
+      figure here as the optimistic case.</li>
+    <li>Air mass is quoted at 1 atm. A habitat running lower pressure scales it linearly:
+      at 0.7 atm the tonnage drops by a third, which does nothing about the structure holding
+      the volume up.</li>
+    <li><strong>Zero gravity is excluded, not overlooked.</strong> At 0 g a ball has no apex and
+      never returns, so required clearance is undefined and the slider stops at 0.05 g. In free
+      fall the enclosure stops being a consequence of the sport and becomes a free design choice
+      &mdash; a different question from this one.</li>
   </ul>
 
-  <footer>An interactive reference matrix &middot; <a href="/">gregquinlan.com</a></footer>
+  <footer>Concept art slots fill from <code>/theme/images/sports-in-space/</code> &middot;
+  prompts in <code>sports-in-space-assets.md</code> &middot; <a href="/">gregquinlan.com</a></footer>
 </div>
-
-<div class="tip" id="tip" role="tooltip" aria-hidden="true"></div>
 
 <script>
 (function(){
   "use strict";
 
-  var G_EARTH = 9.807;          // m/s^2
-  var AIR_DENSITY = 1.2;        // kg/m^3 at 1 atm
-  var REF_VY = 4.0;             // m/s, a strong standing take-off, used in tooltips
-  var IMG_BASE = "/theme/images/sports-in-space/";
-
-  var ASSET_PROMPTS = {
-    header_banner: {
-      title: "Header / banner",
-      text: "Wide panoramic architectural cross-section of an expansive off-world multi-sport complex, hard science fiction realism. Multiple regulation playing surfaces visible at once beneath an enormous transparent habitat roof of exposed steel truss work; a barren planetary horizon and starfield beyond the glazing. Cinematic stadium floodlighting, cool daylight balance, believable engineering scale with human figures for reference. Photorealistic architectural rendering, wide-angle lens, no cartooning, no neon, no fantasy elements."
-    },
-    basketball_planetary_dome: {
-      title: "basketball_planetary_dome",
-      text: "Interior of a low-gravity planetary basketball arena under a vast pressurized dome, hard science fiction realism. Regulation court far below towering eight-metre elevated rim assemblies mounted on engineered steel columns; several athletes suspended in mid-air at the top of impossibly long jumps, limbs extended, clearly hanging rather than falling. High dome trusses and pressure glazing overhead with a dim planetary landscape beyond. Cinematic arena lighting, realistic athletic gear with visible micro-spike footwear, photorealistic wide-angle architectural rendering, no cartooning, no neon."
-    },
-    soccer_dense_atmosphere: {
-      title: "soccer_dense_atmosphere",
-      text: "Cavernous low-gravity indoor soccer facility under a thick high-pressure atmosphere, hard science fiction realism. Enormous enclosed volume with perimeter containment netting rising fifty metres; the ball hangs mid-flight like a balloon on a stalled trajectory, and a goalkeeper in a fabric gliding suit is spread wide, planing sideways through dense air. Heavy structural ribs and pressure bulkheads frame the pitch. Volumetric haze from the dense atmosphere, cinematic floodlighting, photorealistic wide-angle rendering, realistic sports kit, no cartooning, no neon."
-    },
-    football_canyon_dome: {
-      title: "football_canyon_dome",
-      text: "Massive elongated American football field built along the floor of a natural extraterrestrial canyon, hard science fiction realism. The field runs two hundred metres between rock walls, roofed by a cable-suspended transparent membrane anchored to the cliffs by visible tensioning towers and steel catenaries. Broad padded safety run-off zones flank the field; players wear reinforced armour with deceleration harnesses. Long dramatic shadows from low sun, alien geology, cinematic scale with human figures for reference, photorealistic wide-angle architectural rendering, no cartooning, no neon."
-    },
-    hockey_rotating_habitat: {
-      title: "hockey_rotating_habitat",
-      text: "Ice hockey rink inside a rotating cylindrical space habitat, hard science fiction realism. The rink sits on the inner hull surface and the landscape beyond it curves visibly upward into an overhead skyline of habitat structures hanging inverted above; an airborne puck traces a subtly curved Coriolis arc marked against calibrated curvature lines on the arena glass. Skaters lean into the spin direction. Cool arena lighting against warm habitat sun-line illumination, photorealistic wide-angle rendering with believable structural scale, no cartooning, no neon."
-    },
-    baseball_zero_g_chamber: {
-      title: "baseball_zero_g_chamber",
-      text: "Zero-gravity orbital batting chamber inside a padded cylindrical station hull, hard science fiction realism. A batter anchored by magnetic boot locking plates swings toward a series of concentric illuminated sensor scoring rings receding down the axis of the chamber; the ball travels a dead-straight line with no arc whatsoever, and loose equipment drifts free in the volume. Quilted impact padding on the hull, technical instrumentation and handholds throughout. Cool practical interior lighting, photorealistic wide-angle rendering, realistic flight suits, no cartooning, no neon."
-    },
-    basketball_rotating_ring: {
-      title: "basketball_rotating_ring",
-      text: "Basketball court inside the ring of a rotating orbital habitat, hard science fiction realism. The court floor follows the gentle upward curve of the ring and the far end of the habitat rises into the distance overhead; a shooter releases toward a backboard visibly offset from centre to compensate for Coriolis drift, with the ball's curved flight path marked on calibration glass behind the hoop. Engineered deck plating, structural ribs, sun-line lighting from the habitat axis, photorealistic wide-angle rendering, no cartooning, no neon."
-    },
-    soccer_zero_g_sphere: {
-      title: "soccer_zero_g_sphere",
-      text: "Spherical zero-gravity soccer arena inside an orbital station, hard science fiction realism. A forty-metre padded spherical volume with hemispherical goal shells at opposing poles and tethered launch handholds ringing the hull; players float at every orientation with no shared up, pushing off wall anchors while a high-drag foam ball crosses the volume in a dead straight line. Spectator ports set into the sphere wall. Cool practical lighting, photorealistic wide-angle rendering, realistic flight suits, no cartooning, no neon."
-    },
-    football_habitat_corridor: {
-      title: "football_habitat_corridor",
-      text: "American football field laid along the long spin axis of a cylindrical orbital habitat, hard science fiction realism. The field stretches down the habitat corridor with the curved inner hull rising on both sides and structures visible overhead; players in reinforced armour drive down the axis, and directional spin markers are painted along the sidelines. Habitat sun-line lighting from above with long shadows, believable structural and human scale, photorealistic wide-angle architectural rendering, no cartooning, no neon."
-    },
-    hockey_ice_moon_rink: {
-      title: "hockey_ice_moon_rink",
-      text: "Ice hockey rink cut directly into the native surface ice of a frozen moon, hard science fiction realism. A pressurized transparent enclosure covers the rink with boards enclosing all six surfaces including overhead; skaters in ballasted skate assemblies drift with almost no traction, one pair tumbling slowly through the air after a check with nothing to arrest them. A gas giant hangs low over the ice horizon beyond the glazing. Cold blue-white lighting, photorealistic wide-angle rendering, realistic pressure gear, no cartooning, no neon."
-    },
-    baseball_high_g_dome: {
-      title: "baseball_high_g_dome",
-      text: "Baseball stadium under a heavy pressurized dome on a high-gravity world, hard science fiction realism. A compressed field with shortened base paths and a close outfield fence; a struck ball drops on a visibly flattened, truncated arc while thick-limbed athletes in supportive powered bracing move deliberately under nearly double weight. Massive compression-loaded dome structure with unusually heavy columns overhead. Dense heavy atmosphere haze, cinematic floodlighting, photorealistic wide-angle architectural rendering, no cartooning, no neon."
-    }
-  };
-
+  var AIR = 1.2;                 // kg/m^3 at 1 atm
+  var ISS = 916;                 // m^3 pressurized
+  var VAB = 3664883;             // m^3, largest single-storey building on Earth
+  var IMG = "/theme/images/sports-in-space/";
   var PRESETS = [
-    { n:"Earth",  g:1.0 }, { n:"Mars", g:0.38 }, { n:"Moon", g:0.165 },
-    { n:"Titan",  g:0.14 }, { n:"High-G world", g:1.8 }
+    { n:"Earth", g:1 }, { n:"Mars", g:0.38 }, { n:"Moon", g:0.166 },
+    { n:"Titan", g:0.14 }, { n:"Ceres", g:0.03 }, { n:"High-g world", g:1.8 }
   ];
 
-  var DATA = [], view = [], sortKey = null, sortDir = 1, openId = null;
-
+  var DATA = [], g = 0.166;
   var $ = function(s){ return document.querySelector(s); };
-  var fmt = function(n, dp){
-    return Number(n).toLocaleString("en-US", { minimumFractionDigits:dp, maximumFractionDigits:dp });
-  };
   var esc = function(s){
     return String(s).replace(/[&<>"']/g, function(c){
-      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
     });
   };
-  var family = function(row){ return row.environment_type.indexOf("Station") === 0 ? "Station" : "Planetary"; };
+  var n0 = function(x){ return Math.round(x).toLocaleString("en-US"); };
+  var n1 = function(x){ return x.toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1}); };
 
-  // ---------- physics ----------
-  function apex(vy, gAbs){ return (vy*vy) / (2*gAbs); }
-  function hang(vy, gAbs){ return (2*vy) / gAbs; }
-  function range(v, deg, gAbs){ return (v*v * Math.sin(2*deg*Math.PI/180)) / gAbs; }
+  // Volume spans three orders of magnitude, so pick the unit per value.
+  function vol(v){
+    if (v >= 1e6) return n1(v/1e6) + "M m³";
+    if (v >= 1e4) return n0(v/1000) + "k m³";
+    return n0(v) + " m³";
+  }
+  function mass(kg){
+    var t = kg/1000;
+    // Kilotonnes need a decimal: 1,449 t and 1,520 t are a 5% difference and
+    // must not both collapse to a bare "1kt" / "2kt".
+    return t >= 1000 ? n1(t/1000) + " kt" : t >= 10 ? n0(t) + " t" : n1(t) + " t";
+  }
+  function clearance(r){ return r.structural_margin_m + r.earth_apex_m / g; }
+  function volume(r){ return r.footprint_m2 * clearance(r); }
 
-  // ---------- asset slots ----------
-  // Try the real image; if it is not there yet, fall back to the labelled placeholder.
-  function fillSlot(el){
-    var tag = el.dataset.asset, spec = ASSET_PROMPTS[tag];
-    var img = new Image();
-    img.alt = spec ? spec.title + " concept art" : tag;
-    img.addEventListener("load", function(){ el.innerHTML = ""; el.appendChild(img); el.style.borderStyle = "solid"; });
-    img.addEventListener("error", function(){
-      el.innerHTML = '<div class="ph">' +
-        '<div class="tag">' + esc(tag) + '</div>' +
-        '<div class="hint">Image slot reserved. Drop <code>' + esc(tag) + '.jpg</code> into ' +
-        '<code>' + esc(IMG_BASE) + '</code> to fill it.</div></div>';
-    });
-    img.src = IMG_BASE + tag + ".jpg";
-  }
-
-  // ---------- tooltip ----------
-  var tip = $("#tip"), activeTip = null;
-  function showTip(el, html){
-    tip.innerHTML = html;
-    tip.classList.add("on");
-    tip.setAttribute("aria-hidden", "false");
-    var r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
-    var left = Math.min(Math.max(8, r.left), window.innerWidth - t.width - 8);
-    var top = r.top - t.height - 10;
-    if (top < 8) top = r.bottom + 10;
-    // A short landscape viewport can fit the tip neither above nor below the
-    // target, so clamp it into view rather than letting it run off-screen.
-    if (top + t.height > window.innerHeight - 8){
-      top = Math.max(8, window.innerHeight - t.height - 8);
-    }
-    tip.style.left = left + "px";
-    tip.style.top = top + "px";
-  }
-  function hideTip(){ tip.classList.remove("on"); tip.setAttribute("aria-hidden","true"); }
-
-  function gravityTip(row){
-    var gAbs = row.gravity_g * G_EARTH;
-    if (row.gravity_g === 0){
-      return '<div class="th">' + esc(row.gravity_factor) + '</div>' +
-        "There is no apex in free fall. A struck ball holds its launch velocity until something " +
-        "stops it, so flight is linear and the sport is bounded by the hull, not by gravity.";
-    }
-    return '<div class="th">' + esc(row.gravity_factor) + '</div>' +
-      "A " + fmt(REF_VY,1) + " m/s take-off &mdash; a strong standing jump &mdash; reaches:" +
-      '<span class="eq">h = v&#178; / 2g = ' + fmt(REF_VY,1) + '&#178; / (2 &times; ' + fmt(gAbs,2) + ') = ' + fmt(apex(REF_VY,gAbs),2) + ' m</span>' +
-      "Hang time " + fmt(hang(REF_VY,gAbs),2) + " s, against " + fmt(hang(REF_VY,G_EARTH),2) + " s on Earth.";
-  }
-  function apexTip(row){
-    if (row.apex_value === null){
-      return '<div class="th">No apex</div>Linear flight. Apex multipliers are undefined at zero g ' +
-        "&mdash; nothing comes back down.";
-    }
-    return '<div class="th">' + esc(row.apex_multiplier) + '</div>' +
-      "Apex scales as the inverse of gravity, so every jump and every ball flight multiplies:" +
-      '<span class="eq">h &prop; 1/g &rarr; ' + fmt(1/row.gravity_g, 2) + '&times; Earth apex</span>' +
-      (Math.abs(row.apex_value - 1/row.gravity_g) > 0.15
-        ? "Quoted as " + esc(row.apex_multiplier) + " because aerodynamic drag pulls the real figure below the vacuum ideal."
-        : "Which is why the clearance requirement climbs with it.");
-  }
-  function clearTip(row){
-    var v = row.clearance_value * 4000;
-    // Numeric clearances carry their unit in the cell; the tooltip must match.
-    var label = String(row.clearance_required_m) +
-      (typeof row.clearance_required_m === "number" ? " m" : "");
-    return '<div class="th">' + esc(label) + '</div>' +
-      "Roofing a 4,000 m&#178; playing area to this clearance encloses:" +
-      '<span class="eq">V = 4,000 &times; ' + fmt(row.clearance_value,0) + ' = ' + fmt(v,0) + ' m&#179;<br>' +
-      'air = V &times; 1.2 = ' + fmt(v*AIR_DENSITY/1000,1) + ' tonnes @ 1 atm</span>' +
-      "Every cubic metre must be pressurized, heated and scrubbed for the life of the venue.";
-  }
-
-  // ---------- matrix ----------
-  function applyFilters(){
-    var sp = $("#fSport").value, fam = $("#fFamily").value;
-    var q = $("#fSearch").value.trim().toLowerCase();
-    view = DATA.filter(function(r){
-      if (sp && r.sport !== sp) return false;
-      if (fam && family(r) !== fam) return false;
-      if (q){
-        var hay = [r.sport, r.environment_type, r.setting_example, r.primary_constraint,
-                   r.adaptation, r.gravity_factor].join(" ").toLowerCase();
-        if (hay.indexOf(q) === -1) return false;
-      }
-      return true;
-    });
-    if (sortKey) sortView();
-    render();
-  }
-
-  function sortView(){
-    view.sort(function(a,b){
-      var x = a[sortKey], y = b[sortKey];
-      // Nulls (zero-g apex) always sort last, whichever direction.
-      if (x === null && y === null) return 0;
-      if (x === null) return 1;
-      if (y === null) return -1;
-      if (typeof x === "number" && typeof y === "number") return (x - y) * sortDir;
-      return String(x).localeCompare(String(y)) * sortDir;
-    });
+  function compute(){
+    return DATA.map(function(r){
+      var c = clearance(r), v = volume(r);
+      return { r:r, c:c, v:v, iss:v/ISS, kg:v*AIR };
+    }).sort(function(a,b){ return b.v - a.v; });
   }
 
   function render(){
-    var tb = $("#tbody");
-    tb.innerHTML = "";
-    $("#count").textContent = view.length + " of " + DATA.length + " configurations" +
-      (view.length ? "" : " — nothing matches those filters");
+    var rows = compute();
+    var max = rows[0].v;
 
-    if (!view.length){
-      var er = document.createElement("tr");
-      er.innerHTML = '<td colspan="6" class="empty">No configurations match. Try widening the filters.</td>';
-      tb.appendChild(er);
-      return;
-    }
-
-    view.forEach(function(r){
-      var tr = document.createElement("tr");
-      tr.className = "row" + (openId === r.id ? " open" : "");
-      tr.tabIndex = 0;
-      tr.setAttribute("aria-expanded", String(openId === r.id));
-      tr.dataset.id = r.id;
-      tr.innerHTML =
-        '<td class="sportcell" data-label="Sport"><span class="caret">&#9656;</span> ' + esc(r.sport) + '</td>' +
-        '<td data-label="Environment"><span class="chip ' + family(r).toLowerCase() + '">' + esc(r.environment_type) + '</span></td>' +
-        '<td class="envcell" data-label="Setting">' + esc(r.setting_example) + '</td>' +
-        '<td class="num" data-label="Gravity"><span class="hasTip" data-tip="g">' + esc(r.gravity_factor) + '</span></td>' +
-        '<td class="num" data-label="Apex ×"><span class="hasTip" data-tip="a">' + esc(r.apex_multiplier) + '</span></td>' +
-        '<td class="num" data-label="Clearance"><span class="hasTip" data-tip="c">' + esc(String(r.clearance_required_m)) +
-          (typeof r.clearance_required_m === "number" ? " m" : "") + '</span></td>';
-      tb.appendChild(tr);
-
-      if (openId === r.id) tb.appendChild(detailRow(r));
-    });
-  }
-
-  function detailRow(r){
-    var tr = document.createElement("tr");
-    tr.className = "detail";
-    var td = document.createElement("td");
-    td.colSpan = 6;
-
-    var gAbs = r.gravity_g * G_EARTH;
-    var readout;
-    if (r.gravity_g === 0){
-      readout =
-        '<div class="rrow"><span class="rk">Flight path</span><span class="rv">Linear</span></div>' +
-        '<div class="rrow"><span class="rk">Apex</span><span class="rv">None</span></div>' +
-        '<div class="rrow"><span class="rk">Ball returns?</span><span class="rv">Never</span></div>' +
-        '<div class="rrow"><span class="rk">Bounding limit</span><span class="rv">Hull geometry</span></div>';
-    } else {
-      readout =
-        '<div class="rrow"><span class="rk">Absolute gravity</span><span class="rv">' + fmt(gAbs,2) + ' m/s&#178;</span></div>' +
-        '<div class="rrow"><span class="rk">Apex, ' + fmt(REF_VY,1) + ' m/s take-off</span><span class="rv">' + fmt(apex(REF_VY,gAbs),2) + ' m</span></div>' +
-        '<div class="rrow"><span class="rk">Hang time</span><span class="rv">' + fmt(hang(REF_VY,gAbs),2) + ' s</span></div>' +
-        '<div class="rrow"><span class="rk">25 m/s throw, 45&deg;</span><span class="rv">' + fmt(range(25,45,gAbs),0) + ' m</span></div>';
-    }
-    var airT = r.clearance_value * 4000 * AIR_DENSITY / 1000;
-
-    td.innerHTML =
-      '<div class="detailinner">' +
-        '<div>' +
-          '<div class="field"><p class="k">Primary constraint</p><p class="v">' + esc(r.primary_constraint) + '</p></div>' +
-          '<div class="field"><p class="k">Adaptation</p><p class="v">' + esc(r.adaptation) + '</p></div>' +
-          '<div class="field"><p class="k">Trajectory readout</p><div class="readout">' + readout + '</div></div>' +
-          '<div class="field"><p class="k">Pressurization, 4,000 m&#178; venue</p>' +
-            '<p class="v">' + fmt(r.clearance_value * 4000, 0) + ' m&#179; enclosed &mdash; about ' +
-            fmt(airT, 1) + ' tonnes of air at 1 atm to lift, hold and scrub.</p></div>' +
-        '</div>' +
-        '<div>' +
-          '<div class="slot" data-asset="' + esc(r.asset_tag) + '"></div>' +
-          '<div class="field"><p class="k">Asset tag</p><p class="v" style="font-family:\'IBM Plex Mono\',monospace;font-size:13px;word-break:break-all">' + esc(r.asset_tag) + '</p></div>' +
-          '<button class="btn" type="button" data-copy="' + esc(r.asset_tag) + '">Copy image prompt</button>' +
-        '</div>' +
-      '</div>';
-
-    tr.appendChild(td);
-    setTimeout(function(){
-      td.querySelectorAll(".slot").forEach(fillSlot);
-    }, 0);
-    return tr;
-  }
-
-  function toggleRow(id, fromKey){
-    openId = (openId === id) ? null : id;
-    render();
-    // render() rebuilds the rows, destroying the focused element. Put focus back
-    // on the same row so a keyboard user can toggle it more than once.
-    if (fromKey){
-      var back = document.querySelector('tr.row[data-id="' + id + '"]');
-      if (back) back.focus();
-    }
-  }
-
-  // ---------- calculator ----------
-  function runCalc(){
-    var gRel = parseFloat($("#sG").value);
-    var v = parseFloat($("#sV").value);
-    var a = parseFloat($("#sA").value);
-    // 2 dp normally, 3 where the value actually carries thousandths (0.165 g).
-    $("#oG").textContent = gRel.toLocaleString("en-US",
+    $("#gOut").textContent = g.toLocaleString("en-US",
       { minimumFractionDigits:2, maximumFractionDigits:3 }) + " g";
-    $("#oV").textContent = fmt(v,1) + " m/s";
-    $("#oA").textContent = a + "°";
+    document.querySelectorAll("#presets .btn").forEach(function(b){
+      b.setAttribute("aria-pressed", String(Math.abs(parseFloat(b.dataset.g) - g) < 0.0001));
+    });
 
-    var gAbs = gRel * G_EARTH;
-    var vy = v * Math.sin(a*Math.PI/180);
+    // Headline: the spread is the story, so lead with it.
+    var big = rows[0], small = rows[rows.length-1];
+    $("#headline").innerHTML =
+      "At this gravity, <b>" + esc(big.r.sport) + "</b> needs <b>" + vol(big.v) +
+      "</b> of pressurized volume &mdash; <b>" + n0(big.v/small.v) + "&times;</b> what <b>" +
+      esc(small.r.sport) + "</b> needs, and <b>" + n0(big.iss) +
+      "&times;</b> the pressurized volume of the ISS." +
+      (big.v > VAB
+        ? " It would not fit inside the largest building on Earth."
+        : " That is <b>" + n0(100*big.v/VAB) + "%</b> of the Vehicle Assembly Building.");
 
-    if (gRel <= 0.001){
-      $("#rH").innerHTML = "&infin;";
-      $("#rT").innerHTML = "&infin;";
-      $("#rR").innerHTML = "&infin;";
-      $("#rM").innerHTML = "&mdash;";
-      $("#eqH").textContent = "At zero g the ball never turns over: h and range are unbounded, and flight is linear.";
-      return;
-    }
-    var h = apex(vy, gAbs), t = hang(vy, gAbs), R = range(v, a, gAbs);
-    var hEarth = apex(vy, G_EARTH);
-    $("#rH").innerHTML = fmt(h,2) + '<span class="u">m</span>';
-    $("#rT").innerHTML = fmt(t,2) + '<span class="u">s</span>';
-    $("#rR").innerHTML = (R >= 1000 ? fmt(R/1000,2) + '<span class="u">km</span>' : fmt(R,1) + '<span class="u">m</span>');
-    $("#rM").innerHTML = fmt(h/hEarth,2) + '<span class="u">&times;</span>';
-    $("#eqH").textContent =
-      "h = vy² / 2g = (" + fmt(v,1) + " · sin " + a + "°)² / (2 × " + fmt(gAbs,2) + ") = " + fmt(h,2) + " m";
+    $("#cap").textContent = "Enclosed volume at " + $("#gOut").textContent +
+      ", m³ — bars to scale, largest first";
+
+    // Reference line, only while it is on the scale.
+    var vabEl = $("#vab");
+    if (VAB <= max){
+      vabEl.hidden = false;
+      vabEl.style.left = (100*VAB/max) + "%";
+    } else { vabEl.hidden = true; }
+
+    $("#bars").innerHTML = rows.map(function(d){
+      var pct = 100 * d.v / max;
+      var inside = pct > 62;
+      // A label must never be clipped by a bar too small to hold it.
+      var pos = inside ? "right:8px" : "left:calc(" + pct + "% + 8px)";
+      return '<div class="row">' +
+        '<div class="name">' + esc(d.r.sport) + '</div>' +
+        '<div class="track">' +
+          '<div class="fill" style="width:max(3px,' + pct + '%)"></div>' +
+          '<span class="val' + (inside ? " inside" : "") + '" style="' + pos + '">' + vol(d.v) + '</span>' +
+        '</div></div>';
+    }).join("");
+
+    $("#tbody").innerHTML = rows.map(function(d){
+      return "<tr><td>" + esc(d.r.sport) + "</td>" +
+        "<td>" + n0(d.r.footprint_m2) + " m²</td>" +
+        "<td>" + n1(d.c) + " m</td>" +
+        "<td>" + n0(d.v) + " m³</td>" +
+        "<td>" + n0(d.iss) + "</td>" +
+        "<td>" + mass(d.kg) + "</td></tr>";
+    }).join("");
   }
 
-  function runPress(){
-    var A = Math.max(1, parseFloat($("#pA").value) || 0);
-    var H = Math.max(1, parseFloat($("#pH").value) || 0);
-    var P = parseFloat($("#sP").value);
-    $("#oP").textContent = fmt(P,2) + " atm";
-    var V = A * H, kg = V * AIR_DENSITY * P;
-    $("#rV").innerHTML = (V >= 1e6 ? fmt(V/1e6,2) + '<span class="u">M m³</span>' : fmt(V,0) + '<span class="u">m³</span>');
-    $("#rKg").innerHTML = (kg >= 1e6 ? fmt(kg/1e6,2) + '<span class="u">kt</span>' : fmt(kg/1000,1) + '<span class="u">t</span>');
-    $("#eqP").textContent =
-      "V = " + fmt(A,0) + " × " + fmt(H,0) + " = " + fmt(V,0) + " m³ · air = V × 1.2 × " + fmt(P,2) + " = " + fmt(kg/1000,1) + " t";
+  function fillSlot(el){
+    var tag = el.dataset.asset;
+    var img = new Image();
+    img.alt = tag.replace(/_/g," ") + " concept art";
+    img.addEventListener("load", function(){ el.innerHTML = ""; el.appendChild(img); });
+    img.addEventListener("error", function(){
+      el.innerHTML = '<div class="ph"><div class="tag">' + esc(tag) + '</div>' +
+        '<div class="hint">Concept art slot — drop ' + esc(tag) + '.jpg here.</div></div>';
+    });
+    img.src = IMG + tag + ".jpg";
   }
 
-  // ---------- prompts ----------
-  function copyText(text, btn){
-    var done = function(){
-      var old = btn.textContent;
-      btn.textContent = "Copied";
-      setTimeout(function(){ btn.textContent = old; }, 1400);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(done, function(){ fallback(text, done); });
-    } else { fallback(text, done); }
-  }
-  function fallback(text, done){
-    var ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand("copy"); done(); } catch(e){}
-    document.body.removeChild(ta);
-  }
-
-  function renderPrompts(){
-    var host = $("#prompts");
-    Object.keys(ASSET_PROMPTS).forEach(function(tag){
-      var p = ASSET_PROMPTS[tag];
-      var el = document.createElement("article");
-      el.className = "prompt";
-      el.innerHTML =
-        '<p class="pt">' + esc(tag) + '</p>' +
-        '<p class="body">' + esc(p.text) + '</p>' +
-        '<button class="btn" type="button" data-copy="' + esc(tag) + '">Copy prompt</button>';
-      host.appendChild(el);
-    });
-  }
-
-  // ---------- wiring ----------
-  function init(data){
-    DATA = data;
-    view = data.slice();
-
-    var sel = $("#fSport");
-    Array.from(new Set(data.map(function(r){ return r.sport; }))).sort().forEach(function(s){
-      var o = document.createElement("option");
-      o.value = s; o.textContent = s;
-      sel.appendChild(o);
-    });
-
-    ["#fSport","#fFamily"].forEach(function(s){ $(s).addEventListener("change", applyFilters); });
-    $("#fSearch").addEventListener("input", applyFilters);
-    $("#fReset").addEventListener("click", function(){
-      $("#fSport").value = ""; $("#fFamily").value = ""; $("#fSearch").value = "";
-      sortKey = null; sortDir = 1; openId = null;
-      syncSortUI();
-      view = DATA.slice();
-      render();
-    });
-
-    // One sort state, two front ends: column headers and the select. Each
-    // updates the other so they can never disagree.
-    function syncSortUI(){
-      document.querySelectorAll("thead th").forEach(function(o){
-        o.removeAttribute("aria-sort");
-        o.querySelector(".arw").textContent = "";
-        if (o.dataset.key === sortKey){
-          o.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
-          o.querySelector(".arw").textContent = sortDir === 1 ? "▲" : "▼";
-        }
-      });
-      $("#fSortBy").value = sortKey || "";
-      $("#fSortDir").innerHTML = sortDir === 1 ? "&#9650;" : "&#9660;";
-      $("#fSortDir").disabled = !sortKey;
-    }
-
-    document.querySelectorAll("thead th").forEach(function(th){
-      th.querySelector("button").addEventListener("click", function(){
-        var key = th.dataset.key;
-        if (sortKey === key) { sortDir = -sortDir; } else { sortKey = key; sortDir = 1; }
-        syncSortUI();
-        sortView();
-        render();
-      });
-    });
-
-    $("#fSortBy").addEventListener("change", function(){
-      sortKey = this.value || null;
-      sortDir = 1;
-      syncSortUI();
-      if (sortKey) { sortView(); render(); } else { applyFilters(); }
-    });
-    $("#fSortDir").addEventListener("click", function(){
-      if (!sortKey) return;
-      sortDir = -sortDir;
-      syncSortUI();
-      sortView();
-      render();
-    });
-
-    // Row expand: click or keyboard.
-    $("#tbody").addEventListener("click", function(e){
-      if (e.target.closest("[data-copy]")) return;
-      var tr = e.target.closest("tr.row");
-      if (tr) toggleRow(tr.dataset.id);
-    });
-    $("#tbody").addEventListener("keydown", function(e){
-      var tr = e.target.closest("tr.row");
-      if (tr && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); toggleRow(tr.dataset.id, true); }
-    });
-
-    // Tooltips are delegated so they survive re-renders. Hover devices get
-    // hover; touch devices get tap-to-toggle, because hover never fires there
-    // and the working would otherwise be unreachable on a phone.
-    function tipFor(el){
-      var tr = el.closest("tr.row");
-      if (!tr) return "";
-      var row = DATA.filter(function(r){ return r.id === tr.dataset.id; })[0];
-      if (!row) return "";
-      var k = el.dataset.tip;
-      return k === "g" ? gravityTip(row) : k === "a" ? apexTip(row) : clearTip(row);
-    }
-
-    if (window.matchMedia && window.matchMedia("(hover: hover)").matches){
-      document.addEventListener("mouseover", function(e){
-        var el = e.target.closest(".hasTip");
-        if (el) showTip(el, tipFor(el));
-      });
-      document.addEventListener("mouseout", function(e){
-        if (e.target.closest(".hasTip")) hideTip();
-      });
-    } else {
-      // Capture phase: tapping a figure must show its working, not also expand
-      // the row it sits in.
-      document.addEventListener("click", function(e){
-        var el = e.target.closest(".hasTip");
-        if (el){
-          e.stopPropagation();
-          e.preventDefault();
-          if (activeTip === el){ hideTip(); activeTip = null; }
-          else { showTip(el, tipFor(el)); activeTip = el; }
-        } else if (activeTip){
-          hideTip(); activeTip = null;
-        }
-      }, true);
-    }
-    window.addEventListener("scroll", function(){
-      hideTip(); activeTip = null;
-    }, { passive:true });
-
-    // Copy buttons, delegated for the same reason.
-    document.addEventListener("click", function(e){
-      var btn = e.target.closest("[data-copy]");
-      if (!btn) return;
-      var spec = ASSET_PROMPTS[btn.dataset.copy];
-      if (spec) copyText(spec.text, btn);
-    });
-
-    var pv = $("#presets");
-    PRESETS.forEach(function(p){
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "btn"; b.textContent = p.n;
-      b.addEventListener("click", function(){ $("#sG").value = p.g; runCalc(); });
-      pv.appendChild(b);
-    });
-    ["#sG","#sV","#sA"].forEach(function(s){ $(s).addEventListener("input", runCalc); });
-    ["#pA","#pH","#sP"].forEach(function(s){ $(s).addEventListener("input", runPress); });
-
-    syncSortUI();
-    render();
-    runCalc();
-    runPress();
-    renderPrompts();
-    document.querySelectorAll("#banner").forEach(fillSlot);
+  function renderNotes(){
+    $("#notes").innerHTML = DATA.map(function(r){
+      return '<article class="note">' +
+        '<div class="slot" data-asset="' + esc(r.asset_tag) + '"></div>' +
+        '<div class="body">' +
+          "<h3>" + esc(r.sport) + "</h3>" +
+          '<p class="k">Sets the ceiling</p>' +
+          "<p>" + esc(r.apex_note) + ", " + n1(r.earth_apex_m) + " m on Earth, over " +
+            n0(r.footprint_m2) + " m² of floor (" + esc(r.footprint_note) + ").</p>" +
+          '<p class="k">Why it costs what it does</p>' +
+          "<p>" + esc(r.primary_constraint) + "</p>" +
+          '<p class="k">The lever</p>' +
+          "<p>" + esc(r.adaptation) + "</p>" +
+          '<p class="earthref">' + esc(r.earth_reference) + "</p>" +
+        "</div></article>";
+    }).join("");
+    document.querySelectorAll("#notes .slot").forEach(fillSlot);
   }
 
   fetch("sports-in-space.json")
-    .then(function(r){
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
+    .then(function(res){ if(!res.ok) throw new Error("HTTP "+res.status); return res.json(); })
+    .then(function(data){
+      DATA = data;
+      PRESETS.forEach(function(p){
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "btn"; b.textContent = p.n;
+        b.dataset.g = p.g;
+        b.addEventListener("click", function(){ g = p.g; $("#gIn").value = p.g; render(); });
+        $("#presets").appendChild(b);
+      });
+      $("#gIn").addEventListener("input", function(){ g = parseFloat(this.value); render(); });
+      renderNotes();
+      render();
     })
-    .then(init)
     .catch(function(err){
-      $("#tbody").innerHTML = '<tr><td colspan="6" class="empty">' +
-        "Could not load <code>sports-in-space.json</code> (" + esc(err.message) + ").<br>" +
-        "The matrix reads its data over HTTP, so it needs to be served rather than opened " +
-        "from the filesystem. On GitHub Pages this resolves itself; locally, run " +
-        "<code>python3 -m http.server</code> from the repository root." +
-        "</td></tr>";
-      $("#count").textContent = "";
-      runCalc(); runPress(); renderPrompts();
-      document.querySelectorAll("#banner").forEach(fillSlot);
+      $("#headline").textContent =
+        "Could not load sports-in-space.json (" + err.message + "). The page reads its data " +
+        "over HTTP, so it needs to be served rather than opened from the filesystem.";
     });
 })();
 </script>
