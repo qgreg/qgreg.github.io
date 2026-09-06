@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Volume Problem — Sports in Space</title>
+<meta name="description" content="How much pressurized volume each of the Big Five team sports needs to be playable off Earth, computed from real ball flight and regulation field size.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#080B16; --deep:#111729; --panel:#161E36; --line:#28324F; --line2:#3A4770;
+    --chalk:#EEF2FB; --dim:#94A0BE; --faint:#6C7898;
+    --court:#FF8A3D;            /* page accent: text and rules */
+    --plasma:#5BE3C4;
+    --series:#d95926;           /* chart fill: validated for this dark surface */
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%}
+  body{
+    margin:0; background:var(--void); color:var(--chalk);
+    font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .sky{
+    position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.85;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%,#fff,transparent),
+      radial-gradient(1px 1px at 76% 9%,#cfe0ff,transparent),
+      radial-gradient(1px 1px at 41% 62%,#fff,transparent),
+      radial-gradient(2px 2px at 88% 44%,#ffd9b8,transparent),
+      radial-gradient(1px 1px at 25% 81%,#fff,transparent),
+      radial-gradient(1px 1px at 62% 33%,#bcd4ff,transparent),
+      radial-gradient(1px 1px at 94% 74%,#fff,transparent),
+      radial-gradient(1200px 700px at 78% -10%,rgba(91,227,196,.10),transparent 70%),
+      radial-gradient(900px 600px at 8% 105%,rgba(255,138,61,.09),transparent 70%);
+  }
+  .wrap{
+    position:relative; z-index:1; max-width:940px; margin:0 auto;
+    padding:52px max(20px,env(safe-area-inset-right)) 90px max(20px,env(safe-area-inset-left));
+  }
+  h1{font-size:clamp(30px,6vw,48px); line-height:1.05; font-weight:700; margin:0 0 14px; letter-spacing:-.02em}
+  h1 em{font-style:normal; color:var(--court)}
+  .lede{color:var(--dim); max-width:64ch; margin:0 0 32px; font-size:17px}
+  h2{
+    font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--plasma);
+    font-family:"IBM Plex Mono",monospace; font-weight:600;
+    margin:52px 0 16px; display:flex; align-items:center; gap:14px;
+  }
+  h2::after{content:""; flex:1; height:1px; background:var(--line)}
+
+  /* ---------- the one control ---------- */
+  .control{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px}
+  .presets{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px}
+  .btn{
+    background:var(--deep); color:var(--chalk); border:1px solid var(--line2);
+    border-radius:99px; padding:7px 14px; font-family:inherit; font-size:13.5px;
+    cursor:pointer; transition:border-color .15s,background .15s;
+  }
+  .btn:hover{border-color:var(--court)}
+  .btn[aria-pressed="true"]{background:rgba(255,138,61,.14); border-color:var(--court); color:var(--court)}
+  .btn:focus-visible{outline:2px solid var(--plasma); outline-offset:2px}
+  .slab{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px}
+  .slab span{
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--dim);
+  }
+  .slab output{font-family:"IBM Plex Mono",monospace; font-size:16px; color:var(--court); font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%; accent-color:var(--court); background:transparent}
+  input[type=range]:focus-visible{outline:2px solid var(--plasma); outline-offset:3px}
+
+  /* ---------- headline ---------- */
+  .headline{
+    margin:22px 0 0; font-size:19px; line-height:1.5; color:var(--chalk);
+    border-left:3px solid var(--court); padding:2px 0 2px 16px;
+  }
+  .headline b{color:var(--court); font-variant-numeric:tabular-nums; font-weight:700}
+
+  /* ---------- chart ---------- */
+  .chart{margin-top:8px}
+  .chart .cap{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--dim); margin:0 0 14px;
+  }
+  .row{display:flex; align-items:center; gap:12px; margin-bottom:9px}
+  .row .name{
+    flex:0 0 130px; text-align:right; font-size:14px; font-weight:500;
+    overflow-wrap:anywhere;
+  }
+  .track{
+    position:relative; flex:1 1 auto; min-width:0; height:30px;
+    background:rgba(255,255,255,.035); border-radius:5px;
+  }
+  .fill{
+    position:absolute; left:0; top:0; bottom:0; background:var(--series);
+    border-radius:0 4px 4px 0; transition:width .28s ease;
+  }
+  .val{
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-variant-numeric:tabular-nums;
+    white-space:nowrap; color:var(--chalk); transition:left .28s ease;
+  }
+  .val.inside{color:#160A03; font-weight:600}
+  .vab{
+    position:absolute; top:-6px; bottom:-6px; width:0;
+    border-left:1px dashed var(--line2); pointer-events:none;
+  }
+  .vablab{
+    position:absolute; top:-30px; font-family:"IBM Plex Mono",monospace;
+    font-size:10.5px; color:var(--faint); white-space:nowrap; transform:translateX(-50%);
+  }
+  .vabwrap{position:relative; margin-left:142px; height:0}
+  @media (max-width:620px){ .vabwrap{margin-left:0} }
+
+  /* ---------- table ---------- */
+  .tablewrap{border:1px solid var(--line); border-radius:14px; overflow-x:auto; background:var(--panel); margin-top:8px}
+  table{width:100%; border-collapse:collapse; font-size:14px}
+  th,td{padding:11px 14px; text-align:right; white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  thead th{
+    background:var(--deep); color:var(--dim); border-bottom:1px solid var(--line);
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; font-weight:600;
+  }
+  tbody tr+tr td{border-top:1px solid var(--line)}
+  tbody td{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--dim)}
+  tbody td:first-child{font-family:inherit; color:var(--chalk); font-weight:500}
+
+  /* ---------- per-sport notes ---------- */
+  .notecards{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))}
+  .note{background:var(--deep); border:1px solid var(--line); border-radius:14px; overflow:hidden}
+  .note .slot{
+    aspect-ratio:16/9; border-bottom:1px solid var(--line); display:block;
+    background:linear-gradient(135deg,var(--deep),var(--panel));
+  }
+  .note .slot img{display:block; width:100%; height:100%; object-fit:cover}
+  .note .ph{
+    height:100%; display:flex; flex-direction:column; justify-content:center; padding:16px; gap:4px;
+  }
+  .note .ph .tag{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--court); word-break:break-all}
+  .note .ph .hint{font-size:12px; color:var(--faint)}
+  .note .body{padding:16px 18px 18px}
+  .note h3{margin:0 0 4px; font-size:18px}
+  .note .k{
+    font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--plasma); margin:12px 0 4px;
+  }
+  .note p{margin:0; font-size:14.5px; color:var(--dim)}
+  .note .earthref{
+    margin-top:12px; padding-top:11px; border-top:1px solid var(--line);
+    font-size:13px; color:var(--faint);
+  }
+
+  ul.caveats{color:var(--dim); font-size:15px; padding-left:20px}
+  ul.caveats li{margin-bottom:10px}
+  code{
+    font-family:"IBM Plex Mono",monospace; font-size:13px; background:var(--panel);
+    border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:var(--chalk);
+  }
+  footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--line); color:var(--faint); font-size:13.5px; text-align:center}
+  footer a{color:var(--dim)}
+
+  @media (pointer:coarse){
+    .btn{padding:10px 16px; font-size:14px}
+    input[type=range]{height:34px}
+    input[type=range]::-webkit-slider-thumb{width:26px; height:26px}
+  }
+  @media (max-width:620px){
+    .row{flex-wrap:wrap; gap:4px 10px; margin-bottom:14px}
+    .row .name{flex:1 1 100%; text-align:left; font-size:13.5px}
+    .track{flex:1 1 100%}
+  }
+  /* Landscape phone: short and wide. Trim the header, keep everything else. */
+  @media (orientation:landscape) and (max-height:520px){
+    .wrap{padding-top:16px; padding-bottom:44px}
+    h1{font-size:25px; margin-bottom:6px}
+    .lede{font-size:13.5px; margin-bottom:14px; max-width:none}
+    h2{margin:0 0 9px; font-size:11.5px}
+    .headline{font-size:14.5px; padding-left:13px}
+    .control{padding:13px 15px}
+    .presets{margin-bottom:12px; gap:6px}
+    .btn{padding:8px 12px; font-size:13px}
+    /* Width is the plentiful axis here: pair the control with the chart so both
+       land on the first screen instead of stacking past it. */
+    .stage{display:grid; grid-template-columns:minmax(250px,300px) 1fr; gap:20px; align-items:start}
+    .chart .cap{margin-bottom:12px}
+    .row{margin-bottom:7px}
+    .track{height:26px}
+    .row .name{flex-basis:104px; font-size:13px}
+    .vabwrap{margin-left:116px}
+  }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<div class="wrap">
+
+  <h1>The <em>volume</em> problem</h1>
+  <p class="lede">Every off-world sport has to be played inside something you paid to build,
+  pressurize and heat. Gravity sets how high the ball goes; the rulebook sets how wide the
+  field is. Multiply the two and you get the real cost of playing each of the Big Five off
+  Earth &mdash; and the answers are not close together.</p>
+
+  <div class="stage">
+   <div class="stagecol">
+  <h2>Set the gravity</h2>
+  <div class="control">
+    <div class="presets" id="presets"></div>
+    <div class="slab"><span>Surface gravity</span><output id="gOut"></output></div>
+    <input type="range" id="gIn" min="0.05" max="2" step="0.005" value="0.166" aria-label="Surface gravity, in g">
+  </div>
+  <p class="headline" id="headline"></p>
+   </div>
+   <div class="stagecol">
+  <h2>Pressurized volume required</h2>
+  <div class="chart">
+    <p class="cap" id="cap"></p>
+    <div class="vabwrap"><div class="vab" id="vab" hidden><span class="vablab">Vehicle Assembly Building</span></div></div>
+    <div id="bars"></div>
+  </div>
+   </div>
+  </div>
+
+  <h2>The numbers</h2>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Sport</th><th>Footprint</th><th>Clearance</th>
+          <th>Volume</th><th>&times; ISS</th><th>Air mass</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <h2>Why each ceiling is where it is</h2>
+  <div class="notecards" id="notes"></div>
+
+  <h2>Method &amp; caveats</h2>
+  <ul class="caveats">
+    <li>Clearance is <code>structural margin + Earth ball apex ÷ g</code>. Apex scales as the
+      inverse of gravity, which is exact for vacuum ballistics. Volume is that clearance times
+      the enclosure footprint; air mass is volume &times; 1.2 kg/m&sup3; at 1 atm.</li>
+    <li><strong>The model is calibrated against buildings that exist.</strong> At 1 g it returns
+      7 m of clearance for basketball, which is exactly what FIBA mandates, and 8 m for a hockey
+      rink, which is what rinks are built to. That agreement at 1 g is the reason to trust the
+      ratios everywhere else.</li>
+    <li>These are <strong>floors, not designs</strong>. A real roof spanning 150 m has structural
+      depth of its own, which is why domed stadiums run 46&ndash;82 m where this model says 35.
+      Real enclosures are larger than these numbers, never smaller.</li>
+    <li>Footprints are held at regulation size. If you also widen the field so athletes can use
+      the longer strides low gravity allows, volume grows faster still &mdash; so treat every
+      figure here as the optimistic case.</li>
+    <li>Air mass is quoted at 1 atm. A habitat running lower pressure scales it linearly:
+      at 0.7 atm the tonnage drops by a third, which does nothing about the structure holding
+      the volume up.</li>
+    <li><strong>Zero gravity is excluded, not overlooked.</strong> At 0 g a ball has no apex and
+      never returns, so required clearance is undefined and the slider stops at 0.05 g. In free
+      fall the enclosure stops being a consequence of the sport and becomes a free design choice
+      &mdash; a different question from this one.</li>
+  </ul>
+
+  <footer>Concept art slots fill from <code>/theme/images/sports-in-space/</code> &middot;
+  prompts in <code>sports-in-space-assets.md</code> &middot; <a href="/">gregquinlan.com</a></footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var AIR = 1.2;                 // kg/m^3 at 1 atm
+  var ISS = 916;                 // m^3 pressurized
+  var VAB = 3664883;             // m^3, largest single-storey building on Earth
+  var IMG = "/theme/images/sports-in-space/";
+  var PRESETS = [
+    { n:"Earth", g:1 }, { n:"Mars", g:0.38 }, { n:"Moon", g:0.166 },
+    { n:"Titan", g:0.14 }, { n:"Ceres", g:0.03 }, { n:"High-g world", g:1.8 }
+  ];
+
+  var DATA = [], g = 0.166;
+  var $ = function(s){ return document.querySelector(s); };
+  var esc = function(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  };
+  var n0 = function(x){ return Math.round(x).toLocaleString("en-US"); };
+  var n1 = function(x){ return x.toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1}); };
+
+  // Volume spans three orders of magnitude, so pick the unit per value.
+  function vol(v){
+    if (v >= 1e6) return n1(v/1e6) + "M m³";
+    if (v >= 1e4) return n0(v/1000) + "k m³";
+    return n0(v) + " m³";
+  }
+  function mass(kg){
+    var t = kg/1000;
+    // Kilotonnes need a decimal: 1,449 t and 1,520 t are a 5% difference and
+    // must not both collapse to a bare "1kt" / "2kt".
+    return t >= 1000 ? n1(t/1000) + " kt" : t >= 10 ? n0(t) + " t" : n1(t) + " t";
+  }
+  function clearance(r){ return r.structural_margin_m + r.earth_apex_m / g; }
+  function volume(r){ return r.footprint_m2 * clearance(r); }
+
+  function compute(){
+    return DATA.map(function(r){
+      var c = clearance(r), v = volume(r);
+      return { r:r, c:c, v:v, iss:v/ISS, kg:v*AIR };
+    }).sort(function(a,b){ return b.v - a.v; });
+  }
+
+  function render(){
+    var rows = compute();
+    var max = rows[0].v;
+
+    $("#gOut").textContent = g.toLocaleString("en-US",
+      { minimumFractionDigits:2, maximumFractionDigits:3 }) + " g";
+    document.querySelectorAll("#presets .btn").forEach(function(b){
+      b.setAttribute("aria-pressed", String(Math.abs(parseFloat(b.dataset.g) - g) < 0.0001));
+    });
+
+    // Headline: the spread is the story, so lead with it.
+    var big = rows[0], small = rows[rows.length-1];
+    $("#headline").innerHTML =
+      "At this gravity, <b>" + esc(big.r.sport) + "</b> needs <b>" + vol(big.v) +
+      "</b> of pressurized volume &mdash; <b>" + n0(big.v/small.v) + "&times;</b> what <b>" +
+      esc(small.r.sport) + "</b> needs, and <b>" + n0(big.iss) +
+      "&times;</b> the pressurized volume of the ISS." +
+      (big.v > VAB
+        ? " It would not fit inside the largest building on Earth."
+        : " That is <b>" + n0(100*big.v/VAB) + "%</b> of the Vehicle Assembly Building.");
+
+    $("#cap").textContent = "Enclosed volume at " + $("#gOut").textContent +
+      ", m³ — bars to scale, largest first";
+
+    // Reference line, only while it is on the scale.
+    var vabEl = $("#vab");
+    if (VAB <= max){
+      vabEl.hidden = false;
+      vabEl.style.left = (100*VAB/max) + "%";
+    } else { vabEl.hidden = true; }
+
+    $("#bars").innerHTML = rows.map(function(d){
+      var pct = 100 * d.v / max;
+      var inside = pct > 62;
+      // A label must never be clipped by a bar too small to hold it.
+      var pos = inside ? "right:8px" : "left:calc(" + pct + "% + 8px)";
+      return '<div class="row">' +
+        '<div class="name">' + esc(d.r.sport) + '</div>' +
+        '<div class="track">' +
+          '<div class="fill" style="width:max(3px,' + pct + '%)"></div>' +
+          '<span class="val' + (inside ? " inside" : "") + '" style="' + pos + '">' + vol(d.v) + '</span>' +
+        '</div></div>';
+    }).join("");
+
+    $("#tbody").innerHTML = rows.map(function(d){
+      return "<tr><td>" + esc(d.r.sport) + "</td>" +
+        "<td>" + n0(d.r.footprint_m2) + " m²</td>" +
+        "<td>" + n1(d.c) + " m</td>" +
+        "<td>" + n0(d.v) + " m³</td>" +
+        "<td>" + n0(d.iss) + "</td>" +
+        "<td>" + mass(d.kg) + "</td></tr>";
+    }).join("");
+  }
+
+  function fillSlot(el){
+    var tag = el.dataset.asset;
+    var img = new Image();
+    img.alt = tag.replace(/_/g," ") + " concept art";
+    img.addEventListener("load", function(){ el.innerHTML = ""; el.appendChild(img); });
+    img.addEventListener("error", function(){
+      el.innerHTML = '<div class="ph"><div class="tag">' + esc(tag) + '</div>' +
+        '<div class="hint">Concept art slot — drop ' + esc(tag) + '.jpg here.</div></div>';
+    });
+    img.src = IMG + tag + ".jpg";
+  }
+
+  function renderNotes(){
+    $("#notes").innerHTML = DATA.map(function(r){
+      return '<article class="note">' +
+        '<div class="slot" data-asset="' + esc(r.asset_tag) + '"></div>' +
+        '<div class="body">' +
+          "<h3>" + esc(r.sport) + "</h3>" +
+          '<p class="k">Sets the ceiling</p>' +
+          "<p>" + esc(r.apex_note) + ", " + n1(r.earth_apex_m) + " m on Earth, over " +
+            n0(r.footprint_m2) + " m² of floor (" + esc(r.footprint_note) + ").</p>" +
+          '<p class="k">Why it costs what it does</p>' +
+          "<p>" + esc(r.primary_constraint) + "</p>" +
+          '<p class="k">The lever</p>' +
+          "<p>" + esc(r.adaptation) + "</p>" +
+          '<p class="earthref">' + esc(r.earth_reference) + "</p>" +
+        "</div></article>";
+    }).join("");
+    document.querySelectorAll("#notes .slot").forEach(fillSlot);
+  }
+
+  fetch("sports-in-space.json")
+    .then(function(res){ if(!res.ok) throw new Error("HTTP "+res.status); return res.json(); })
+    .then(function(data){
+      DATA = data;
+      PRESETS.forEach(function(p){
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "btn"; b.textContent = p.n;
+        b.dataset.g = p.g;
+        b.addEventListener("click", function(){ g = p.g; $("#gIn").value = p.g; render(); });
+        $("#presets").appendChild(b);
+      });
+      $("#gIn").addEventListener("input", function(){ g = parseFloat(this.value); render(); });
+      renderNotes();
+      render();
+    })
+    .catch(function(err){
+      $("#headline").textContent =
+        "Could not load sports-in-space.json (" + err.message + "). The page reads its data " +
+        "over HTTP, so it needs to be served rather than opened from the filesystem.";
+    });
+})();
+</script>
+</body>
+</html>
