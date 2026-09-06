@@ -5,7 +5,7 @@ One image per sport. Name each file for its `asset_tag` in
 
     basketball_planetary_dome.jpg
     hockey_rotating_habitat.jpg
-    football_canyon_dome.jpg
+    football_lunar_dome.jpg
     soccer_dense_atmosphere.jpg
     baseball_lunar_dome.jpg
 
