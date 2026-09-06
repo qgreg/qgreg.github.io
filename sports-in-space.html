@@ -3,405 +3,854 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sports in Space — What the Records Would Be</title>
-<!-- Unlisted: nothing on the site links here, and search engines are asked to
-     stay away. The URL still works for anyone it is handed to. -->
-<meta name="robots" content="noindex, nofollow">
-<meta name="description" content="Pick a world and watch the record book rewrite itself. Elite human performances run through real ballistics at real surface gravities.">
+<title>Sports in Space — Interactive Reference Matrix</title>
+<meta name="description" content="How the Big Five team sports adapt to off-world environments: an interactive matrix of gravity, inertia, aerodynamics and pressurized volume across planetary surfaces and orbital habitats.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#080B16;
-    --deep:#111729;
-    --panel:#161E36;
-    --line:#28324F;
-    --chalk:#EEF2FB;
-    --dim:#94A0BE;
-    --court:#FF8A3D;
-    --plasma:#5BE3C4;
+    --void:#080B16; --deep:#111729; --panel:#161E36; --panel2:#1B2440;
+    --line:#28324F; --line2:#3A4770;
+    --chalk:#EEF2FB; --dim:#94A0BE; --faint:#6C7898;
+    --court:#FF8A3D; --plasma:#5BE3C4; --violet:#9E8CFF;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{
-    margin:0;
-    background:var(--void);
-    color:var(--chalk);
-    font-family:"Space Grotesk", "Helvetica Neue", Arial, sans-serif;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    margin:0; background:var(--void); color:var(--chalk);
+    font-family:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
   }
-  /* Starfield: three layers of tiny radial dots, no images, no requests. */
   .sky{
-    position:fixed; inset:0; z-index:0; pointer-events:none;
+    position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.85;
     background-image:
-      radial-gradient(1px 1px at 12% 18%, #fff, transparent),
-      radial-gradient(1px 1px at 76% 9%, #cfe0ff, transparent),
-      radial-gradient(1px 1px at 41% 62%, #fff, transparent),
-      radial-gradient(2px 2px at 88% 44%, #ffd9b8, transparent),
-      radial-gradient(1px 1px at 25% 81%, #fff, transparent),
-      radial-gradient(1px 1px at 62% 33%, #bcd4ff, transparent),
-      radial-gradient(1px 1px at 94% 74%, #fff, transparent),
-      radial-gradient(1px 1px at 6% 52%, #fff, transparent),
-      radial-gradient(1200px 700px at 78% -10%, rgba(91,227,196,.10), transparent 70%),
-      radial-gradient(900px 600px at 8% 105%, rgba(255,138,61,.09), transparent 70%);
-    opacity:.85;
+      radial-gradient(1px 1px at 12% 18%,#fff,transparent),
+      radial-gradient(1px 1px at 76% 9%,#cfe0ff,transparent),
+      radial-gradient(1px 1px at 41% 62%,#fff,transparent),
+      radial-gradient(2px 2px at 88% 44%,#ffd9b8,transparent),
+      radial-gradient(1px 1px at 25% 81%,#fff,transparent),
+      radial-gradient(1px 1px at 62% 33%,#bcd4ff,transparent),
+      radial-gradient(1px 1px at 94% 74%,#fff,transparent),
+      radial-gradient(1px 1px at 6% 52%,#fff,transparent),
+      radial-gradient(1200px 700px at 78% -10%,rgba(91,227,196,.10),transparent 70%),
+      radial-gradient(900px 600px at 8% 105%,rgba(255,138,61,.09),transparent 70%);
   }
-  .wrap{position:relative; z-index:1; max-width:900px; margin:0 auto; padding:56px 20px 90px}
+  .wrap{position:relative; z-index:1; max-width:1140px; margin:0 auto; padding:52px 20px 90px}
 
-  /* Signature mark: a center-court circle that is also an orbit. */
-  .mark{width:96px;height:96px;margin:0 auto 26px;position:relative}
-  .mark .ring{
-    position:absolute; inset:0; border-radius:50%;
-    border:2px solid var(--line);
-  }
-  .mark .ring.tilt{transform:rotate(-24deg) scaleY(.42); border-color:rgba(91,227,196,.55)}
-  .mark .ball{
-    position:absolute; top:50%; left:50%; width:13px; height:13px; margin:-6.5px 0 0 -6.5px;
-    border-radius:50%; background:var(--court);
-    box-shadow:0 0 16px 3px rgba(255,138,61,.6);
-    transform-origin:6.5px 6.5px;
-    animation:orbit 9s linear infinite;
-  }
-  @keyframes orbit{ from{transform:rotate(0) translateX(46px) rotate(0)} to{transform:rotate(360deg) translateX(46px) rotate(-360deg)} }
-  @media (prefers-reduced-motion: reduce){ .mark .ball{animation:none; transform:translateX(40px)} }
-
-  h1{
-    font-size:clamp(32px,7.5vw,54px); line-height:1.04; font-weight:700;
-    margin:0 0 14px; text-align:center; letter-spacing:-.02em;
-  }
+  h1{font-size:clamp(30px,6vw,50px); line-height:1.05; font-weight:700; margin:0 0 14px; letter-spacing:-.02em}
   h1 em{font-style:normal; color:var(--court)}
-  .sub{
-    text-align:center; color:var(--dim); max-width:52ch; margin:0 auto 44px; font-size:17px;
-  }
-
+  .lede{color:var(--dim); max-width:66ch; margin:0 0 30px; font-size:17px}
   h2{
     font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--plasma);
-    font-family:"IBM Plex Mono", monospace; font-weight:600;
-    margin:56px 0 16px; display:flex; align-items:center; gap:14px;
+    font-family:"IBM Plex Mono",monospace; font-weight:600;
+    margin:54px 0 16px; display:flex; align-items:center; gap:14px;
   }
   h2::after{content:""; flex:1; height:1px; background:var(--line)}
+  h3{margin:0 0 6px; font-size:18px; font-weight:700}
 
-  /* --- world picker --- */
-  .worlds{display:grid; gap:8px; grid-template-columns:repeat(auto-fit, minmax(126px,1fr)); margin-bottom:24px}
-  .world{
-    cursor:pointer; text-align:left;
-    background:var(--deep); color:var(--chalk);
-    border:1px solid var(--line); border-radius:12px; padding:11px 13px;
-    font-family:inherit; font-size:15px; font-weight:500;
-    transition:border-color .15s, background .15s, transform .15s;
+  /* ---------- asset slots ---------- */
+  .slot{
+    position:relative; border:1px dashed var(--line2); border-radius:14px;
+    background:linear-gradient(135deg,var(--deep),var(--panel));
+    overflow:hidden; display:block;
   }
-  .world:hover{border-color:#3E4C77; transform:translateY(-1px)}
-  .world .g{display:block; font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--dim); margin-top:2px}
-  .world[aria-pressed="true"]{
-    background:linear-gradient(180deg, rgba(255,138,61,.16), rgba(255,138,61,.05));
-    border-color:var(--court);
+  .slot img{display:block; width:100%; height:100%; object-fit:cover}
+  .slot .ph{
+    display:flex; flex-direction:column; justify-content:center; align-items:flex-start;
+    gap:8px; padding:20px; min-height:100%;
   }
-  .world[aria-pressed="true"] .g{color:var(--court)}
-  .world:focus-visible{outline:2px solid var(--plasma); outline-offset:2px}
+  .slot .ph .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.06em;
+    color:var(--court); word-break:break-all;
+  }
+  .slot .ph .hint{font-size:13px; color:var(--faint); max-width:52ch}
+  #banner{aspect-ratio:21/7; margin-bottom:34px}
+  #banner .ph{min-height:0; height:100%}
 
-  .blurb{
-    background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--plasma);
-    border-radius:0 10px 10px 0; padding:14px 18px; margin:0 0 26px; color:var(--dim); font-size:15px;
+  /* ---------- controls ---------- */
+  .controls{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:14px 16px; margin-bottom:8px;
   }
-  .blurb strong{color:var(--chalk); font-weight:500}
+  .ctl{display:flex; flex-direction:column; gap:5px; flex:1 1 168px}
+  .ctl label{
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--dim);
+  }
+  select,input[type=text],input[type=number]{
+    background:var(--void); color:var(--chalk); border:1px solid var(--line2);
+    border-radius:9px; padding:9px 11px; font-family:inherit; font-size:14.5px; width:100%;
+  }
+  select:focus,input:focus{outline:2px solid var(--plasma); outline-offset:1px; border-color:var(--plasma)}
+  .btn{
+    background:var(--panel2); color:var(--chalk); border:1px solid var(--line2);
+    border-radius:9px; padding:9px 14px; font-family:inherit; font-size:14px;
+    cursor:pointer; transition:border-color .15s,background .15s;
+  }
+  .btn:hover{border-color:var(--court); background:rgba(255,138,61,.10)}
+  .btn:focus-visible{outline:2px solid var(--plasma); outline-offset:2px}
+  .count{
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--faint);
+    margin:0 0 14px; padding-left:2px;
+  }
 
-  /* --- results --- */
-  .events{display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(232px,1fr))}
-  .event{
-    background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  /* ---------- matrix ---------- */
+  .tablewrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--panel)}
+  table{width:100%; border-collapse:collapse; font-size:14.5px; table-layout:fixed}
+  /* Fixed proportions: the long free-text columns get the room, and nothing
+     overflows the rounded container on the right. */
+  thead th:nth-child(1),tbody td:nth-child(1){width:14%}
+  thead th:nth-child(2),tbody td:nth-child(2){width:19%}
+  thead th:nth-child(3),tbody td:nth-child(3){width:20%}
+  thead th:nth-child(4),tbody td:nth-child(4){width:12%}
+  thead th:nth-child(5),tbody td:nth-child(5){width:21%}
+  thead th:nth-child(6),tbody td:nth-child(6){width:14%}
+  thead th{
+    background:var(--deep); text-align:left; padding:0; border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:2;
   }
-  .event .name{
-    font-family:"IBM Plex Mono", monospace; font-size:11.5px; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--dim); margin:0 0 6px;
+  thead button{
+    width:100%; text-align:left; background:none; border:0; color:var(--dim); cursor:pointer;
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.11em;
+    text-transform:uppercase; padding:13px 14px; display:flex; align-items:center; gap:6px;
   }
-  .event .val{
-    font-size:30px; font-weight:700; letter-spacing:-.02em; line-height:1.1;
+  thead button:hover{color:var(--chalk)}
+  thead button:focus-visible{outline:2px solid var(--plasma); outline-offset:-2px}
+  thead button .arw{color:var(--court); font-size:11px; opacity:0}
+  thead th[aria-sort] button{color:var(--chalk)}
+  thead th[aria-sort] button .arw{opacity:1}
+  tbody tr.row{border-bottom:1px solid var(--line); cursor:pointer; transition:background .12s}
+  tbody tr.row:hover{background:var(--panel2)}
+  tbody tr.row.open{background:var(--panel2)}
+  tbody td{padding:13px 14px; vertical-align:top}
+  .sportcell{font-weight:700; white-space:nowrap}
+  .envcell{color:var(--dim); font-size:13.5px}
+  .num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:13px}
+  .chip{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px;
+    padding:2px 8px; border-radius:99px; border:1px solid; line-height:1.45;
+  }
+  .chip.planetary{color:var(--court); border-color:rgba(255,138,61,.45); background:rgba(255,138,61,.10)}
+  .chip.station{color:var(--plasma); border-color:rgba(91,227,196,.45); background:rgba(91,227,196,.10)}
+  .caret{color:var(--faint); font-size:12px; transition:transform .15s; display:inline-block}
+  tr.row.open .caret{transform:rotate(90deg); color:var(--court)}
+
+  /* expanded detail */
+  tr.detail>td{padding:0; background:var(--void); border-bottom:1px solid var(--line)}
+  .detailinner{padding:20px 16px 24px; display:grid; gap:18px; grid-template-columns:1.35fr .95fr}
+  .field{margin-bottom:16px}
+  .field:last-child{margin-bottom:0}
+  .field .k{
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--plasma); margin:0 0 5px;
+  }
+  .field .v{margin:0; color:var(--dim); font-size:15px}
+  .readout{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px;
+  }
+  .readout .rrow{display:flex; justify-content:space-between; gap:14px; padding:5px 0; font-size:14px}
+  .readout .rrow + .rrow{border-top:1px solid var(--line)}
+  .readout .rk{color:var(--dim)}
+  .readout .rv{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--chalk)}
+  .detail .slot{aspect-ratio:16/10; margin-bottom:12px}
+  .empty{padding:34px 16px; text-align:center; color:var(--dim)}
+
+  /* ---------- tooltip ---------- */
+  .tip{
+    position:fixed; z-index:60; max-width:310px; pointer-events:none; opacity:0;
+    transition:opacity .12s; background:#050810; border:1px solid var(--line2);
+    border-radius:11px; padding:12px 14px; font-size:13.5px; color:var(--dim);
+    box-shadow:0 14px 40px rgba(0,0,0,.6);
+  }
+  .tip.on{opacity:1}
+  .tip .th{color:var(--chalk); font-weight:700; font-size:14px; margin-bottom:6px}
+  .tip .eq{
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--plasma);
+    background:rgba(91,227,196,.08); border:1px solid rgba(91,227,196,.25);
+    border-radius:6px; padding:5px 8px; margin:7px 0; display:block;
+  }
+  .hasTip{border-bottom:1px dotted var(--line2); cursor:help}
+
+  /* ---------- calculator ---------- */
+  .calc{display:grid; gap:16px; grid-template-columns:1fr 1fr}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px}
+  .card p.note{color:var(--faint); font-size:13.5px; margin:0 0 16px}
+  .slider{margin-bottom:16px}
+  .slider .lab{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px}
+  .slider .lab span:first-child{
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--dim);
+  }
+  .slider .lab output{
+    font-family:"IBM Plex Mono",monospace; font-size:14px; color:var(--court);
     font-variant-numeric:tabular-nums;
   }
-  .event .val .unit{font-size:15px; font-weight:400; color:var(--dim); margin-left:3px}
-  .event .cmp{font-size:13.5px; color:var(--dim); margin-top:6px}
-  .event .cmp b{color:var(--court); font-weight:600; font-variant-numeric:tabular-nums}
-
-  /* --- coriolis panel --- */
-  #spinNote{
-    margin-top:14px; padding:16px 18px; border-radius:12px; font-size:15px;
-    background:rgba(91,227,196,.07); border:1px solid rgba(91,227,196,.32); color:var(--dim);
+  input[type=range]{width:100%; accent-color:var(--court); background:transparent}
+  input[type=range]:focus-visible{outline:2px solid var(--plasma); outline-offset:3px}
+  .presets{display:flex; flex-wrap:wrap; gap:6px; margin:-4px 0 18px}
+  .presets .btn{padding:5px 10px; font-size:12.5px; border-radius:99px}
+  .out{display:grid; gap:10px; grid-template-columns:1fr 1fr; margin-top:4px}
+  .out .o{background:var(--void); border:1px solid var(--line); border-radius:11px; padding:12px 14px}
+  .out .ok{
+    font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--dim); margin:0 0 3px;
   }
-  #spinNote b{color:var(--plasma); font-variant-numeric:tabular-nums}
-  #spinNote[hidden]{display:none}
-
-  /* --- invented sports --- */
-  .games{display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(258px,1fr))}
-  .game{
-    background:var(--deep); border:1px solid var(--line); border-radius:14px; padding:20px;
+  .out .ov{font-size:23px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.15}
+  .out .ov .u{font-size:13px; font-weight:400; color:var(--dim); margin-left:3px}
+  .eqline{
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--plasma);
+    background:rgba(91,227,196,.07); border:1px solid rgba(91,227,196,.24);
+    border-radius:8px; padding:9px 11px; margin-top:14px; overflow-x:auto; white-space:nowrap;
   }
-  .game h3{margin:0 0 4px; font-size:19px; font-weight:700}
-  .game .venue{
-    font-family:"IBM Plex Mono", monospace; font-size:11.5px; letter-spacing:.08em;
-    text-transform:uppercase; color:var(--court); margin:0 0 10px;
-  }
-  .game p{margin:0; font-size:15px; color:var(--dim)}
-  .game p + p{margin-top:9px}
+  .grid2{display:grid; gap:10px; grid-template-columns:1fr 1fr; margin-bottom:14px}
+  /* Grid items default to min-width:auto, so a nowrap .eqline would otherwise
+     push its whole column wider than the viewport. */
+  .calc>*,.detailinner>*,.out>*,.prompts>*,.grid2>*{min-width:0}
+  .eqline{max-width:100%}
 
+  /* ---------- asset prompts ---------- */
+  .prompts{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr))}
+  .prompt{background:var(--deep); border:1px solid var(--line); border-radius:13px; padding:16px 18px}
+  .prompt .pt{
+    font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.07em;
+    color:var(--court); margin:0 0 8px; word-break:break-all;
+  }
+  .prompt p.body{font-size:14px; color:var(--dim); margin:0 0 12px}
   .notes{color:var(--dim); font-size:15px}
   .notes li{margin-bottom:9px}
-  .notes code{
-    font-family:"IBM Plex Mono", monospace; font-size:13px;
-    background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:var(--chalk);
+  code{
+    font-family:"IBM Plex Mono",monospace; font-size:13px; background:var(--panel);
+    border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:var(--chalk);
   }
-  footer{
-    margin-top:64px; padding-top:22px; border-top:1px solid var(--line);
-    color:#6C7898; font-size:13.5px; text-align:center;
-  }
+  footer{margin-top:64px; padding-top:22px; border-top:1px solid var(--line); color:var(--faint); font-size:13.5px; text-align:center}
   footer a{color:var(--dim)}
+  .vh{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+  @media (max-width:900px){
+    .calc,.detailinner{grid-template-columns:1fr}
+  }
+  /* Below 760px the matrix restacks into cards: each row is a block, each cell
+     labelled by its column so nothing depends on horizontal scrolling. */
+  @media (max-width:760px){
+    .wrap{padding:36px 14px 70px}
+    .tablewrap{border:0; background:none; overflow:visible}
+    table,tbody,tr,td{display:block; width:100% !important}
+    thead{display:none}
+    tbody tr.row{
+      background:var(--panel); border:1px solid var(--line); border-radius:13px;
+      margin-bottom:10px; padding:6px 4px;
+    }
+    tbody tr.row.open{border-color:var(--court); margin-bottom:0; border-radius:13px 13px 0 0}
+    tbody td{padding:7px 14px; display:flex; justify-content:space-between; gap:16px; text-align:right}
+    tbody td::before{
+      content:attr(data-label); text-align:left; flex:0 0 auto;
+      font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--dim); padding-top:3px;
+    }
+    tbody td.sportcell{text-align:left; font-size:17px; border-bottom:1px solid var(--line); padding-bottom:10px}
+    tbody td.sportcell::before{content:none}
+    tr.detail>td{
+      border:1px solid var(--court); border-top:0; border-radius:0 0 13px 13px;
+      margin-bottom:10px; display:block; text-align:left;
+    }
+    tr.detail>td::before{content:none}
+    .detailinner{padding:16px 14px 20px}
+    .out{grid-template-columns:1fr 1fr}
+  }
 </style>
 </head>
 <body>
 <div class="sky" aria-hidden="true"></div>
-
 <div class="wrap">
 
-  <div class="mark" aria-hidden="true">
-    <div class="ring"></div>
-    <div class="ring tilt"></div>
-    <div class="ball"></div>
-  </div>
-
   <h1>Sports in <em>Space</em></h1>
-  <p class="sub">Gravity is the silent rule-maker in every game we play. Change it, and the
-  record book rewrites itself. Pick a world and watch.</p>
+  <p class="lede">The Big Five team sports were tuned, over a century, to one gravitational
+  constant and one atmosphere. Move them off Earth and the rules break before the athletes do.
+  This is a reference matrix for where they break, and what each sport becomes on the other side
+  &mdash; across planetary gravity wells and engineered orbital habitats.</p>
 
-  <h2>Pick a venue</h2>
-  <div class="worlds" id="worlds" role="group" aria-label="Choose a world"></div>
-  <p class="blurb" id="blurb"></p>
+  <div class="slot" id="banner" data-asset="header_banner"></div>
 
-  <h2>The record book, recalculated</h2>
-  <div class="events" id="events"></div>
-  <div id="spinNote" hidden></div>
+  <h2>The matrix</h2>
+  <div class="controls">
+    <div class="ctl">
+      <label for="fSport">Sport</label>
+      <select id="fSport"><option value="">All sports</option></select>
+    </div>
+    <div class="ctl">
+      <label for="fFamily">Environment family</label>
+      <select id="fFamily">
+        <option value="">All environments</option>
+        <option value="Planetary">Planetary (gravity well)</option>
+        <option value="Station">Station / orbital</option>
+      </select>
+    </div>
+    <div class="ctl" style="flex:2 1 240px">
+      <label for="fSearch">Search constraints &amp; adaptations</label>
+      <input type="text" id="fSearch" placeholder="e.g. traction, Coriolis, pressurization" autocomplete="off">
+    </div>
+    <button class="btn" id="fReset" type="button">Reset</button>
+  </div>
+  <p class="count" id="count"></p>
 
-  <h2>Games that only work up there</h2>
-  <div class="games">
-    <article class="game">
-      <p class="venue">Free-fall / microgravity</p>
-      <h3>Newton's Third Law Ball</h3>
-      <p>In free fall there is no floor to push against, so every move costs momentum you
-      cannot get back. Push off a wall and you are committed to a straight line until you
-      hit something.</p>
-      <p>The whole sport becomes budgeting: each player gets a handful of pushes per point,
-      and the throw that scores is also the throw that sends you drifting the wrong way.</p>
-    </article>
-    <article class="game">
-      <p class="venue">Lunar surface · 0.17 g</p>
-      <h3>The Long Court</h3>
-      <p>A basketball court sized for Earth legs is a joke at one-sixth gravity — a standing
-      jump rises nearly five metres and hangs for five full seconds.</p>
-      <p>So you stretch the court six-fold and raise the rim, and the game stops being about
-      speed. It becomes chess with flight times: you commit to an arc, and everyone has
-      several seconds to watch you be wrong.</p>
-    </article>
-    <article class="game">
-      <p class="venue">Rotating habitat · spin gravity</p>
-      <h3>Coriolis Handball</h3>
-      <p>Spin gravity is a lie the floor tells your inner ear. Nothing thrown across the
-      room travels straight: it curves sideways, and the direction of the curve flips
-      depending on which way you throw.</p>
-      <p>Home teams learn the drift the way sailors learn a tide. Visitors throw straight
-      at the goal and watch the ball bend politely around it.</p>
-    </article>
+  <div class="tablewrap">
+    <table>
+      <caption class="vh">Big Five sports compared across off-world environments. Select a column header to sort; select a row to expand its full constraint, adaptation and trajectory readout.</caption>
+      <thead>
+        <tr>
+          <th data-key="sport"><button type="button">Sport <span class="arw"></span></button></th>
+          <th data-key="environment_type"><button type="button">Environment <span class="arw"></span></button></th>
+          <th data-key="setting_example"><button type="button">Setting <span class="arw"></span></button></th>
+          <th data-key="gravity_g"><button type="button">Gravity <span class="arw"></span></button></th>
+          <th data-key="apex_value"><button type="button">Apex &times; <span class="arw"></span></button></th>
+          <th data-key="clearance_value"><button type="button">Clearance <span class="arw"></span></button></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
   </div>
 
-  <h2>The fine print</h2>
+  <h2>Parametric trajectory calculator</h2>
+  <div class="calc">
+    <div class="card">
+      <h3>Ballistics</h3>
+      <p class="note">Vacuum ballistics for a point mass. Honest on thin-atmosphere worlds;
+      on dense-atmosphere and pressurized venues, drag and lift dominate and these are ceilings,
+      not predictions.</p>
+      <div class="presets" id="presets"></div>
+      <div class="slider">
+        <div class="lab"><span>Gravity</span><output id="oG"></output></div>
+        <input type="range" id="sG" min="0" max="2" step="0.005" value="0.38" aria-label="Gravity in g">
+      </div>
+      <div class="slider">
+        <div class="lab"><span>Launch velocity v</span><output id="oV"></output></div>
+        <input type="range" id="sV" min="1" max="40" step="0.5" value="9" aria-label="Launch velocity, metres per second">
+      </div>
+      <div class="slider">
+        <div class="lab"><span>Launch angle &theta;</span><output id="oA"></output></div>
+        <input type="range" id="sA" min="5" max="85" step="1" value="45" aria-label="Launch angle in degrees">
+      </div>
+      <div class="out">
+        <div class="o"><p class="ok">Apex height h</p><div class="ov" id="rH"></div></div>
+        <div class="o"><p class="ok">Hang time</p><div class="ov" id="rT"></div></div>
+        <div class="o"><p class="ok">Range</p><div class="ov" id="rR"></div></div>
+        <div class="o"><p class="ok">vs. Earth apex</p><div class="ov" id="rM"></div></div>
+      </div>
+      <div class="eqline" id="eqH"></div>
+    </div>
+
+    <div class="card">
+      <h3>Pressurization load</h3>
+      <p class="note">Clearance is not free. Every metre of headroom a sport demands is
+      volume that must be filled with breathable air, held by structure and scrubbed forever.
+      Air mass at 1 atm is taken as 1.2 kg/m&sup3;.</p>
+      <div class="grid2">
+        <div class="ctl">
+          <label for="pA">Playing area (m&sup2;)</label>
+          <input type="number" id="pA" value="4000" min="1" step="100">
+        </div>
+        <div class="ctl">
+          <label for="pH">Clearance (m)</label>
+          <input type="number" id="pH" value="25" min="1" step="1">
+        </div>
+      </div>
+      <div class="slider">
+        <div class="lab"><span>Pressure</span><output id="oP"></output></div>
+        <input type="range" id="sP" min="0.3" max="2" step="0.05" value="1" aria-label="Pressure in atmospheres">
+      </div>
+      <div class="out">
+        <div class="o"><p class="ok">Enclosed volume</p><div class="ov" id="rV"></div></div>
+        <div class="o"><p class="ok">Air mass to lift</p><div class="ov" id="rKg"></div></div>
+      </div>
+      <div class="eqline" id="eqP"></div>
+      <p class="note" style="margin:14px 0 0">Sorting the matrix by clearance ranks the
+      Big Five by how expensive they are to host. Soccer under a dense atmosphere and football
+      in a canyon dome are, structurally, the two hardest sports to put off Earth.</p>
+    </div>
+  </div>
+
+  <h2>Visual asset pipeline</h2>
+  <p class="lede" style="margin-bottom:20px">Each matrix row reserves an image slot keyed to its
+  <code>asset_tag</code>. Drop a file at <code>/theme/images/sports-in-space/&lt;asset_tag&gt;.jpg</code>
+  and the slot fills automatically &mdash; no code change. Until then the slot shows the tag and
+  its generation prompt. Prompts are written standalone for ChatGPT / DALL&middot;E and share one
+  house style: hard sci-fi architectural realism, real structural scale, cinematic stadium
+  lighting, no cartooning or neon.</p>
+  <div class="prompts" id="prompts"></div>
+
+  <h2>Method &amp; caveats</h2>
   <ul class="notes">
-    <li>Every number comes from the same elite-human launch conditions — take-off speed and
-      angle — run through projectile motion at that world's surface gravity. Only <code>g</code>
-      changes between venues.</li>
-    <li>The math is <strong>vacuum ballistics</strong>: point mass, no air. That is nearly exact on
-      the Moon and honest enough on Mars. It flatters Earth badly — a real 49 m/s home run
-      travels about 120 m, not the 200 m a vacuum promises, because the atmosphere eats the
-      difference. Earth's row is best read as "if someone pumped the air out of the stadium."</li>
-    <li>Jumping and throwing scale cleanly with gravity. <strong>Running does not.</strong> Sprinting
-      needs the traction and downforce that gravity supplies, so below roughly half a <em>g</em>
-      athletes bounce instead of stride, and the 100 m dash gets slower, not faster. No sprint
-      numbers here for exactly that reason.</li>
-    <li>Bodies are left out of it too. Months at low gravity thin bone and shrink the heart, so
-      the first lunar record-holders would likely be residents, not visiting Earth athletes.</li>
-    <li>Everything is calibrated so the Earth column lands on today's actual world records.
-      Trust the ratios; hold the decimals loosely.</li>
+    <li>The matrix is a <strong>design reference, not a simulation</strong>. Gravity, apex and
+      clearance figures are physical; constraints and adaptations are engineering judgement about
+      what a sport becomes once those figures bind.</li>
+    <li>Apex multipliers are <code>1/g</code> relative to Earth, which is exact for vacuum
+      ballistics. The soccer row deliberately breaks from that &mdash; at 0.15&nbsp;g under
+      1.5&nbsp;atm, aerodynamic stall cuts the ideal 6.7&times; back toward 6&times;, and drag,
+      not gravity, is writing the rules.</li>
+    <li><strong>Jumping and throwing scale cleanly with gravity. Running does not.</strong>
+      Sprinting depends on the normal force gravity supplies; below roughly half a <em>g</em>
+      athletes bounce instead of stride and get slower, not faster. That is why the constraint
+      column keeps returning to traction rather than speed.</li>
+    <li>Zero-g rows have no apex at all &mdash; flight is linear, so the ballistics half of the
+      calculator does not apply to them. Their limit is Newton's third law: every action a player
+      takes moves the player.</li>
+    <li>Bodies are the unmodelled variable. Months at low gravity thin bone and shrink cardiac
+      muscle, so off-world leagues would likely be contested by residents, not visiting Earth
+      athletes &mdash; and the two could not safely share a field.</li>
   </ul>
 
-  <footer>
-    Built for the fun of it · <a href="/">gregquinlan.com</a>
-  </footer>
+  <footer>An interactive reference matrix &middot; <a href="/">gregquinlan.com</a></footer>
 </div>
+
+<div class="tip" id="tip" role="tooltip" aria-hidden="true"></div>
 
 <script>
 (function(){
   "use strict";
 
-  // Surface gravities in m/s^2.
-  var WORLDS = [
-    { id:"earth",  name:"Earth",   g:9.807, label:"1.00 g",
-      blurb:"The control group. <strong>Every record below is the real one</strong>, which is how the rest of the table is calibrated." },
-    { id:"moon",   name:"The Moon", g:1.625, label:"0.17 g",
-      blurb:"One-sixth gravity and no air at all, so the vacuum math here is <strong>essentially exact</strong>. Alan Shepard's one-handed 6-iron in 1971 is still the only real data point." },
-    { id:"mars",   name:"Mars",    g:3.721, label:"0.38 g",
-      blurb:"Just over a third of a <em>g</em>, with an atmosphere less than 1% as thick as Earth's — <strong>close enough to a vacuum</strong> that these numbers mostly hold." },
-    { id:"titan",  name:"Titan",   g:1.352, label:"0.14 g",
-      blurb:"The strangest venue in the solar system: lunar gravity under an atmosphere <strong>denser than Earth's</strong>. Drag would gut these distances — but strap on wings and a human could genuinely fly." },
-    { id:"europa", name:"Europa",  g:1.314, label:"0.13 g",
-      blurb:"A frozen ocean world with barely any gravity. <strong>Ice is the whole sport here</strong> — a hockey rink on Europa is just the ground." },
-    { id:"ceres",  name:"Ceres",   g:0.28,  label:"0.03 g",
-      blurb:"So little gravity that <strong>sport becomes an escape-velocity problem</strong>. A hard throw genuinely risks never coming down — Ceres' escape speed is about 510 m/s, but a golf drive already stays airborne for minutes." },
-    { id:"spin",   name:"Spin station", g:3.27, label:"0.33 g · spin",
-      blurb:"A 200 m-radius ring turning once every 49 seconds to fake a third of a <em>g</em>. The floor feels solid — but <strong>nothing you throw flies straight</strong>." }
-  ];
+  var G_EARTH = 9.807;          // m/s^2
+  var AIR_DENSITY = 1.2;        // kg/m^3 at 1 atm
+  var REF_VY = 4.0;             // m/s, a strong standing take-off, used in tooltips
+  var IMG_BASE = "/theme/images/sports-in-space/";
 
-  // Elite-human launch conditions, calibrated so Earth lands on real records.
-  var G_E = 9.807;
-  var ATHLETE = {
-    highJumpVy: 5.15,          // m/s vertical take-off -> 2.45 m bar on Earth
-    standStart: 1.10,          // m of bar height that is body, not flight
-    longJumpV: 10.35, longJumpDeg: 21.5, longJumpDrop: 0.70,
-    golfV: 76, golfDeg: 11,
-    hrV: 49, hrDeg: 28,
-    dunkVy: 4.0,
-    ftDist: 4.19               // m, free-throw line to hoop centre
+  var ASSET_PROMPTS = {
+    header_banner: {
+      title: "Header / banner",
+      text: "Wide panoramic architectural cross-section of an expansive off-world multi-sport complex, hard science fiction realism. Multiple regulation playing surfaces visible at once beneath an enormous transparent habitat roof of exposed steel truss work; a barren planetary horizon and starfield beyond the glazing. Cinematic stadium floodlighting, cool daylight balance, believable engineering scale with human figures for reference. Photorealistic architectural rendering, wide-angle lens, no cartooning, no neon, no fantasy elements."
+    },
+    basketball_planetary_dome: {
+      title: "basketball_planetary_dome",
+      text: "Interior of a low-gravity planetary basketball arena under a vast pressurized dome, hard science fiction realism. Regulation court far below towering eight-metre elevated rim assemblies mounted on engineered steel columns; several athletes suspended in mid-air at the top of impossibly long jumps, limbs extended, clearly hanging rather than falling. High dome trusses and pressure glazing overhead with a dim planetary landscape beyond. Cinematic arena lighting, realistic athletic gear with visible micro-spike footwear, photorealistic wide-angle architectural rendering, no cartooning, no neon."
+    },
+    soccer_dense_atmosphere: {
+      title: "soccer_dense_atmosphere",
+      text: "Cavernous low-gravity indoor soccer facility under a thick high-pressure atmosphere, hard science fiction realism. Enormous enclosed volume with perimeter containment netting rising fifty metres; the ball hangs mid-flight like a balloon on a stalled trajectory, and a goalkeeper in a fabric gliding suit is spread wide, planing sideways through dense air. Heavy structural ribs and pressure bulkheads frame the pitch. Volumetric haze from the dense atmosphere, cinematic floodlighting, photorealistic wide-angle rendering, realistic sports kit, no cartooning, no neon."
+    },
+    football_canyon_dome: {
+      title: "football_canyon_dome",
+      text: "Massive elongated American football field built along the floor of a natural extraterrestrial canyon, hard science fiction realism. The field runs two hundred metres between rock walls, roofed by a cable-suspended transparent membrane anchored to the cliffs by visible tensioning towers and steel catenaries. Broad padded safety run-off zones flank the field; players wear reinforced armour with deceleration harnesses. Long dramatic shadows from low sun, alien geology, cinematic scale with human figures for reference, photorealistic wide-angle architectural rendering, no cartooning, no neon."
+    },
+    hockey_rotating_habitat: {
+      title: "hockey_rotating_habitat",
+      text: "Ice hockey rink inside a rotating cylindrical space habitat, hard science fiction realism. The rink sits on the inner hull surface and the landscape beyond it curves visibly upward into an overhead skyline of habitat structures hanging inverted above; an airborne puck traces a subtly curved Coriolis arc marked against calibrated curvature lines on the arena glass. Skaters lean into the spin direction. Cool arena lighting against warm habitat sun-line illumination, photorealistic wide-angle rendering with believable structural scale, no cartooning, no neon."
+    },
+    baseball_zero_g_chamber: {
+      title: "baseball_zero_g_chamber",
+      text: "Zero-gravity orbital batting chamber inside a padded cylindrical station hull, hard science fiction realism. A batter anchored by magnetic boot locking plates swings toward a series of concentric illuminated sensor scoring rings receding down the axis of the chamber; the ball travels a dead-straight line with no arc whatsoever, and loose equipment drifts free in the volume. Quilted impact padding on the hull, technical instrumentation and handholds throughout. Cool practical interior lighting, photorealistic wide-angle rendering, realistic flight suits, no cartooning, no neon."
+    },
+    basketball_rotating_ring: {
+      title: "basketball_rotating_ring",
+      text: "Basketball court inside the ring of a rotating orbital habitat, hard science fiction realism. The court floor follows the gentle upward curve of the ring and the far end of the habitat rises into the distance overhead; a shooter releases toward a backboard visibly offset from centre to compensate for Coriolis drift, with the ball's curved flight path marked on calibration glass behind the hoop. Engineered deck plating, structural ribs, sun-line lighting from the habitat axis, photorealistic wide-angle rendering, no cartooning, no neon."
+    },
+    soccer_zero_g_sphere: {
+      title: "soccer_zero_g_sphere",
+      text: "Spherical zero-gravity soccer arena inside an orbital station, hard science fiction realism. A forty-metre padded spherical volume with hemispherical goal shells at opposing poles and tethered launch handholds ringing the hull; players float at every orientation with no shared up, pushing off wall anchors while a high-drag foam ball crosses the volume in a dead straight line. Spectator ports set into the sphere wall. Cool practical lighting, photorealistic wide-angle rendering, realistic flight suits, no cartooning, no neon."
+    },
+    football_habitat_corridor: {
+      title: "football_habitat_corridor",
+      text: "American football field laid along the long spin axis of a cylindrical orbital habitat, hard science fiction realism. The field stretches down the habitat corridor with the curved inner hull rising on both sides and structures visible overhead; players in reinforced armour drive down the axis, and directional spin markers are painted along the sidelines. Habitat sun-line lighting from above with long shadows, believable structural and human scale, photorealistic wide-angle architectural rendering, no cartooning, no neon."
+    },
+    hockey_ice_moon_rink: {
+      title: "hockey_ice_moon_rink",
+      text: "Ice hockey rink cut directly into the native surface ice of a frozen moon, hard science fiction realism. A pressurized transparent enclosure covers the rink with boards enclosing all six surfaces including overhead; skaters in ballasted skate assemblies drift with almost no traction, one pair tumbling slowly through the air after a check with nothing to arrest them. A gas giant hangs low over the ice horizon beyond the glazing. Cold blue-white lighting, photorealistic wide-angle rendering, realistic pressure gear, no cartooning, no neon."
+    },
+    baseball_high_g_dome: {
+      title: "baseball_high_g_dome",
+      text: "Baseball stadium under a heavy pressurized dome on a high-gravity world, hard science fiction realism. A compressed field with shortened base paths and a close outfield fence; a struck ball drops on a visibly flattened, truncated arc while thick-limbed athletes in supportive powered bracing move deliberately under nearly double weight. Massive compression-loaded dome structure with unusually heavy columns overhead. Dense heavy atmosphere haze, cinematic floodlighting, photorealistic wide-angle architectural rendering, no cartooning, no neon."
+    }
   };
 
-  var rad = function(d){ return d * Math.PI / 180; };
+  var PRESETS = [
+    { n:"Earth",  g:1.0 }, { n:"Mars", g:0.38 }, { n:"Moon", g:0.165 },
+    { n:"Titan",  g:0.14 }, { n:"High-G world", g:1.8 }
+  ];
 
-  // Range of a projectile launched from height h above its landing point.
-  function range(v, deg, g, drop){
-    var vx = v * Math.cos(rad(deg)), vy = v * Math.sin(rad(deg));
-    var t = (vy + Math.sqrt(vy*vy + 2*g*(drop||0))) / g;
-    return vx * t;
+  var DATA = [], view = [], sortKey = null, sortDir = 1, openId = null;
+
+  var $ = function(s){ return document.querySelector(s); };
+  var fmt = function(n, dp){
+    return Number(n).toLocaleString("en-US", { minimumFractionDigits:dp, maximumFractionDigits:dp });
+  };
+  var esc = function(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  };
+  var family = function(row){ return row.environment_type.indexOf("Station") === 0 ? "Station" : "Planetary"; };
+
+  // ---------- physics ----------
+  function apex(vy, gAbs){ return (vy*vy) / (2*gAbs); }
+  function hang(vy, gAbs){ return (2*vy) / gAbs; }
+  function range(v, deg, gAbs){ return (v*v * Math.sin(2*deg*Math.PI/180)) / gAbs; }
+
+  // ---------- asset slots ----------
+  // Try the real image; if it is not there yet, fall back to the labelled placeholder.
+  function fillSlot(el){
+    var tag = el.dataset.asset, spec = ASSET_PROMPTS[tag];
+    var img = new Image();
+    img.alt = spec ? spec.title + " concept art" : tag;
+    img.addEventListener("load", function(){ el.innerHTML = ""; el.appendChild(img); el.style.borderStyle = "solid"; });
+    img.addEventListener("error", function(){
+      el.innerHTML = '<div class="ph">' +
+        '<div class="tag">' + esc(tag) + '</div>' +
+        '<div class="hint">Image slot reserved. Drop <code>' + esc(tag) + '.jpg</code> into ' +
+        '<code>' + esc(IMG_BASE) + '</code> to fill it.</div></div>';
+    });
+    img.src = IMG_BASE + tag + ".jpg";
   }
 
-  function fmt(n, dp){
-    return n.toLocaleString("en-US", { minimumFractionDigits:dp, maximumFractionDigits:dp });
+  // ---------- tooltip ----------
+  var tip = $("#tip");
+  function showTip(el, html){
+    tip.innerHTML = html;
+    tip.classList.add("on");
+    tip.setAttribute("aria-hidden", "false");
+    var r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    var left = Math.min(Math.max(8, r.left), window.innerWidth - t.width - 8);
+    var top = r.top - t.height - 10;
+    if (top < 8) top = r.bottom + 10;
+    tip.style.left = left + "px";
+    tip.style.top = top + "px";
   }
-  // Metres, scaled to something a human can picture.
-  function dist(m){
-    if (m >= 1000) return { v: fmt(m/1000, 2), u: "km" };
-    if (m >= 100)  return { v: fmt(m, 0), u: "m" };
-    return { v: fmt(m, 2), u: "m" };
+  function hideTip(){ tip.classList.remove("on"); tip.setAttribute("aria-hidden","true"); }
+
+  function gravityTip(row){
+    var gAbs = row.gravity_g * G_EARTH;
+    if (row.gravity_g === 0){
+      return '<div class="th">' + esc(row.gravity_factor) + '</div>' +
+        "There is no apex in free fall. A struck ball holds its launch velocity until something " +
+        "stops it, so flight is linear and the sport is bounded by the hull, not by gravity.";
+    }
+    return '<div class="th">' + esc(row.gravity_factor) + '</div>' +
+      "A " + fmt(REF_VY,1) + " m/s take-off &mdash; a strong standing jump &mdash; reaches:" +
+      '<span class="eq">h = v&#178; / 2g = ' + fmt(REF_VY,1) + '&#178; / (2 &times; ' + fmt(gAbs,2) + ') = ' + fmt(apex(REF_VY,gAbs),2) + ' m</span>' +
+      "Hang time " + fmt(hang(REF_VY,gAbs),2) + " s, against " + fmt(hang(REF_VY,G_EARTH),2) + " s on Earth.";
   }
-  function times(x){
-    return x >= 10 ? fmt(x, 0) : fmt(x, 1);
+  function apexTip(row){
+    if (row.apex_value === null){
+      return '<div class="th">No apex</div>Linear flight. Apex multipliers are undefined at zero g ' +
+        "&mdash; nothing comes back down.";
+    }
+    return '<div class="th">' + esc(row.apex_multiplier) + '</div>' +
+      "Apex scales as the inverse of gravity, so every jump and every ball flight multiplies:" +
+      '<span class="eq">h &prop; 1/g &rarr; ' + fmt(1/row.gravity_g, 2) + '&times; Earth apex</span>' +
+      (Math.abs(row.apex_value - 1/row.gravity_g) > 0.15
+        ? "Quoted as " + esc(row.apex_multiplier) + " because aerodynamic drag pulls the real figure below the vacuum ideal."
+        : "Which is why the clearance requirement climbs with it.");
   }
-
-  function compute(g){
-    var A = ATHLETE, out = [];
-
-    var rise = (A.highJumpVy * A.highJumpVy) / (2 * g);
-    out.push({
-      name:"High jump",
-      val: dist(A.standStart + rise),
-      cmp: "Airborne for " + fmt(2 * A.highJumpVy / g, 1) + " s"
-    });
-
-    out.push({
-      name:"Long jump",
-      val: dist(range(A.longJumpV, A.longJumpDeg, g, A.longJumpDrop)),
-      cmp: "One bound, no run-up changes"
-    });
-
-    var golf = range(A.golfV, A.golfDeg, g, 0);
-    out.push({
-      name:"Golf drive",
-      val: dist(golf),
-      cmp: fmt(golf * 1.09361, 0) + " yards, one swing"
-    });
-
-    var hr = range(A.hrV, A.hrDeg, g, 0);
-    out.push({
-      name:"Home run",
-      val: dist(hr),
-      cmp: "Hangs " + fmt(2 * A.hrV * Math.sin(rad(A.hrDeg)) / g, 1) + " s before it lands"
-    });
-
-    var dunk = (A.dunkVy * A.dunkVy) / (2 * g);
-    out.push({
-      name:"Vertical leap",
-      val: dist(dunk),
-      cmp: "Hang time " + fmt(2 * A.dunkVy / g, 2) + " s"
-    });
-
-    // Muscle memory: throw with Earth-calibrated force, see where it lands.
-    // Free-throw range scales as 1/g, so the overshoot is the ratio minus one.
-    var over = A.ftDist * (G_E / g) - A.ftDist;
-    out.push({
-      name:"Free throw, Earth aim",
-      val: over < 0.01 ? { v:"—", u:"" } : dist(over),
-      cmp: over < 0.01 ? "Dead on. You are home." : "Long. Every shot needs relearning."
-    });
-
-    return out;
+  function clearTip(row){
+    var v = row.clearance_value * 4000;
+    return '<div class="th">' + esc(String(row.clearance_required_m)) + '</div>' +
+      "Roofing a 4,000 m&#178; playing area to this clearance encloses:" +
+      '<span class="eq">V = 4,000 &times; ' + fmt(row.clearance_value,0) + ' = ' + fmt(v,0) + ' m&#179;<br>' +
+      'air = V &times; 1.2 = ' + fmt(v*AIR_DENSITY/1000,1) + ' tonnes @ 1 atm</span>' +
+      "Every cubic metre must be pressurized, heated and scrubbed for the life of the venue.";
   }
 
-  // Rotating habitat: 200 m radius spun to 1/3 g.
-  var SPIN_R = 200;
-  function spinNote(g){
-    var omega = Math.sqrt(g / SPIN_R);            // rad/s
-    var period = 2 * Math.PI / omega;             // s per revolution
-    var v = 7, t = ATHLETE.ftDist / v;            // a flat 7 m/s pass to the hoop
-    var drift = omega * v * t * t;                // Coriolis sidestep, ~1/2 * (2*omega*v) * t^2
-    return "The ring turns once every <b>" + fmt(period, 0) + " seconds</b> — slow enough to look " +
-      "still, fast enough to matter. A flat 7 m/s pass across the free-throw line drifts " +
-      "<b>" + fmt(drift * 100, 1) + " cm</b> sideways before it arrives, and the drift reverses if " +
-      "you throw the other way down the ring. Jump straight up and you land <b>off your own " +
-      "footprints</b>. The high jump and long jump numbers above ignore all of this; the home " +
-      "crowd does not.";
+  // ---------- matrix ----------
+  function applyFilters(){
+    var sp = $("#fSport").value, fam = $("#fFamily").value;
+    var q = $("#fSearch").value.trim().toLowerCase();
+    view = DATA.filter(function(r){
+      if (sp && r.sport !== sp) return false;
+      if (fam && family(r) !== fam) return false;
+      if (q){
+        var hay = [r.sport, r.environment_type, r.setting_example, r.primary_constraint,
+                   r.adaptation, r.gravity_factor].join(" ").toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+    if (sortKey) sortView();
+    render();
   }
 
-  var elWorlds = document.getElementById("worlds");
-  var elBlurb  = document.getElementById("blurb");
-  var elEvents = document.getElementById("events");
-  var elSpin   = document.getElementById("spinNote");
-  var current  = "earth";
-
-  WORLDS.forEach(function(w){
-    var b = document.createElement("button");
-    b.type = "button";
-    b.className = "world";
-    b.setAttribute("aria-pressed", String(w.id === current));
-    b.dataset.id = w.id;
-    b.innerHTML = w.name + '<span class="g">' + w.label + "</span>";
-    b.addEventListener("click", function(){ select(w.id); });
-    elWorlds.appendChild(b);
-  });
-
-  function select(id){
-    current = id;
-    var w = WORLDS.filter(function(x){ return x.id === id; })[0];
-
-    Array.prototype.forEach.call(elWorlds.children, function(b){
-      b.setAttribute("aria-pressed", String(b.dataset.id === id));
+  function sortView(){
+    view.sort(function(a,b){
+      var x = a[sortKey], y = b[sortKey];
+      // Nulls (zero-g apex) always sort last, whichever direction.
+      if (x === null && y === null) return 0;
+      if (x === null) return 1;
+      if (y === null) return -1;
+      if (typeof x === "number" && typeof y === "number") return (x - y) * sortDir;
+      return String(x).localeCompare(String(y)) * sortDir;
     });
+  }
 
-    elBlurb.innerHTML = "<strong>" + w.name + "</strong> — " + w.blurb;
+  function render(){
+    var tb = $("#tbody");
+    tb.innerHTML = "";
+    $("#count").textContent = view.length + " of " + DATA.length + " configurations" +
+      (view.length ? "" : " — nothing matches those filters");
 
-    elEvents.innerHTML = "";
-    compute(w.g).forEach(function(ev){
-      var card = document.createElement("div");
-      card.className = "event";
-      card.innerHTML =
-        '<p class="name">' + ev.name + "</p>" +
-        '<div class="val">' + ev.val.v + '<span class="unit">' + ev.val.u + "</span></div>" +
-        '<p class="cmp">' + ev.cmp + "</p>";
-      elEvents.appendChild(card);
+    if (!view.length){
+      var er = document.createElement("tr");
+      er.innerHTML = '<td colspan="6" class="empty">No configurations match. Try widening the filters.</td>';
+      tb.appendChild(er);
+      return;
+    }
+
+    view.forEach(function(r){
+      var tr = document.createElement("tr");
+      tr.className = "row" + (openId === r.id ? " open" : "");
+      tr.tabIndex = 0;
+      tr.setAttribute("aria-expanded", String(openId === r.id));
+      tr.dataset.id = r.id;
+      tr.innerHTML =
+        '<td class="sportcell" data-label="Sport"><span class="caret">&#9656;</span> ' + esc(r.sport) + '</td>' +
+        '<td data-label="Environment"><span class="chip ' + family(r).toLowerCase() + '">' + esc(r.environment_type) + '</span></td>' +
+        '<td class="envcell" data-label="Setting">' + esc(r.setting_example) + '</td>' +
+        '<td class="num" data-label="Gravity"><span class="hasTip" data-tip="g">' + esc(r.gravity_factor) + '</span></td>' +
+        '<td class="num" data-label="Apex ×"><span class="hasTip" data-tip="a">' + esc(r.apex_multiplier) + '</span></td>' +
+        '<td class="num" data-label="Clearance"><span class="hasTip" data-tip="c">' + esc(String(r.clearance_required_m)) +
+          (typeof r.clearance_required_m === "number" ? " m" : "") + '</span></td>';
+      tb.appendChild(tr);
+
+      if (openId === r.id) tb.appendChild(detailRow(r));
     });
+  }
 
-    if (w.id === "spin"){
-      elSpin.innerHTML = spinNote(w.g);
-      elSpin.hidden = false;
+  function detailRow(r){
+    var tr = document.createElement("tr");
+    tr.className = "detail";
+    var td = document.createElement("td");
+    td.colSpan = 6;
+
+    var gAbs = r.gravity_g * G_EARTH;
+    var readout;
+    if (r.gravity_g === 0){
+      readout =
+        '<div class="rrow"><span class="rk">Flight path</span><span class="rv">Linear</span></div>' +
+        '<div class="rrow"><span class="rk">Apex</span><span class="rv">None</span></div>' +
+        '<div class="rrow"><span class="rk">Ball returns?</span><span class="rv">Never</span></div>' +
+        '<div class="rrow"><span class="rk">Bounding limit</span><span class="rv">Hull geometry</span></div>';
     } else {
-      elSpin.hidden = true;
+      readout =
+        '<div class="rrow"><span class="rk">Absolute gravity</span><span class="rv">' + fmt(gAbs,2) + ' m/s&#178;</span></div>' +
+        '<div class="rrow"><span class="rk">Apex, ' + fmt(REF_VY,1) + ' m/s take-off</span><span class="rv">' + fmt(apex(REF_VY,gAbs),2) + ' m</span></div>' +
+        '<div class="rrow"><span class="rk">Hang time</span><span class="rv">' + fmt(hang(REF_VY,gAbs),2) + ' s</span></div>' +
+        '<div class="rrow"><span class="rk">25 m/s throw, 45&deg;</span><span class="rv">' + fmt(range(25,45,gAbs),0) + ' m</span></div>';
+    }
+    var airT = r.clearance_value * 4000 * AIR_DENSITY / 1000;
+
+    td.innerHTML =
+      '<div class="detailinner">' +
+        '<div>' +
+          '<div class="field"><p class="k">Primary constraint</p><p class="v">' + esc(r.primary_constraint) + '</p></div>' +
+          '<div class="field"><p class="k">Adaptation</p><p class="v">' + esc(r.adaptation) + '</p></div>' +
+          '<div class="field"><p class="k">Trajectory readout</p><div class="readout">' + readout + '</div></div>' +
+          '<div class="field"><p class="k">Pressurization, 4,000 m&#178; venue</p>' +
+            '<p class="v">' + fmt(r.clearance_value * 4000, 0) + ' m&#179; enclosed &mdash; about ' +
+            fmt(airT, 1) + ' tonnes of air at 1 atm to lift, hold and scrub.</p></div>' +
+        '</div>' +
+        '<div>' +
+          '<div class="slot" data-asset="' + esc(r.asset_tag) + '"></div>' +
+          '<div class="field"><p class="k">Asset tag</p><p class="v" style="font-family:\'IBM Plex Mono\',monospace;font-size:13px;word-break:break-all">' + esc(r.asset_tag) + '</p></div>' +
+          '<button class="btn" type="button" data-copy="' + esc(r.asset_tag) + '">Copy image prompt</button>' +
+        '</div>' +
+      '</div>';
+
+    tr.appendChild(td);
+    setTimeout(function(){
+      td.querySelectorAll(".slot").forEach(fillSlot);
+    }, 0);
+    return tr;
+  }
+
+  function toggleRow(id, fromKey){
+    openId = (openId === id) ? null : id;
+    render();
+    // render() rebuilds the rows, destroying the focused element. Put focus back
+    // on the same row so a keyboard user can toggle it more than once.
+    if (fromKey){
+      var back = document.querySelector('tr.row[data-id="' + id + '"]');
+      if (back) back.focus();
     }
   }
 
-  select("earth");
+  // ---------- calculator ----------
+  function runCalc(){
+    var gRel = parseFloat($("#sG").value);
+    var v = parseFloat($("#sV").value);
+    var a = parseFloat($("#sA").value);
+    // 2 dp normally, 3 where the value actually carries thousandths (0.165 g).
+    $("#oG").textContent = gRel.toLocaleString("en-US",
+      { minimumFractionDigits:2, maximumFractionDigits:3 }) + " g";
+    $("#oV").textContent = fmt(v,1) + " m/s";
+    $("#oA").textContent = a + "°";
+
+    var gAbs = gRel * G_EARTH;
+    var vy = v * Math.sin(a*Math.PI/180);
+
+    if (gRel <= 0.001){
+      $("#rH").innerHTML = "&infin;";
+      $("#rT").innerHTML = "&infin;";
+      $("#rR").innerHTML = "&infin;";
+      $("#rM").innerHTML = "&mdash;";
+      $("#eqH").textContent = "At zero g the ball never turns over: h and range are unbounded, and flight is linear.";
+      return;
+    }
+    var h = apex(vy, gAbs), t = hang(vy, gAbs), R = range(v, a, gAbs);
+    var hEarth = apex(vy, G_EARTH);
+    $("#rH").innerHTML = fmt(h,2) + '<span class="u">m</span>';
+    $("#rT").innerHTML = fmt(t,2) + '<span class="u">s</span>';
+    $("#rR").innerHTML = (R >= 1000 ? fmt(R/1000,2) + '<span class="u">km</span>' : fmt(R,1) + '<span class="u">m</span>');
+    $("#rM").innerHTML = fmt(h/hEarth,2) + '<span class="u">&times;</span>';
+    $("#eqH").textContent =
+      "h = vy² / 2g = (" + fmt(v,1) + " · sin " + a + "°)² / (2 × " + fmt(gAbs,2) + ") = " + fmt(h,2) + " m";
+  }
+
+  function runPress(){
+    var A = Math.max(1, parseFloat($("#pA").value) || 0);
+    var H = Math.max(1, parseFloat($("#pH").value) || 0);
+    var P = parseFloat($("#sP").value);
+    $("#oP").textContent = fmt(P,2) + " atm";
+    var V = A * H, kg = V * AIR_DENSITY * P;
+    $("#rV").innerHTML = (V >= 1e6 ? fmt(V/1e6,2) + '<span class="u">M m³</span>' : fmt(V,0) + '<span class="u">m³</span>');
+    $("#rKg").innerHTML = (kg >= 1e6 ? fmt(kg/1e6,2) + '<span class="u">kt</span>' : fmt(kg/1000,1) + '<span class="u">t</span>');
+    $("#eqP").textContent =
+      "V = " + fmt(A,0) + " × " + fmt(H,0) + " = " + fmt(V,0) + " m³ · air = V × 1.2 × " + fmt(P,2) + " = " + fmt(kg/1000,1) + " t";
+  }
+
+  // ---------- prompts ----------
+  function copyText(text, btn){
+    var done = function(){
+      var old = btn.textContent;
+      btn.textContent = "Copied";
+      setTimeout(function(){ btn.textContent = old; }, 1400);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, function(){ fallback(text, done); });
+    } else { fallback(text, done); }
+  }
+  function fallback(text, done){
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  function renderPrompts(){
+    var host = $("#prompts");
+    Object.keys(ASSET_PROMPTS).forEach(function(tag){
+      var p = ASSET_PROMPTS[tag];
+      var el = document.createElement("article");
+      el.className = "prompt";
+      el.innerHTML =
+        '<p class="pt">' + esc(tag) + '</p>' +
+        '<p class="body">' + esc(p.text) + '</p>' +
+        '<button class="btn" type="button" data-copy="' + esc(tag) + '">Copy prompt</button>';
+      host.appendChild(el);
+    });
+  }
+
+  // ---------- wiring ----------
+  function init(data){
+    DATA = data;
+    view = data.slice();
+
+    var sel = $("#fSport");
+    Array.from(new Set(data.map(function(r){ return r.sport; }))).sort().forEach(function(s){
+      var o = document.createElement("option");
+      o.value = s; o.textContent = s;
+      sel.appendChild(o);
+    });
+
+    ["#fSport","#fFamily"].forEach(function(s){ $(s).addEventListener("change", applyFilters); });
+    $("#fSearch").addEventListener("input", applyFilters);
+    $("#fReset").addEventListener("click", function(){
+      $("#fSport").value = ""; $("#fFamily").value = ""; $("#fSearch").value = "";
+      sortKey = null; openId = null;
+      document.querySelectorAll("thead th").forEach(function(th){ th.removeAttribute("aria-sort"); });
+      view = DATA.slice();
+      render();
+    });
+
+    document.querySelectorAll("thead th").forEach(function(th){
+      th.querySelector("button").addEventListener("click", function(){
+        var key = th.dataset.key;
+        if (sortKey === key) { sortDir = -sortDir; } else { sortKey = key; sortDir = 1; }
+        document.querySelectorAll("thead th").forEach(function(o){ o.removeAttribute("aria-sort"); });
+        th.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
+        th.querySelector(".arw").textContent = sortDir === 1 ? "▲" : "▼";
+        sortView();
+        render();
+      });
+    });
+
+    // Row expand: click or keyboard.
+    $("#tbody").addEventListener("click", function(e){
+      if (e.target.closest("[data-copy]")) return;
+      var tr = e.target.closest("tr.row");
+      if (tr) toggleRow(tr.dataset.id);
+    });
+    $("#tbody").addEventListener("keydown", function(e){
+      var tr = e.target.closest("tr.row");
+      if (tr && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); toggleRow(tr.dataset.id, true); }
+    });
+
+    // Tooltips, delegated so they survive re-renders.
+    document.addEventListener("mouseover", function(e){
+      var el = e.target.closest(".hasTip");
+      if (!el) return;
+      var tr = el.closest("tr.row");
+      var row = DATA.filter(function(r){ return r.id === tr.dataset.id; })[0];
+      var kind = el.dataset.tip;
+      showTip(el, kind === "g" ? gravityTip(row) : kind === "a" ? apexTip(row) : clearTip(row));
+    });
+    document.addEventListener("mouseout", function(e){
+      if (e.target.closest(".hasTip")) hideTip();
+    });
+    window.addEventListener("scroll", hideTip, { passive:true });
+
+    // Copy buttons, delegated for the same reason.
+    document.addEventListener("click", function(e){
+      var btn = e.target.closest("[data-copy]");
+      if (!btn) return;
+      var spec = ASSET_PROMPTS[btn.dataset.copy];
+      if (spec) copyText(spec.text, btn);
+    });
+
+    var pv = $("#presets");
+    PRESETS.forEach(function(p){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "btn"; b.textContent = p.n;
+      b.addEventListener("click", function(){ $("#sG").value = p.g; runCalc(); });
+      pv.appendChild(b);
+    });
+    ["#sG","#sV","#sA"].forEach(function(s){ $(s).addEventListener("input", runCalc); });
+    ["#pA","#pH","#sP"].forEach(function(s){ $(s).addEventListener("input", runPress); });
+
+    render();
+    runCalc();
+    runPress();
+    renderPrompts();
+    document.querySelectorAll("#banner").forEach(fillSlot);
+  }
+
+  fetch("sports-in-space.json")
+    .then(function(r){
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(init)
+    .catch(function(err){
+      $("#tbody").innerHTML = '<tr><td colspan="6" class="empty">' +
+        "Could not load <code>sports-in-space.json</code> (" + esc(err.message) + ").<br>" +
+        "The matrix reads its data over HTTP, so it needs to be served rather than opened " +
+        "from the filesystem. On GitHub Pages this resolves itself; locally, run " +
+        "<code>python3 -m http.server</code> from the repository root." +
+        "</td></tr>";
+      $("#count").textContent = "";
+      runCalc(); runPress(); renderPrompts();
+      document.querySelectorAll("#banner").forEach(fillSlot);
+    });
 })();
 </script>
 </body>
