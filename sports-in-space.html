@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sports in Space — What the Records Would Be</title>
+<!-- Unlisted: nothing on the site links here, and search engines are asked to
+     stay away. The URL still works for anyone it is handed to. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Pick a world and watch the record book rewrite itself. Elite human performances run through real ballistics at real surface gravities.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#080B16;
+    --deep:#111729;
+    --panel:#161E36;
+    --line:#28324F;
+    --chalk:#EEF2FB;
+    --dim:#94A0BE;
+    --court:#FF8A3D;
+    --plasma:#5BE3C4;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--void);
+    color:var(--chalk);
+    font-family:"Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* Starfield: three layers of tiny radial dots, no images, no requests. */
+  .sky{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, #fff, transparent),
+      radial-gradient(1px 1px at 76% 9%, #cfe0ff, transparent),
+      radial-gradient(1px 1px at 41% 62%, #fff, transparent),
+      radial-gradient(2px 2px at 88% 44%, #ffd9b8, transparent),
+      radial-gradient(1px 1px at 25% 81%, #fff, transparent),
+      radial-gradient(1px 1px at 62% 33%, #bcd4ff, transparent),
+      radial-gradient(1px 1px at 94% 74%, #fff, transparent),
+      radial-gradient(1px 1px at 6% 52%, #fff, transparent),
+      radial-gradient(1200px 700px at 78% -10%, rgba(91,227,196,.10), transparent 70%),
+      radial-gradient(900px 600px at 8% 105%, rgba(255,138,61,.09), transparent 70%);
+    opacity:.85;
+  }
+  .wrap{position:relative; z-index:1; max-width:900px; margin:0 auto; padding:56px 20px 90px}
+
+  /* Signature mark: a center-court circle that is also an orbit. */
+  .mark{width:96px;height:96px;margin:0 auto 26px;position:relative}
+  .mark .ring{
+    position:absolute; inset:0; border-radius:50%;
+    border:2px solid var(--line);
+  }
+  .mark .ring.tilt{transform:rotate(-24deg) scaleY(.42); border-color:rgba(91,227,196,.55)}
+  .mark .ball{
+    position:absolute; top:50%; left:50%; width:13px; height:13px; margin:-6.5px 0 0 -6.5px;
+    border-radius:50%; background:var(--court);
+    box-shadow:0 0 16px 3px rgba(255,138,61,.6);
+    transform-origin:6.5px 6.5px;
+    animation:orbit 9s linear infinite;
+  }
+  @keyframes orbit{ from{transform:rotate(0) translateX(46px) rotate(0)} to{transform:rotate(360deg) translateX(46px) rotate(-360deg)} }
+  @media (prefers-reduced-motion: reduce){ .mark .ball{animation:none; transform:translateX(40px)} }
+
+  h1{
+    font-size:clamp(32px,7.5vw,54px); line-height:1.04; font-weight:700;
+    margin:0 0 14px; text-align:center; letter-spacing:-.02em;
+  }
+  h1 em{font-style:normal; color:var(--court)}
+  .sub{
+    text-align:center; color:var(--dim); max-width:52ch; margin:0 auto 44px; font-size:17px;
+  }
+
+  h2{
+    font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--plasma);
+    font-family:"IBM Plex Mono", monospace; font-weight:600;
+    margin:56px 0 16px; display:flex; align-items:center; gap:14px;
+  }
+  h2::after{content:""; flex:1; height:1px; background:var(--line)}
+
+  /* --- world picker --- */
+  .worlds{display:grid; gap:8px; grid-template-columns:repeat(auto-fit, minmax(126px,1fr)); margin-bottom:24px}
+  .world{
+    cursor:pointer; text-align:left;
+    background:var(--deep); color:var(--chalk);
+    border:1px solid var(--line); border-radius:12px; padding:11px 13px;
+    font-family:inherit; font-size:15px; font-weight:500;
+    transition:border-color .15s, background .15s, transform .15s;
+  }
+  .world:hover{border-color:#3E4C77; transform:translateY(-1px)}
+  .world .g{display:block; font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--dim); margin-top:2px}
+  .world[aria-pressed="true"]{
+    background:linear-gradient(180deg, rgba(255,138,61,.16), rgba(255,138,61,.05));
+    border-color:var(--court);
+  }
+  .world[aria-pressed="true"] .g{color:var(--court)}
+  .world:focus-visible{outline:2px solid var(--plasma); outline-offset:2px}
+
+  .blurb{
+    background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--plasma);
+    border-radius:0 10px 10px 0; padding:14px 18px; margin:0 0 26px; color:var(--dim); font-size:15px;
+  }
+  .blurb strong{color:var(--chalk); font-weight:500}
+
+  /* --- results --- */
+  .events{display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(232px,1fr))}
+  .event{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  }
+  .event .name{
+    font-family:"IBM Plex Mono", monospace; font-size:11.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--dim); margin:0 0 6px;
+  }
+  .event .val{
+    font-size:30px; font-weight:700; letter-spacing:-.02em; line-height:1.1;
+    font-variant-numeric:tabular-nums;
+  }
+  .event .val .unit{font-size:15px; font-weight:400; color:var(--dim); margin-left:3px}
+  .event .cmp{font-size:13.5px; color:var(--dim); margin-top:6px}
+  .event .cmp b{color:var(--court); font-weight:600; font-variant-numeric:tabular-nums}
+
+  /* --- coriolis panel --- */
+  #spinNote{
+    margin-top:14px; padding:16px 18px; border-radius:12px; font-size:15px;
+    background:rgba(91,227,196,.07); border:1px solid rgba(91,227,196,.32); color:var(--dim);
+  }
+  #spinNote b{color:var(--plasma); font-variant-numeric:tabular-nums}
+  #spinNote[hidden]{display:none}
+
+  /* --- invented sports --- */
+  .games{display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(258px,1fr))}
+  .game{
+    background:var(--deep); border:1px solid var(--line); border-radius:14px; padding:20px;
+  }
+  .game h3{margin:0 0 4px; font-size:19px; font-weight:700}
+  .game .venue{
+    font-family:"IBM Plex Mono", monospace; font-size:11.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--court); margin:0 0 10px;
+  }
+  .game p{margin:0; font-size:15px; color:var(--dim)}
+  .game p + p{margin-top:9px}
+
+  .notes{color:var(--dim); font-size:15px}
+  .notes li{margin-bottom:9px}
+  .notes code{
+    font-family:"IBM Plex Mono", monospace; font-size:13px;
+    background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:1px 6px; color:var(--chalk);
+  }
+  footer{
+    margin-top:64px; padding-top:22px; border-top:1px solid var(--line);
+    color:#6C7898; font-size:13.5px; text-align:center;
+  }
+  footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <div class="mark" aria-hidden="true">
+    <div class="ring"></div>
+    <div class="ring tilt"></div>
+    <div class="ball"></div>
+  </div>
+
+  <h1>Sports in <em>Space</em></h1>
+  <p class="sub">Gravity is the silent rule-maker in every game we play. Change it, and the
+  record book rewrites itself. Pick a world and watch.</p>
+
+  <h2>Pick a venue</h2>
+  <div class="worlds" id="worlds" role="group" aria-label="Choose a world"></div>
+  <p class="blurb" id="blurb"></p>
+
+  <h2>The record book, recalculated</h2>
+  <div class="events" id="events"></div>
+  <div id="spinNote" hidden></div>
+
+  <h2>Games that only work up there</h2>
+  <div class="games">
+    <article class="game">
+      <p class="venue">Free-fall / microgravity</p>
+      <h3>Newton's Third Law Ball</h3>
+      <p>In free fall there is no floor to push against, so every move costs momentum you
+      cannot get back. Push off a wall and you are committed to a straight line until you
+      hit something.</p>
+      <p>The whole sport becomes budgeting: each player gets a handful of pushes per point,
+      and the throw that scores is also the throw that sends you drifting the wrong way.</p>
+    </article>
+    <article class="game">
+      <p class="venue">Lunar surface · 0.17 g</p>
+      <h3>The Long Court</h3>
+      <p>A basketball court sized for Earth legs is a joke at one-sixth gravity — a standing
+      jump rises nearly five metres and hangs for five full seconds.</p>
+      <p>So you stretch the court six-fold and raise the rim, and the game stops being about
+      speed. It becomes chess with flight times: you commit to an arc, and everyone has
+      several seconds to watch you be wrong.</p>
+    </article>
+    <article class="game">
+      <p class="venue">Rotating habitat · spin gravity</p>
+      <h3>Coriolis Handball</h3>
+      <p>Spin gravity is a lie the floor tells your inner ear. Nothing thrown across the
+      room travels straight: it curves sideways, and the direction of the curve flips
+      depending on which way you throw.</p>
+      <p>Home teams learn the drift the way sailors learn a tide. Visitors throw straight
+      at the goal and watch the ball bend politely around it.</p>
+    </article>
+  </div>
+
+  <h2>The fine print</h2>
+  <ul class="notes">
+    <li>Every number comes from the same elite-human launch conditions — take-off speed and
+      angle — run through projectile motion at that world's surface gravity. Only <code>g</code>
+      changes between venues.</li>
+    <li>The math is <strong>vacuum ballistics</strong>: point mass, no air. That is nearly exact on
+      the Moon and honest enough on Mars. It flatters Earth badly — a real 49 m/s home run
+      travels about 120 m, not the 200 m a vacuum promises, because the atmosphere eats the
+      difference. Earth's row is best read as "if someone pumped the air out of the stadium."</li>
+    <li>Jumping and throwing scale cleanly with gravity. <strong>Running does not.</strong> Sprinting
+      needs the traction and downforce that gravity supplies, so below roughly half a <em>g</em>
+      athletes bounce instead of stride, and the 100 m dash gets slower, not faster. No sprint
+      numbers here for exactly that reason.</li>
+    <li>Bodies are left out of it too. Months at low gravity thin bone and shrink the heart, so
+      the first lunar record-holders would likely be residents, not visiting Earth athletes.</li>
+    <li>Everything is calibrated so the Earth column lands on today's actual world records.
+      Trust the ratios; hold the decimals loosely.</li>
+  </ul>
+
+  <footer>
+    Built for the fun of it · <a href="/">gregquinlan.com</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // Surface gravities in m/s^2.
+  var WORLDS = [
+    { id:"earth",  name:"Earth",   g:9.807, label:"1.00 g",
+      blurb:"The control group. <strong>Every record below is the real one</strong>, which is how the rest of the table is calibrated." },
+    { id:"moon",   name:"The Moon", g:1.625, label:"0.17 g",
+      blurb:"One-sixth gravity and no air at all, so the vacuum math here is <strong>essentially exact</strong>. Alan Shepard's one-handed 6-iron in 1971 is still the only real data point." },
+    { id:"mars",   name:"Mars",    g:3.721, label:"0.38 g",
+      blurb:"Just over a third of a <em>g</em>, with an atmosphere less than 1% as thick as Earth's — <strong>close enough to a vacuum</strong> that these numbers mostly hold." },
+    { id:"titan",  name:"Titan",   g:1.352, label:"0.14 g",
+      blurb:"The strangest venue in the solar system: lunar gravity under an atmosphere <strong>denser than Earth's</strong>. Drag would gut these distances — but strap on wings and a human could genuinely fly." },
+    { id:"europa", name:"Europa",  g:1.314, label:"0.13 g",
+      blurb:"A frozen ocean world with barely any gravity. <strong>Ice is the whole sport here</strong> — a hockey rink on Europa is just the ground." },
+    { id:"ceres",  name:"Ceres",   g:0.28,  label:"0.03 g",
+      blurb:"So little gravity that <strong>sport becomes an escape-velocity problem</strong>. A hard throw genuinely risks never coming down — Ceres' escape speed is about 510 m/s, but a golf drive already stays airborne for minutes." },
+    { id:"spin",   name:"Spin station", g:3.27, label:"0.33 g · spin",
+      blurb:"A 200 m-radius ring turning once every 49 seconds to fake a third of a <em>g</em>. The floor feels solid — but <strong>nothing you throw flies straight</strong>." }
+  ];
+
+  // Elite-human launch conditions, calibrated so Earth lands on real records.
+  var G_E = 9.807;
+  var ATHLETE = {
+    highJumpVy: 5.15,          // m/s vertical take-off -> 2.45 m bar on Earth
+    standStart: 1.10,          // m of bar height that is body, not flight
+    longJumpV: 10.35, longJumpDeg: 21.5, longJumpDrop: 0.70,
+    golfV: 76, golfDeg: 11,
+    hrV: 49, hrDeg: 28,
+    dunkVy: 4.0,
+    ftDist: 4.19               // m, free-throw line to hoop centre
+  };
+
+  var rad = function(d){ return d * Math.PI / 180; };
+
+  // Range of a projectile launched from height h above its landing point.
+  function range(v, deg, g, drop){
+    var vx = v * Math.cos(rad(deg)), vy = v * Math.sin(rad(deg));
+    var t = (vy + Math.sqrt(vy*vy + 2*g*(drop||0))) / g;
+    return vx * t;
+  }
+
+  function fmt(n, dp){
+    return n.toLocaleString("en-US", { minimumFractionDigits:dp, maximumFractionDigits:dp });
+  }
+  // Metres, scaled to something a human can picture.
+  function dist(m){
+    if (m >= 1000) return { v: fmt(m/1000, 2), u: "km" };
+    if (m >= 100)  return { v: fmt(m, 0), u: "m" };
+    return { v: fmt(m, 2), u: "m" };
+  }
+  function times(x){
+    return x >= 10 ? fmt(x, 0) : fmt(x, 1);
+  }
+
+  function compute(g){
+    var A = ATHLETE, out = [];
+
+    var rise = (A.highJumpVy * A.highJumpVy) / (2 * g);
+    out.push({
+      name:"High jump",
+      val: dist(A.standStart + rise),
+      cmp: "Airborne for " + fmt(2 * A.highJumpVy / g, 1) + " s"
+    });
+
+    out.push({
+      name:"Long jump",
+      val: dist(range(A.longJumpV, A.longJumpDeg, g, A.longJumpDrop)),
+      cmp: "One bound, no run-up changes"
+    });
+
+    var golf = range(A.golfV, A.golfDeg, g, 0);
+    out.push({
+      name:"Golf drive",
+      val: dist(golf),
+      cmp: fmt(golf * 1.09361, 0) + " yards, one swing"
+    });
+
+    var hr = range(A.hrV, A.hrDeg, g, 0);
+    out.push({
+      name:"Home run",
+      val: dist(hr),
+      cmp: "Hangs " + fmt(2 * A.hrV * Math.sin(rad(A.hrDeg)) / g, 1) + " s before it lands"
+    });
+
+    var dunk = (A.dunkVy * A.dunkVy) / (2 * g);
+    out.push({
+      name:"Vertical leap",
+      val: dist(dunk),
+      cmp: "Hang time " + fmt(2 * A.dunkVy / g, 2) + " s"
+    });
+
+    // Muscle memory: throw with Earth-calibrated force, see where it lands.
+    // Free-throw range scales as 1/g, so the overshoot is the ratio minus one.
+    var over = A.ftDist * (G_E / g) - A.ftDist;
+    out.push({
+      name:"Free throw, Earth aim",
+      val: over < 0.01 ? { v:"—", u:"" } : dist(over),
+      cmp: over < 0.01 ? "Dead on. You are home." : "Long. Every shot needs relearning."
+    });
+
+    return out;
+  }
+
+  // Rotating habitat: 200 m radius spun to 1/3 g.
+  var SPIN_R = 200;
+  function spinNote(g){
+    var omega = Math.sqrt(g / SPIN_R);            // rad/s
+    var period = 2 * Math.PI / omega;             // s per revolution
+    var v = 7, t = ATHLETE.ftDist / v;            // a flat 7 m/s pass to the hoop
+    var drift = omega * v * t * t;                // Coriolis sidestep, ~1/2 * (2*omega*v) * t^2
+    return "The ring turns once every <b>" + fmt(period, 0) + " seconds</b> — slow enough to look " +
+      "still, fast enough to matter. A flat 7 m/s pass across the free-throw line drifts " +
+      "<b>" + fmt(drift * 100, 1) + " cm</b> sideways before it arrives, and the drift reverses if " +
+      "you throw the other way down the ring. Jump straight up and you land <b>off your own " +
+      "footprints</b>. The high jump and long jump numbers above ignore all of this; the home " +
+      "crowd does not.";
+  }
+
+  var elWorlds = document.getElementById("worlds");
+  var elBlurb  = document.getElementById("blurb");
+  var elEvents = document.getElementById("events");
+  var elSpin   = document.getElementById("spinNote");
+  var current  = "earth";
+
+  WORLDS.forEach(function(w){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "world";
+    b.setAttribute("aria-pressed", String(w.id === current));
+    b.dataset.id = w.id;
+    b.innerHTML = w.name + '<span class="g">' + w.label + "</span>";
+    b.addEventListener("click", function(){ select(w.id); });
+    elWorlds.appendChild(b);
+  });
+
+  function select(id){
+    current = id;
+    var w = WORLDS.filter(function(x){ return x.id === id; })[0];
+
+    Array.prototype.forEach.call(elWorlds.children, function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.id === id));
+    });
+
+    elBlurb.innerHTML = "<strong>" + w.name + "</strong> — " + w.blurb;
+
+    elEvents.innerHTML = "";
+    compute(w.g).forEach(function(ev){
+      var card = document.createElement("div");
+      card.className = "event";
+      card.innerHTML =
+        '<p class="name">' + ev.name + "</p>" +
+        '<div class="val">' + ev.val.v + '<span class="unit">' + ev.val.u + "</span></div>" +
+        '<p class="cmp">' + ev.cmp + "</p>";
+      elEvents.appendChild(card);
+    });
+
+    if (w.id === "spin"){
+      elSpin.innerHTML = spinNote(w.g);
+      elSpin.hidden = false;
+    } else {
+      elSpin.hidden = true;
+    }
+  }
+
+  select("earth");
+})();
+</script>
+</body>
+</html>
