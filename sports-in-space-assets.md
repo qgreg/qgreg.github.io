@@ -38,7 +38,7 @@ Ice hockey rink inside a rotating cylindrical space habitat, hard science fictio
 **American Football** — 30.0 m ball apex over 6,500 m² of floor; peak of a punt with 5 s hang time
 
 ```text
-Massive elongated American football field built along the floor of a natural extraterrestrial canyon, hard science fiction realism. The field runs two hundred metres between rock walls, roofed by a cable-suspended transparent membrane anchored to the cliffs by visible tensioning towers and steel catenaries. Broad padded safety run-off zones flank the field; players wear reinforced armour with deceleration harnesses. Long dramatic shadows from low sun, alien geology, cinematic scale with human figures for reference, photorealistic wide-angle architectural rendering, no cartooning, no neon.
+American football field built into an excavated pit on the lunar surface, hard science fiction realism. The field lies at the floor of a rectangular cut with raw grey regolith walls rising steeply on both sides, roofed by a geodesic pressure dome of steel framing and glazing; Earth hangs in the black sky beyond the dome. Terraced sideline galleries lit along both rock walls carry equipment, vehicles and crew in pressure suits. Symmetrical wide-angle view straight down the long axis of the field, goalposts at both ends, cool floodlighting against grey rock and green turf, believable structural and human scale. Photorealistic architectural rendering, no cartooning, no neon.
 ```
 
 ## `soccer_dense_atmosphere`
