@@ -327,7 +327,7 @@
   <div class="control">
     <div class="presets" id="presets"></div>
     <div class="slab"><span>Surface gravity</span><output id="gOut"></output></div>
-    <input type="range" id="gIn" min="0.05" max="2" step="0.005" value="0.166" aria-label="Surface gravity, in g">
+    <input type="range" id="gIn" min="0.02" max="2" step="0.001" value="0.166" aria-label="Surface gravity, in g">
   </div>
    </div>
   </div>
@@ -353,12 +353,20 @@
     <li>Clearance is <code>structural margin + Earth ball apex ÷ g</code>. Apex scales as the
       inverse of gravity, which is exact for vacuum ballistics. Volume is that clearance times
       the enclosure footprint; air mass is volume &times; 1.2 kg/m&sup3; at 1 atm.</li>
-    <li><strong>The model is calibrated against buildings that exist.</strong> At 1 g it returns
-      7 m of clearance for basketball, which is exactly what FIBA mandates, and 8 m for a hockey
-      rink, which is what rinks are built to. That agreement at 1 g is the reason to trust the
-      ratios everywhere else.</li>
+    <li><strong>The Earth column is calibrated, not confirmed.</strong> Clearance is apex plus a
+      structural margin, and both are values chosen here. Basketball's margin was picked so that
+      1 g returns FIBA's 7 m minimum, which makes that agreement a fit rather than evidence.
+      What does hold is that the off-world ratios barely depend on it: zero the margins entirely
+      and the gap between baseball and basketball moves from 166&times; to 177&times;; quadruple
+      them and it is 141&times;. On the Moon the margin is 8% of basketball's clearance and the
+      apex term carries the rest. Trust the ratios because they survive the assumption, not
+      because 1 g matches a rulebook.</li>
+    <li><strong>Real domes are not flat.</strong> Tropicana Field peaks at 68.6 m over second base
+      and drops to 26 m at the centre-field wall. This model multiplies a single clearance across
+      the whole footprint, which overstates the volume of a real dome while understating how
+      awkwardly that height has to be distributed across it.</li>
     <li>These are <strong>floors, not designs</strong>. A real roof spanning 150 m has structural
-      depth of its own, which is why domed stadiums run 46&ndash;82 m where this model says 35.
+      depth of its own, which is why the Superdome stands 83 m where this model says 35.
       Real enclosures are larger than these numbers, never smaller.</li>
     <li>Footprints are held at regulation size. If you also widen the field so athletes can use
       the longer strides low gravity allows, volume grows faster still &mdash; so treat every
@@ -391,12 +399,13 @@
   var ISS = 916;                 // m^3 pressurized
   var VAB = 3664883;             // m^3, largest single-storey building on Earth
   var IMG = "/theme/images/sports-in-space/";
+  // Measured surface gravity / 9.80665, to the slider's 0.001 resolution.
   var PRESETS = [
-    { n:"Earth", g:1,     p:"On Earth" },
-    { n:"Mars",  g:0.38,  p:"On Mars" },
-    { n:"Moon",  g:0.166, p:"On the Moon" },
-    { n:"Titan", g:0.14,  p:"On Titan" },
-    { n:"Ceres", g:0.03,  p:"On Ceres" },
+    { n:"Earth", g:1,     p:"On Earth" },              // 9.807 m/s²
+    { n:"Mars",  g:0.378, p:"On Mars" },               // 3.711
+    { n:"Moon",  g:0.166, p:"On the Moon" },           // 1.625
+    { n:"Titan", g:0.138, p:"On Titan" },              // 1.352
+    { n:"Ceres", g:0.029, p:"On Ceres" },              // 0.28
     { n:"High-g world", g:1.8, p:"On a high-gravity world" }
   ];
 

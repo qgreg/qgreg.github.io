@@ -33,7 +33,7 @@ Interior of a low-gravity planetary basketball arena under a vast pressurized do
 Ice hockey rink inside a rotating cylindrical space habitat, hard science fiction realism. The rink sits on the inner hull surface and the landscape beyond it curves visibly upward into an overhead skyline of habitat structures hanging inverted above; an airborne puck traces a subtly curved Coriolis arc marked against calibrated curvature lines on the arena glass. Skaters lean into the spin direction. Cool arena lighting against warm habitat sun-line illumination, photorealistic wide-angle rendering with believable structural scale, no cartooning, no neon.
 ```
 
-## `football_canyon_dome`
+## `football_lunar_dome`
 
 **American Football** — 30.0 m ball apex over 6,500 m² of floor; peak of a punt with 5 s hang time
 
