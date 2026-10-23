@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Third Spaces — Rooms, Not Feeds</title>
+<meta name="description" content="Ray Oldenburg's eight traits of a third place, applied to the places people actually gather online: forums, Discord servers, guilds, feeds and group chats.">
+<link rel="canonical" href="https://qgreg.github.io/digital-third-spaces.html">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Greg Quinlan">
+<meta property="og:url" content="https://qgreg.github.io/digital-third-spaces.html">
+<meta property="og:title" content="Digital Third Spaces — Rooms, Not Feeds">
+<meta property="og:description" content="Ray Oldenburg's eight traits of a third place, applied to the places people actually gather online.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Digital Third Spaces — Rooms, Not Feeds">
+<meta name="twitter:description" content="Ray Oldenburg's eight traits of a third place, applied to the places people actually gather online.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23B4532A%22%2F%3E%3Ctext%20x%3D%2216%22%20y%3D%2223%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2219%22%20font-weight%3D%22700%22%20text-anchor%3D%22middle%22%20fill%3D%22%23F6F1E7%22%3E3%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F1E7; --card:#FFFCF6; --sunk:#EDE5D6; --line:#DDD2BF; --line2:#C9BBA3;
+    --ink:#231F1A; --dim:#5E554A; --faint:#8A7F70;
+    --clay:#B4532A;             /* page accent */
+    --sage:#4F6B52;
+    --dot:#B4532A; --dothalf:#D9A184; --dotnone:#C9BBA3;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#17140F; --card:#211C16; --sunk:#2A241C; --line:#3A3227; --line2:#4E4436;
+      --ink:#EDE6D8; --dim:#B5AA98; --faint:#857A69;
+      --clay:#E07A4E; --sage:#8DB08F;
+      --dot:#E07A4E; --dothalf:#8F5A40; --dotnone:#4E4436;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#17140F; --card:#211C16; --sunk:#2A241C; --line:#3A3227; --line2:#4E4436;
+    --ink:#EDE6D8; --dim:#B5AA98; --faint:#857A69;
+    --clay:#E07A4E; --sage:#8DB08F;
+    --dot:#E07A4E; --dothalf:#8F5A40; --dotnone:#4E4436;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:Inter,"Helvetica Neue",Arial,sans-serif; font-size:16.5px;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:860px; margin:0 auto;
+    padding:56px max(16px,env(safe-area-inset-right)) 90px max(16px,env(safe-area-inset-left));
+  }
+  a{color:var(--clay)}
+  .serif{font-family:Fraunces,Georgia,serif}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center; margin-bottom:34px}
+  .kicker{
+    font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--sage);
+    font-weight:600; margin:0 0 12px;
+  }
+  h1{
+    font-family:Fraunces,Georgia,serif; font-weight:700; letter-spacing:-.02em;
+    font-size:clamp(38px,7.4vw,66px); line-height:1.0; margin:0 0 14px;
+  }
+  h1 em{font-style:italic; font-weight:400; color:var(--clay)}
+  .tagline{margin:0; font-size:clamp(17px,2.2vw,20px); color:var(--dim); max-width:46ch; text-wrap:balance}
+  .places{width:190px; height:auto}
+  .places .lbl{font-family:Inter,Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:.08em; fill:var(--dim)}
+  .places .num{font-family:Fraunces,Georgia,serif; font-size:26px; font-weight:700}
+
+  .lede p{max-width:64ch; margin:0 0 16px}
+  p{max-width:64ch}
+
+  h2{
+    font-family:Fraunces,Georgia,serif; font-weight:600; font-size:clamp(25px,3.6vw,32px);
+    letter-spacing:-.01em; line-height:1.15; margin:64px 0 8px;
+  }
+  .sub{color:var(--dim); margin:0 0 22px}
+
+  /* ---------- eight traits ---------- */
+  .traits{list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px}
+  .traits li{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px}
+  .traits .n{font-family:Fraunces,Georgia,serif; color:var(--clay); font-weight:700; font-size:15px; margin-right:6px}
+  .traits b{font-weight:600}
+  .traits p{margin:6px 0 0; color:var(--dim); font-size:14.5px; line-height:1.55}
+
+  /* ---------- rooms vs feeds ---------- */
+  .versus{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:22px 0 4px}
+  .versus > div{border-radius:12px; padding:18px 20px; border:1px solid var(--line)}
+  .versus .room{background:var(--card); border-color:var(--sage)}
+  .versus .feed{background:var(--sunk)}
+  .versus h3{font-family:Fraunces,Georgia,serif; margin:0 0 8px; font-size:20px}
+  .versus .room h3{color:var(--sage)}
+  .versus ul{margin:0; padding-left:18px; font-size:15px; color:var(--dim)}
+  .versus li{margin-bottom:6px}
+  .versus li b{color:var(--ink); font-weight:600}
+
+  /* ---------- matrix ---------- */
+  .matrix-wrap{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 10px 10px}
+  table.matrix{border-collapse:collapse; width:100%; table-layout:fixed}
+  .matrix th, .matrix td{padding:0; text-align:center}
+  .matrix thead th{
+    font-size:11px; font-weight:600; color:var(--faint); padding-bottom:8px;
+    font-variant-numeric:tabular-nums;
+  }
+  .matrix thead th abbr{text-decoration:none; cursor:help}
+  .matrix col.name{width:34%}
+  .matrix col.tot{width:44px}
+  .matrix tbody tr{border-top:1px solid var(--line)}
+  .matrix tbody th{text-align:left}
+  .rowbtn{
+    all:unset; box-sizing:border-box; display:block; width:100%; cursor:pointer;
+    padding:9px 6px; border-radius:7px; font-size:14px; font-weight:500; line-height:1.25;
+  }
+  .rowbtn:hover{color:var(--clay)}
+  .rowbtn:focus-visible{outline:2px solid var(--clay); outline-offset:-2px}
+  tr.sel{background:var(--sunk)}
+  tr.sel .rowbtn{color:var(--clay)}
+  .dot{display:inline-block; width:14px; height:14px; border-radius:50%; vertical-align:middle}
+  .d2{background:var(--dot)}
+  .d1{background:linear-gradient(90deg,var(--dot) 50%,transparent 50%); box-shadow:inset 0 0 0 2px var(--dot)}
+  .d0{box-shadow:inset 0 0 0 2px var(--dotnone)}
+  .tot{font-family:Fraunces,Georgia,serif; font-weight:700; font-size:16px; font-variant-numeric:tabular-nums}
+  .legend{display:flex; flex-wrap:wrap; gap:6px 18px; font-size:13px; color:var(--dim); margin:12px 6px 2px}
+  .legend span{display:inline-flex; align-items:center; gap:7px}
+  .sortbar{display:flex; gap:8px; flex-wrap:wrap; margin:0 0 12px}
+  .chip{
+    font:inherit; font-size:13.5px; background:var(--card); color:var(--ink);
+    border:1px solid var(--line2); border-radius:99px; padding:6px 13px; cursor:pointer;
+  }
+  .chip:hover{border-color:var(--clay)}
+  .chip[aria-pressed="true"]{background:var(--clay); border-color:var(--clay); color:var(--paper)}
+  .chip:focus-visible{outline:2px solid var(--clay); outline-offset:2px}
+
+  .detail{margin-top:14px; background:var(--card); border:1px solid var(--line); border-left:4px solid var(--clay); border-radius:0 12px 12px 0; padding:18px 20px}
+  .detail h3{font-family:Fraunces,Georgia,serif; margin:0 0 4px; font-size:22px}
+  .detail .verdict{margin:0 0 14px; color:var(--dim)}
+  .detail dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:7px 12px; font-size:14.5px}
+  .detail dt{display:flex; align-items:center; gap:8px; font-weight:600; white-space:nowrap}
+  .detail dd{margin:0; color:var(--dim)}
+
+  /* ---------- quiz ---------- */
+  .quiz{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:6px 20px}
+  .q{display:grid; grid-template-columns:1fr auto; gap:10px 16px; align-items:center; padding:13px 0; border-top:1px solid var(--line)}
+  .q:first-child{border-top:0}
+  .q p{margin:0; font-size:15px}
+  .q p b{font-weight:600}
+  .seg{display:inline-flex; border:1px solid var(--line2); border-radius:9px; overflow:hidden}
+  .seg button{
+    font:inherit; font-size:13px; padding:6px 11px; background:transparent; color:var(--dim);
+    border:0; border-left:1px solid var(--line2); cursor:pointer; min-width:52px;
+  }
+  .seg button:first-child{border-left:0}
+  .seg button[aria-pressed="true"]{background:var(--clay); color:var(--paper)}
+  .seg button:focus-visible{outline:2px solid var(--clay); outline-offset:-2px}
+  .result{
+    margin-top:14px; padding:18px 20px; border-radius:12px; background:var(--sunk);
+    display:grid; grid-template-columns:auto 1fr; gap:6px 18px; align-items:center;
+  }
+  .result .big{font-family:Fraunces,Georgia,serif; font-size:44px; font-weight:700; line-height:1; color:var(--clay); font-variant-numeric:tabular-nums}
+  .result .big small{font-size:18px; color:var(--faint); font-weight:400}
+  .result p{margin:0}
+  .result .rv{font-weight:600}
+  .result .rn{color:var(--dim); font-size:14.5px}
+
+  /* ---------- principles ---------- */
+  .principles{counter-reset:p; list-style:none; padding:0; margin:0}
+  .principles li{counter-increment:p; position:relative; padding:0 0 18px 46px; max-width:66ch}
+  .principles li::before{
+    content:counter(p); position:absolute; left:0; top:0; width:30px; height:30px; border-radius:50%;
+    border:1.5px solid var(--sage); color:var(--sage); display:grid; place-items:center;
+    font-family:Fraunces,Georgia,serif; font-weight:700; font-size:15px;
+  }
+  .principles b{font-weight:600}
+  .principles span{color:var(--dim)}
+
+  blockquote{
+    margin:26px 0; padding:4px 0 4px 22px; border-left:3px solid var(--clay);
+    font-family:Fraunces,Georgia,serif; font-size:clamp(19px,2.4vw,23px); line-height:1.4; max-width:56ch;
+  }
+
+  /* ---------- timeline ---------- */
+  .timeline{list-style:none; padding:0; margin:0; border-left:2px solid var(--line); margin-left:6px}
+  .timeline li{position:relative; padding:0 0 16px 22px; max-width:64ch}
+  .timeline li::before{content:""; position:absolute; left:-7px; top:6px; width:12px; height:12px; border-radius:50%; background:var(--paper); border:2px solid var(--clay)}
+  .timeline .yr{font-family:Fraunces,Georgia,serif; font-weight:700; color:var(--clay); margin-right:8px; font-variant-numeric:tabular-nums}
+  .timeline span{color:var(--dim)}
+
+  .sources{font-size:14.5px; color:var(--dim); padding-left:18px}
+  .sources li{margin-bottom:8px; max-width:70ch}
+  .sources i{color:var(--ink)}
+
+  .visually-hidden{position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+  footer{margin-top:54px; padding-top:20px; border-top:1px solid var(--line); color:var(--faint); font-size:13.5px; text-align:center}
+  footer a{color:var(--dim); text-decoration:none}
+  footer a:hover{color:var(--clay)}
+
+  @media (max-width:640px){
+    .wrap{padding-top:36px}
+    .hero{grid-template-columns:1fr}
+    .places{width:150px; order:-1}
+    .versus{grid-template-columns:1fr}
+    .q{grid-template-columns:1fr}
+    .matrix-wrap{padding:10px 4px 8px}
+    .matrix col.name{width:30%}
+    .matrix col.tot{width:30px}
+    .rowbtn{font-size:12.5px; padding:8px 4px}
+    .dot{width:11px; height:11px}
+    .tot{font-size:14px}
+    .detail dl{grid-template-columns:1fr; gap:2px}
+    .detail dd{margin-bottom:8px}
+    .result{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <p class="kicker">An essay with a scorecard</p>
+      <h1>Digital <em>third</em> spaces</h1>
+      <p class="tagline">Home is the first place, work the second. The third is where you go to be
+      among people for no reason at all &mdash; and more and more of it lives on a screen.</p>
+    </div>
+    <svg class="places" viewBox="0 0 200 170" role="img" aria-label="Three places: home, work, and a third place drawn as a screen">
+      <rect x="8" y="10" width="84" height="66" rx="10" fill="none" stroke="var(--line2)" stroke-width="2"/>
+      <text class="num" x="22" y="48" fill="var(--faint)">1</text>
+      <text class="lbl" x="22" y="64">HOME</text>
+      <rect x="108" y="10" width="84" height="66" rx="10" fill="none" stroke="var(--line2)" stroke-width="2"/>
+      <text class="num" x="122" y="48" fill="var(--faint)">2</text>
+      <text class="lbl" x="122" y="64">WORK</text>
+      <rect x="40" y="92" width="120" height="66" rx="10" fill="var(--card)" stroke="var(--clay)" stroke-width="2.5" stroke-dasharray="6 5"/>
+      <text class="num" x="56" y="132" fill="var(--clay)">3</text>
+      <text class="lbl" x="56" y="148">ONLINE</text>
+      <circle cx="132" cy="112" r="4" fill="var(--sage)"/>
+      <circle cx="144" cy="112" r="4" fill="var(--clay)"/>
+      <circle cx="138" cy="124" r="4" fill="var(--dim)"/>
+    </svg>
+  </header>
+
+  <section class="lede">
+    <p>In 1989 the sociologist Ray Oldenburg published <i>The Great Good Place</i>, an argument
+    that the coffee shops, pubs, barbershops and general stores of ordinary life were not
+    incidental. They were infrastructure: the places where neighbours became acquaintances,
+    where strangers argued about nothing, where a town learned what it thought. He called them
+    <b>third places</b>, and he worried, loudly, that suburban America was paving them over.</p>
+    <p>Thirty-odd years later, a lot of people answer his question &mdash; <i>where do you go to
+    just hang out?</i> &mdash; with the name of a Discord server, a guild, a subreddit or a group
+    chat. Oldenburg himself was skeptical that anything on a screen could count. This page takes
+    his own checklist and runs the internet through it.</p>
+  </section>
+
+  <h2>Oldenburg&rsquo;s eight traits</h2>
+  <p class="sub">His test for a third place, paraphrased. A place doesn&rsquo;t need all eight,
+  but the good ones have most.</p>
+  <ol class="traits" id="traitList"></ol>
+
+  <h2>Rooms, not feeds</h2>
+  <p class="sub">Most of the argument fits in one distinction.</p>
+  <p>Oldenburg never had to spell out that a café has walls, because every café does. Online,
+  walls are optional, and the biggest platforms removed them on purpose. That split &mdash;
+  between places that behave like <b>rooms</b> and places that behave like <b>feeds</b> &mdash;
+  predicts the scorecard below better than any other single factor.</p>
+  <div class="versus">
+    <div class="room">
+      <h3>A room</h3>
+      <ul>
+        <li><b>Has edges.</b> You can tell who is in it, roughly how many, and when you have left.</li>
+        <li><b>Has memory.</b> The same people are there tomorrow, and they remember yesterday.</li>
+        <li><b>Has presence.</b> You can see who is around right now and wander over.</li>
+        <li><b>Is shaped by its regulars</b>, who set the tone and greet the newcomer.</li>
+      </ul>
+    </div>
+    <div class="feed">
+      <h3>A feed</h3>
+      <ul>
+        <li><b>Has no edges.</b> Your audience is whoever the ranking decides, at any size.</li>
+        <li><b>Has no memory.</b> Each scroll is a fresh draw; you rarely see the same stranger twice.</li>
+        <li><b>Has no presence.</b> Everyone is a post, not a person who is &ldquo;here.&rdquo;</li>
+        <li><b>Is shaped by a ranking</b> that optimises for attention, not for regulars.</li>
+      </ul>
+    </div>
+  </div>
+  <p>You can be lonely in a feed of millions and at home in a room of twelve. Regulars are
+  impossible without memory, conversation is impossible without edges, and &ldquo;a home away
+  from home&rdquo; is impossible in a place that rearranges itself every time you open it.</p>
+
+  <h2>Scoring the internet</h2>
+  <p class="sub">Eight kinds of online gathering place against the eight traits. These are
+  judgment calls, not measurements &mdash; tap a row to see the reasoning, and argue with it.</p>
+  <div class="sortbar" role="group" aria-label="Order rows">
+    <button class="chip" data-sort="score" aria-pressed="true">Best first</button>
+    <button class="chip" data-sort="list" aria-pressed="false">Original order</button>
+  </div>
+  <div class="matrix-wrap">
+    <table class="matrix" id="matrix">
+      <colgroup><col class="name"><col><col><col><col><col><col><col><col><col class="tot"></colgroup>
+      <thead><tr id="mhead"><th scope="col"><span class="visually-hidden">Place</span></th></tr></thead>
+      <tbody id="mbody"></tbody>
+    </table>
+    <div class="legend" id="legend">
+      <span><i class="dot d2"></i>Yes</span>
+      <span><i class="dot d1"></i>Partly</span>
+      <span><i class="dot d0"></i>No</span>
+      <span id="keyline"></span>
+    </div>
+  </div>
+  <div class="detail" id="detail" aria-live="polite"></div>
+
+  <p>Two things stand out. The top of the table is dominated by <b>small, bounded, persistent</b>
+  spaces, the ones that look most like rooms. And the group chat scores well while failing the
+  two traits that matter most to Oldenburg: it is not neutral ground and it levels nothing,
+  because everyone in it already knows each other. It is a wonderful thing, but it is the
+  living room extended, not a third place. The whole point of his third place was meeting
+  people <i>outside</i> your circle.</p>
+
+  <h2>Score a place you use</h2>
+  <p class="sub">Pick a server, forum, game or chat you actually spend time in and answer
+  honestly.</p>
+  <div class="quiz" id="quiz"></div>
+  <div class="result" id="result" aria-live="polite"></div>
+
+  <h2>What a good one needs</h2>
+  <p class="sub">If you are building or running one, the traits turn into design choices.</p>
+  <ol class="principles">
+    <li><b>Keep it small enough to have regulars.</b> <span>Conversation stops scaling long
+      before servers do. When a space outgrows the point where people recognise each other,
+      split it into rooms rather than letting it become a stage.</span></li>
+    <li><b>Show who is here.</b> <span>The single most café-like feature online is a presence
+      list: names that light up, a voice channel with three people idling in it. It is the
+      digital version of seeing friends through the window.</span></li>
+    <li><b>Make dropping in free.</b> <span>No scheduling, no performance, no obligation to post.
+      Lurking is how most people first walk into a bar, too.</span></li>
+    <li><b>Prefer persistent names to follower counts.</b> <span>A stable handle lets people
+      build a reputation inside the room; a visible metric imports status from outside it and
+      breaks the leveler.</span></li>
+    <li><b>Give it a host, not an algorithm.</b> <span>Oldenburg&rsquo;s places had a proprietor
+      who knew the regulars. Online, that is a moderator with a name, a face and judgment &mdash;
+      not a ranking system tuned for time-on-site.</span></li>
+    <li><b>Let the activity be an excuse.</b> <span>The game, the hobby or the show gives people
+      a reason to show up. The good spaces let conversation take over from it.</span></li>
+  </ol>
+
+  <h2>The catch: who owns the room</h2>
+  <p>A café owner makes money selling coffee, so a regular who nurses one cup for three hours is
+  tolerated, even loved. Most digital gathering places are rented from a platform that makes
+  money from attention, and that difference leaks into everything. Ranked feeds replace
+  conversation with performance because performance holds attention. Badges and counters
+  arrive because status is engaging. And the room can disappear on a business decision:
+  Club Penguin and AOL Instant Messenger both shut down in 2017, taking their regulars&rsquo;
+  shared histories with them.</p>
+  <blockquote>A third place you rent is only as permanent as the landlord&rsquo;s quarterly plan.</blockquote>
+  <p>That doesn&rsquo;t make digital third places fake. Researchers studying online games in the
+  mid-2000s found that guilds did real third-place work, especially in mixing people who would
+  never otherwise meet. It does mean the ones that last tend to be the ones whose community has
+  some stake in the walls: volunteer-run forums, self-hosted servers, guilds that outlive the
+  game they started in.</p>
+
+  <h2>A short history</h2>
+  <ol class="timeline">
+    <li><span class="yr">1985</span><span>The WELL opens, a dial-up conferencing system in the
+      San Francisco Bay Area and one of the first online communities with a strong sense of
+      place.</span></li>
+    <li><span class="yr">1989</span><span>Oldenburg publishes <i>The Great Good Place</i>.</span></li>
+    <li><span class="yr">1990</span><span>LambdaMOO, a text-based world built of rooms people
+      could walk between, goes online.</span></li>
+    <li><span class="yr">1993</span><span>Howard Rheingold&rsquo;s <i>The Virtual Community</i>,
+      largely about the WELL, argues that online groups can be real communities.</span></li>
+    <li><span class="yr">2000</span><span>Robert Putnam&rsquo;s <i>Bowling Alone</i> documents
+      the decline of American civic and social life.</span></li>
+    <li><span class="yr">2003</span><span>Second Life launches; virtual worlds become
+      places with addresses.</span></li>
+    <li><span class="yr">2004</span><span>World of Warcraft launches, and its guilds become one
+      of the largest third-place experiments ever run.</span></li>
+    <li><span class="yr">2006</span><span>Steinkuehler and Williams publish &ldquo;Where
+      Everybody Knows Your Name,&rdquo; finding that online games meet most of
+      Oldenburg&rsquo;s criteria.</span></li>
+    <li><span class="yr">2015</span><span>Discord launches for gamers and becomes the default
+      clubhouse for hobbies of every kind.</span></li>
+    <li><span class="yr">2020</span><span>Pandemic lockdowns close physical third places
+      almost everywhere at once; game worlds and voice channels absorb the overflow.</span></li>
+    <li><span class="yr">2023</span><span>The U.S. Surgeon General issues an advisory on the
+      &ldquo;epidemic of loneliness and isolation,&rdquo; naming the loss of shared social
+      spaces as part of the problem.</span></li>
+  </ol>
+
+  <h2>Further reading</h2>
+  <ul class="sources">
+    <li>Ray Oldenburg, <i>The Great Good Place</i> (1989).</li>
+    <li>Howard Rheingold, <i>The Virtual Community: Homesteading on the Electronic Frontier</i> (1993).</li>
+    <li>Robert D. Putnam, <i>Bowling Alone: The Collapse and Revival of American Community</i> (2000).</li>
+    <li>Constance Steinkuehler and Dmitri Williams, &ldquo;Where Everybody Knows Your Name: Online
+      Games as &lsquo;Third Places&rsquo;,&rdquo; <i>Journal of Computer-Mediated Communication</i> (2006).</li>
+    <li>Office of the U.S. Surgeon General, <i>Our Epidemic of Loneliness and Isolation</i> (2023).</li>
+  </ul>
+
+  <footer><a href="/">Greg Quinlan</a></footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // Oldenburg's eight characteristics, paraphrased. `short` labels the matrix columns.
+  var TRAITS = [
+    {name:"Neutral ground", short:"Neutral", text:"Nobody is the host. You can come and go without invitation or obligation.",
+     ask:"Could you show up uninvited, and leave, without anyone being put out?"},
+    {name:"A leveler", short:"Leveler", text:"Status from outside doesn't count inside. People are judged by how they are in the room.",
+     ask:"Does it mix people you wouldn't otherwise meet, without outside status counting?"},
+    {name:"Conversation", short:"Talk", text:"Talk is the main activity, and it is playful, unhurried and back-and-forth.",
+     ask:"Is real back-and-forth conversation the main thing that happens?"},
+    {name:"Accessible", short:"Access", text:"Open at odd hours, easy to reach, and accommodating to whoever wanders in.",
+     ask:"Can a newcomer drop in at almost any hour and find someone around?"},
+    {name:"The regulars", short:"Regulars", text:"A core of familiar faces who give the place its character and welcome newcomers.",
+     ask:"Are there regulars who recognise you, and who'd notice if you stopped coming?"},
+    {name:"Low profile", short:"Plain", text:"Plain and unpretentious. Not a showcase, not a stage.",
+     ask:"Is it unpretentious, with no pressure to perform or look impressive?"},
+    {name:"Playful mood", short:"Play", text:"Wit and lightness are the norm; tension is the exception.",
+     ask:"Is the mood mostly light, joking and good-humoured?"},
+    {name:"Home away from home", short:"Home", text:"People feel rooted there, a sense of belonging and of being missed.",
+     ask:"Does it feel like yours, somewhere you belong?"}
+  ];
+
+  // Scores: 2 = yes, 1 = partly, 0 = no. One note per trait, same order as TRAITS.
+  var SPACES = [
+    {name:"Small Discord server", s:[1,1,2,2,2,2,2,2],
+     verdict:"The closest thing the modern internet has to a corner café.",
+     notes:["Someone owns it and can lock the door, but members rarely feel like guests.",
+            "Roles and admin colours create a pecking order, though outside status mostly doesn't travel in.",
+            "Text channels and idle voice chat are conversation first.",
+            "Always open, and the member list shows who is around right now.",
+            "The defining feature: a server of a few hundred has a recognisable core.",
+            "Usually scrappy and in-jokey rather than polished.",
+            "Emoji, bots and running gags make the mood light by default.",
+            "People call it “my server”. That possessive is the tell."]},
+    {name:"Hobby forum", s:[1,2,2,1,2,2,1,2],
+     verdict:"The old model, and still one of the best: slow, bounded and remembered.",
+     notes:["Usually run by a volunteer or a small owner, not a platform.",
+            "Pseudonymous; your post history is your only status.",
+            "Threaded discussion is the whole point.",
+            "Always open, but asynchronous: you rarely catch anyone “in”.",
+            "Long-lived regulars with years of shared history.",
+            "Plain, often visually dated, and nobody minds.",
+            "Off-topic boards are playful; the main boards can be earnest.",
+            "Members describe leaving one like moving out of a neighbourhood."]},
+    {name:"MMO guild", s:[1,2,1,1,2,1,2,2],
+     verdict:"Proven third-place territory, with the game as the excuse to show up.",
+     notes:["The publisher owns the world, but the guild is the members' own.",
+            "Your job, age and looks don't matter; what you're like on a raid night does.",
+            "Chat runs alongside the activity rather than being it, though it often takes over.",
+            "Requires the game, the hardware, and often a subscription.",
+            "Guild rosters are regulars by definition.",
+            "Gear and rank are on display, which brings some showcase back.",
+            "Play is literally the activity.",
+            "Some guilds outlive the game they formed in."]},
+    {name:"Group chat", s:[0,0,2,0,2,2,2,2],
+     verdict:"Scores high, but it is the living room extended, not a third place.",
+     notes:["It's somebody's invite list. There's no neutral ground in a private room.",
+            "Everyone already knows each other, so nothing gets levelled or mixed.",
+            "Pure conversation.",
+            "Closed to anyone not already invited.",
+            "Everyone in it is a regular.",
+            "Nobody performs for their own group chat. Mostly.",
+            "Memes, voice notes, bits that run for years.",
+            "Deeply homey, which is exactly why it belongs with the first place."]},
+    {name:"Social VR world", s:[1,1,2,1,1,1,2,1],
+     verdict:"The most literally place-like, held back by hardware and churn.",
+     notes:["Public worlds are neutral; private instances belong to whoever opened them.",
+            "Avatars hide a lot, though the hardware itself is a barrier to entry.",
+            "Spatial voice makes overlapping, wandering conversation feel natural.",
+            "Open all night, but you need a headset or a capable PC.",
+            "Regulars form in specific worlds and groups; public lobbies churn.",
+            "Elaborate avatars can make it something of a showcase.",
+            "Exuberantly playful.",
+            "Strong for some communities, transient for drop-in visitors."]},
+    {name:"Subreddit", s:[1,2,2,2,1,1,1,1],
+     verdict:"Good conversation, weak regulars. Depends enormously on size.",
+     notes:["Volunteer moderators run it, but the platform can overrule them.",
+            "Pseudonymous; karma exists but doesn't travel much between communities.",
+            "Comment threads are genuine back-and-forth.",
+            "Anyone can drop in, any time.",
+            "Small subs have regulars; big ones are a sea of strangers.",
+            "Vote counts make every comment a small audition.",
+            "Varies from playful to combative.",
+            "Some people feel rooted in a small sub; few do in a default one."]},
+    {name:"Big streamer's chat", s:[0,1,0,2,1,1,2,1],
+     verdict:"A stadium, not a pub: fun, crowded and focused on one person.",
+     notes:["It's the streamer's stage. Everyone else is the audience.",
+            "Subscriber badges and paid highlights sell status inside the room.",
+            "At high speed chat becomes chanting, not conversation.",
+            "Free, live, and one click away.",
+            "Regulars exist, but they are a tiny fraction of the crowd.",
+            "Production values and donations make it a show.",
+            "Emotes and in-jokes make it very playful.",
+            "Belonging attaches to the streamer more than to fellow viewers."]},
+    {name:"Algorithmic feed", s:[0,0,0,2,0,0,1,0],
+     verdict:"Not a third place at all. A billboard you can talk back to.",
+     notes:["The ranking decides who sees you. That is the opposite of neutral.",
+            "Follower counts and virality are status made visible.",
+            "Replies are mostly broadcast at each other, not conversation.",
+            "Always open, always full, and that's the only box it ticks.",
+            "No memory, so no regulars: you rarely meet the same stranger twice.",
+            "Everything is a performance for an unknown audience.",
+            "Sometimes funny, often tense.",
+            "Nobody feels at home in a place that rearranges itself every time they visit."]}
+  ];
+
+  var LABEL = ["No","Partly","Yes"];
+  function total(a){ return a.reduce(function(x,y){return x+y;},0); }
+  function el(tag, attrs, html){
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+  function dot(v){ return '<i class="dot d'+v+'" aria-hidden="true"></i>'; }
+
+  // ---------- trait cards ----------
+  var tl = document.getElementById("traitList");
+  TRAITS.forEach(function(t,i){
+    tl.appendChild(el("li", null, '<span class="n">'+(i+1)+'</span><b>'+t.name+'</b><p>'+t.text+'</p>'));
+  });
+
+  // ---------- matrix ----------
+  var head = document.getElementById("mhead");
+  TRAITS.forEach(function(t,i){
+    head.appendChild(el("th", {scope:"col"}, '<abbr title="'+t.name+'">'+(i+1)+'</abbr>'));
+  });
+  head.appendChild(el("th", {scope:"col"}, '<abbr title="Total out of 16">&Sigma;</abbr>'));
+  document.getElementById("keyline").textContent =
+    "Columns: " + TRAITS.map(function(t,i){return (i+1)+" "+t.short;}).join(" · ");
+
+  var body = document.getElementById("mbody");
+  var detail = document.getElementById("detail");
+  var selected = 0, order = "score";
+
+  function renderDetail(){
+    var sp = SPACES[selected];
+    var rows = TRAITS.map(function(t,i){
+      return '<dt>'+dot(sp.s[i])+t.name+'</dt><dd>'+sp.notes[i]+'</dd>';
+    }).join("");
+    detail.innerHTML = '<h3>'+sp.name+' <span class="tot" style="color:var(--clay)">'+total(sp.s)+'/16</span></h3>'+
+      '<p class="verdict">'+sp.verdict+'</p><dl>'+rows+'</dl>';
+  }
+
+  function renderMatrix(){
+    var idx = SPACES.map(function(_,i){return i;});
+    if (order === "score") idx.sort(function(a,b){ return total(SPACES[b].s) - total(SPACES[a].s); });
+    body.innerHTML = "";
+    idx.forEach(function(i){
+      var sp = SPACES[i];
+      var tr = el("tr", i === selected ? {"class":"sel"} : null);
+      var th = el("th", {scope:"row"});
+      var b = el("button", {"class":"rowbtn", type:"button", "aria-pressed": String(i===selected)}, sp.name);
+      b.addEventListener("click", function(){ selected = i; renderMatrix(); renderDetail(); });
+      th.appendChild(b); tr.appendChild(th);
+      sp.s.forEach(function(v,j){
+        tr.appendChild(el("td", {title: TRAITS[j].name+": "+LABEL[v]}, dot(v)+'<span class="visually-hidden">'+TRAITS[j].name+": "+LABEL[v]+'</span>'));
+      });
+      tr.appendChild(el("td", {"class":"tot"}, String(total(sp.s))));
+      body.appendChild(tr);
+    });
+  }
+
+  document.querySelectorAll(".chip[data-sort]").forEach(function(c){
+    c.addEventListener("click", function(){
+      order = c.getAttribute("data-sort");
+      document.querySelectorAll(".chip[data-sort]").forEach(function(o){ o.setAttribute("aria-pressed", String(o===c)); });
+      renderMatrix();
+    });
+  });
+
+  renderMatrix(); renderDetail();
+
+  // ---------- quiz ----------
+  var quiz = document.getElementById("quiz");
+  var result = document.getElementById("result");
+  var answers = TRAITS.map(function(){ return null; });
+
+  TRAITS.forEach(function(t,i){
+    var q = el("div", {"class":"q"});
+    q.appendChild(el("p", null, '<b>'+t.name+'.</b> '+t.ask));
+    var seg = el("div", {"class":"seg", role:"group", "aria-label": t.name});
+    LABEL.forEach(function(lab,v){
+      var b = el("button", {type:"button", "aria-pressed":"false"}, lab);
+      b.addEventListener("click", function(){
+        answers[i] = v;
+        seg.querySelectorAll("button").forEach(function(o,k){ o.setAttribute("aria-pressed", String(k===v)); });
+        renderResult();
+      });
+      seg.appendChild(b);
+    });
+    q.appendChild(seg);
+    quiz.appendChild(q);
+  });
+
+  function renderResult(){
+    var done = answers.filter(function(a){ return a !== null; }).length;
+    if (done < TRAITS.length){
+      result.innerHTML = '<div class="big">'+done+'<small>/8</small></div><p class="rn">Answer all eight to see where your place lands.</p>';
+      return;
+    }
+    var sc = total(answers);
+    // Nearest space by squared distance across all eight traits, not just total.
+    var best = 0, bestD = Infinity;
+    SPACES.forEach(function(sp,i){
+      var d = sp.s.reduce(function(acc,v,j){ return acc + (v-answers[j])*(v-answers[j]); },0);
+      if (d < bestD){ bestD = d; best = i; }
+    });
+    var v;
+    if (answers[0] === 0 && answers[1] === 0) v = "A first-place extension. Warm, maybe, but closed: it isn’t introducing you to anyone new.";
+    else if (sc >= 13) v = "That’s a genuine third place. Look after it.";
+    else if (sc >= 9) v = "Most of the way there. The traits you marked “partly” are where to push.";
+    else if (sc >= 5) v = "More of a venue than a hangout: you visit it, but it doesn’t hold you.";
+    else v = "A feed in disguise. Fine for news, but don’t count on it for company.";
+    result.innerHTML = '<div class="big">'+sc+'<small>/16</small></div>'+
+      '<div><p class="rv">'+v+'</p><p class="rn">Its profile is closest to a <b>'+SPACES[best].name.toLowerCase()+'</b>.</p></div>';
+  }
+  renderResult();
+})();
+</script>
+</body>
+</html>
