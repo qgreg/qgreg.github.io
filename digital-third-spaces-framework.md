@@ -153,3 +153,31 @@ the commute owns what becomes scarce.
 
 See "Still to verify" in the research notes. Also check: the WFH yearly
 series and pre-pandemic baseline, and the Aghion, Jones & Jones paper.
+
+## 10. Working title and structure
+
+**Annealing in a post-pandemic agentic age: pondering by a pivoteer**
+
+- **Why annealing:** annealing is controlled. Someone chooses the cooling
+  schedule, so the frame carries a choice between annealing (slow settling,
+  where new structure forms) and quenching (abrupt mandates that freeze
+  defects in place).
+- **"Pondering"** marks the piece as reflective, so the metaphor is offered
+  as a frame, not a finding.
+- **The byline makes this a personal essay.** That's a shift from the
+  impersonal voice used for the third-places page. Decide which pieces carry
+  which voice.
+
+Possible chapters, following the annealing process:
+
+1. **Heating (2020):** the pandemic shock. Location and role decouple.
+2. **Where it rests:** hysteresis. The system does not return to baseline.
+3. **The material:** one reality and the five layers (medium, mise en scène,
+   configuration, conditions, experience).
+4. **What resists compression:** Baumol's disease and Baumol's blessings.
+   Agents compress the work that can be compressed.
+5. **Nucleation:** new forms take hold in the new circumstances, such as the
+   online one-act, the participatory house, the small recurring house, the
+   regained commute hour, and hosted gatherings at work.
+6. **Anneal or quench:** a choice for organisations and creators.
+7. **Third places:** the existing page, as one case study.
