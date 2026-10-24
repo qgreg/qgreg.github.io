@@ -82,7 +82,34 @@ management policy on it is configuration.
   fixed. Its leverage is set by the configuration it sits in, and whoever owns
   the configuration decides who captures the gain.
 
-## 7. Thesis (*hypothesis*)
+## 6a. Socialisation and creativity
+
+- **Organisational socialisation** is an established field (Van Maanen &
+  Schein, 1979). Much of it used to happen through physical co-location.
+- **Remote work siloed collaboration.** Firm-wide remote work at Microsoft
+  (about 61,000 employees) made collaboration networks more static and siloed,
+  with fewer ties across groups (Yang et al., *Nature Human Behaviour*, 2022).
+  *Verify details.*
+- **New ideas travel through weak ties** (Granovetter, 1973), which are the
+  ties third places produce and the commute used to supply.
+- **Socialisation is a Baumol activity.** Mentoring, onboarding and corridor
+  talk cannot be made more productive per hour. As AI cheapens codifiable work,
+  encounter grows relatively more expensive, and firms are pushed to cut it
+  just as it matters most for creativity.
+- **Same cure as the theatre:** enlarge the house, not the cast. Configure
+  encounter so an hour of it reaches more people and more weak ties.
+
+## 7. Subject statement
+
+Baumol says human encounter keeps getting relatively more expensive, and AI
+agents accelerate that just as encounter becomes what matters most. With place
+no longer arranging it, the work is to configure encounter, for employees and
+for audiences, so it scales without losing what makes it live.
+
+Possible section title: "After the commute: configuring encounter in the age
+of AI agents."
+
+## 7a. Thesis (*hypothesis*)
 
 The pandemic decoupled where people are from what they are doing. Baumol says
 being among people will keep getting relatively more expensive, and AI
