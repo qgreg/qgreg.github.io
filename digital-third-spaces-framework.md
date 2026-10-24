@@ -99,12 +99,33 @@ management policy on it is configuration.
 - **Same cure as the theatre:** enlarge the house, not the cast. Configure
   encounter so an hour of it reaches more people and more weak ties.
 
+## 6b. Baumol's blessings
+
+- **Some things don't compress, and that is their value.** In care and in
+  time spent together, the hours are not a cost of producing the good; they
+  *are* the good. A compressed bedside visit, mentoring session or
+  performance is a lesser one.
+- **Baumol's own optimistic point** (*The Cost Disease*, 2012): productivity
+  growth elsewhere means society can afford the rising relative cost.
+- **The blessing framing goes further:** if AI agents compress codifiable
+  work, the dividend can be spent on what doesn't compress.
+- **Design rule: share encounter, don't compress it.** "Enlarge the house"
+  shares a performance with more people without shortening it.
+- **The phrase:** one search found no prior use of "Baumol's blessing."
+  That's not proof of originality, so check again before claiming it.
+
 ## 7. Subject statement
 
 Baumol says human encounter keeps getting relatively more expensive, and AI
 agents accelerate that just as encounter becomes what matters most. With place
 no longer arranging it, the work is to configure encounter, for employees and
 for audiences, so it scales without losing what makes it live.
+
+Alternative, from the blessing side: Caring for people and time together
+don't compress. That is Baumol's blessing, not only his disease. As AI agents
+compress the work that can be compressed, the question is whether the time
+they free is spent on encounter, and how to configure it now that place no
+longer does.
 
 Possible section title: "After the commute: configuring encounter in the age
 of AI agents."
