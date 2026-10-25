@@ -181,3 +181,23 @@ Possible chapters, following the annealing process:
    regained commute hour, and hosted gatherings at work.
 6. **Anneal or quench:** a choice for organisations and creators.
 7. **Third places:** the existing page, as one case study.
+
+## 11. Numbers in human connection
+
+- **Hubs room cap: 25 by default,** adjustable by the room owner, with
+  overflow watching from the lobby. It's a *medium* limit, set by device
+  performance on phones and standalone headsets, not a social one. Checked
+  (Mozilla docs; a mirrored copy gives 24, raisable to 30).
+- **Conversation splits at about four speakers.** Freely forming
+  conversation groups rarely sustain more than about four people before
+  splitting (Dunbar, Duncan & Nettle, 1995). *Verify.* With spatial audio,
+  25 people become several small conversations. On a video call, 25 people
+  are one conversation with about 24 listeners.
+- **Team size:** the "two-pizza team" is Amazon's rule (Bezos), not Scrum's.
+  The 2020 Scrum Guide says a team is "typically 10 or fewer people."
+- **Communication pairs grow as n(n−1)/2:** 10 people make 45 pairs, 25
+  make 300, and 150 make 11,175.
+- **Dunbar's layers** run about 5, 15, 50 and 150, each roughly three times
+  the last. The 150 figure is contested (Lindenfors et al., 2021). *Verify.*
+- **No single natural number;** a nested series of them. The design question
+  is which layer a configuration serves.
