@@ -227,3 +227,15 @@ Possible chapters, following the annealing process:
     survive online.
   - **Third places serve the outer layers.** That's why their loss matters
     for creativity, and why configuring encounter is the work.
+
+## 12. Section decisions (in progress)
+
+- **Form:** a site section, under review.
+- **Voice, two modes (exploring):**
+  - **Ponderings:** first person, the pondering pivoteer, reflective. The
+    annealing essay is one.
+  - **Workings:** impersonal and evidence-led: frameworks, case studies,
+    data. The third-places page is one.
+  - **Each cites the other.** A pondering links to the workings it rests on.
+- **Out of scope:** the author's software experiments.
+- **Glossary:** a defined-terms working, to keep the vocabulary precise.
