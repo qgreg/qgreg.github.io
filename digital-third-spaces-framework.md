@@ -213,3 +213,17 @@ Possible chapters, following the annealing process:
   - **Relevance:** tutoring is a pure Baumol case, and AI tutoring is pitched
     as the cure. Whether care in teaching compresses is the
     Baumol's-blessings question in its sharpest form.
+- **Dunbar as a frame:**
+  - **The layers are a time budget.** Each layer is kept up by time spent on
+    it, with the most time going to the innermost few. *Verify the
+    proportions.* Relationships are a Baumol good: their maintenance doesn't
+    compress.
+  - **Online networks appear to obey the same limits** (Dunbar, 2016, on
+    social media networks). *Verify.* More connections isn't more
+    relationships.
+  - **Decoupling thinned the outer layers.** The 50–150 layer of
+    acquaintances and weak ties was the one place used to supply; the
+    Microsoft network study shows cross-group ties thinning. Inner layers
+    survive online.
+  - **Third places serve the outer layers.** That's why their loss matters
+    for creativity, and why configuring encounter is the work.
