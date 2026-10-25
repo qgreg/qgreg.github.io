@@ -201,3 +201,15 @@ Possible chapters, following the annealing process:
   the last. The 150 figure is contested (Lindenfors et al., 2021). *Verify.*
 - **No single natural number;** a nested series of them. The design question
   is which layer a configuration serves.
+- **Classrooms:** no single studied optimum.
+  - **Tennessee STAR** (1985–89, randomised): small classes of 13–17 against
+    regular classes of 22–25. Small classes helped, most in early grades and
+    for disadvantaged students.
+  - **Other studies are mixed:** Glass & Smith (1978) found benefits growing
+    below about 15–20. Hoxby (2000) found no effect from natural variation.
+  - **Bloom's "2 sigma problem" (1984):** one-to-one tutoring outperformed
+    conventional classes by about two standard deviations. Later
+    meta-analyses find smaller but real tutoring effects. *Verify.*
+  - **Relevance:** tutoring is a pure Baumol case, and AI tutoring is pitched
+    as the cure. Whether care in teaching compresses is the
+    Baumol's-blessings question in its sharpest form.
