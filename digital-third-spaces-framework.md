@@ -57,8 +57,10 @@ management policy on it is configuration.
   levelled off well above baseline. *Verify with the WFH time series.*
 - **Activation energy** (why it stays): the pandemic paid the switching costs
   all at once. The WFH researchers' "forced experiment."
-- **Annealing vs quenching** (how to respond): slow settling vs abrupt
-  mandates that freeze defects in place. *Editorial frame, not evidence.*
+- **Annealing vs quenching** (how to respond): gradual, participatory
+  settling vs abrupt change in *any* direction that freezes defects in
+  place. The frame is about pace and participation, never about which
+  arrangement is right. *Editorial frame, not evidence.*
 - **Keep the shapes distinct:** hysteresis (WFH), accelerated trend (suburban
   Broadway share, already falling before 2020), relaxation (total Broadway
   attendance, back near baseline).
@@ -160,7 +162,7 @@ series and pre-pandemic baseline, and the Aghion, Jones & Jones paper.
 
 - **Why annealing:** annealing is controlled. Someone chooses the cooling
   schedule, so the frame carries a choice between annealing (slow settling,
-  where new structure forms) and quenching (abrupt mandates that freeze
+  where new structure forms) and quenching (abrupt change, in any direction, that freezes
   defects in place).
 - **"Pondering"** marks the piece as reflective, so the metaphor is offered
   as a frame, not a finding.
@@ -179,7 +181,9 @@ Possible chapters, following the annealing process:
 5. **Nucleation:** new forms take hold in the new circumstances, such as the
    online one-act, the participatory house, the small recurring house, the
    regained commute hour, and hosted gatherings at work.
-6. **Anneal or quench:** a choice for organisations and creators.
+6. **Anneal or quench:** a choice about pace and participation, for
+   organisations, communities and creators. Not a position on any
+   particular arrangement.
 7. **Third places:** the existing page, as one case study.
 
 ## 11. Numbers in human connection
@@ -239,3 +243,20 @@ Possible chapters, following the annealing process:
   - **Each cites the other.** A pondering links to the workings it rests on.
 - **Out of scope:** the author's software experiments.
 - **Glossary:** a defined-terms working, to keep the vocabulary precise.
+
+## 13. Stance and ethics
+
+- **Stance:** the author is responding to circumstances and trends. The
+  section takes no position on remote work, return-to-office, or any
+  employer's or government's policy. Work examples are about the design of
+  encounter, never about policy.
+- **High bar:** no named employers, clients, executives or colleagues in
+  public material. No internal or nonpublic information. A "views are my own"
+  line in the section footer.
+- **Interest:** effective communal action. A candidate working on
+  community-owned configuration builds on Ostrom's design principles for
+  governing commons (*Governing the Commons*, 1990).
+- **Space and place:** the difficulty with "place" was its imaginary
+  coordinates, not its population. Online settings have no coordinates;
+  the only coordinates in the same-chair example are the chair's.
+- **Glossary:** an addendum. A term enters it only once the content uses it.
