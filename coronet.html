@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Coronet · Request a Boarding Pass</title>
+<meta name="description" content="Request your boarding pass for the Coronet.">
+<!-- Link previews (Facebook, iMessage, Slack). Change the domain if the page moves. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Coronet · Request a Boarding Pass">
+<meta property="og:description" content="I built a royal starship, and she's open now. Free in AltspaceVR, no headset needed. Request a boarding pass and come aboard.">
+<meta property="og:url" content="https://qgreg.github.io/coronet.html">
+<meta property="og:image" content="https://qgreg.github.io/coronet-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Coronet, a starship with lit rings and a boarding tube, in orbit above Earth">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Karla:wght@400;600;700&display=swap">
+<style>
+/* One gold-edged boarding card on a deep night field. Single dark look by choice. */
+:root {
+  --night: #0b0e1a;
+  --night-2: #141a2e;
+  --gold: #d9b45a;
+  --gold-soft: #f0dca4;
+  --ink: #f3efe4;
+  --muted: #a7a9b8;
+  --error: #ff8a7a;
+  --display: "Cormorant Garamond", Georgia, serif;
+  --body: "Karla", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1d2648 0%, transparent 60%),
+    var(--night);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1rem;
+  line-height: 1.55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(24px + env(safe-area-inset-top, 0px)) 18px calc(32px + env(safe-area-inset-bottom, 0px));
+}
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: linear-gradient(180deg, var(--night-2), #10152a);
+  border: 1px solid var(--gold);
+  border-radius: 14px;
+  box-shadow: 0 0 0 4px rgba(217,180,90,.12), 0 24px 60px rgba(0,0,0,.5);
+  overflow: hidden;
+}
+.hero { display: block; width: 100%; height: auto; border-bottom: 1px solid rgba(217,180,90,.55); }
+.top { padding: 22px 26px 22px; text-align: center; }
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 11vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: .02em;
+  color: var(--gold-soft);
+}
+.lede { margin: 14px auto 0; max-width: 32ch; color: var(--ink); }
+.tear {
+  position: relative;
+  border-top: 1px dashed rgba(217,180,90,.55);
+  margin: 0 18px;
+}
+.tear::before, .tear::after {
+  content: "";
+  position: absolute;
+  top: -11px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--night);
+  border: 1px solid var(--gold);
+}
+.tear::before { left: -30px; }
+.tear::after { right: -30px; }
+form, .done { padding: 22px 26px 26px; }
+label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+input[type="email"] {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: #0a0d18;
+  border: 1px solid #39405c;
+  border-radius: 8px;
+  padding: 13px 14px;
+}
+input[type="email"]:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+button {
+  margin-top: 14px;
+  width: 100%;
+  font: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: .06em;
+  color: #1a1406;
+  background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+  border: 0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+button[disabled] { opacity: .6; cursor: progress; }
+.fine { margin: 14px 0 0; font-size: .85rem; color: var(--muted); }
+.msg { margin: 12px 0 0; font-size: .95rem; min-height: 1.4em; }
+.msg.error { color: var(--error); }
+.done h2 {
+  margin: 0 0 8px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: var(--gold-soft);
+}
+.done p { margin: 0 0 10px; }
+footer { padding: 0 26px 22px; text-align: center; font-size: .8rem; color: var(--muted); }
+footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="card">
+  <img class="hero" src="coronet-og.jpg" width="1200" height="630" alt="The Coronet, a starship with lit rings and a boarding tube, in orbit above Earth">
+  <div class="top">
+    <p class="eyebrow">Secrets of the Social Deck</p>
+    <h1>The Coronet</h1>
+    <p class="lede">I built a royal starship, and she's open now. Free in AltspaceVR, no headset needed. Request a boarding pass and come aboard: a ship is only half a ship until there's company.</p>
+  </div>
+  <div class="tear" aria-hidden="true"></div>
+
+  <form id="pass-form" novalidate>
+    <label for="email">Your email</label>
+    <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@example.com">
+    <div class="hp" aria-hidden="true">
+      <label for="website">Leave this empty</label>
+      <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+    </div>
+    <button id="submit" type="submit">Send my boarding pass</button>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    <p class="fine">I'll email your pass with boarding instructions. Your address is used only for the Coronet.</p>
+  </form>
+
+  <div class="done" id="done" hidden>
+    <h2>Your pass is on its way</h2>
+    <p>Check your inbox for an email from me with everything you need to board.</p>
+    <p class="fine">Nothing there in a few minutes? Check your spam folder.</p>
+  </div>
+
+  <footer>Greg Quinlan · <a href="index.html">qgreg.github.io</a></footer>
+</main>
+
+<script>
+// EDIT HERE: your deployed Apps Script web app URL (ends in /exec).
+const ENDPOINT = "PASTE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+const form = document.getElementById("pass-form");
+const emailEl = document.getElementById("email");
+const msg = document.getElementById("msg");
+const btn = document.getElementById("submit");
+const done = document.getElementById("done");
+
+// Where the visitor came from, e.g. coronet.html?src=survey
+const src = new URLSearchParams(location.search).get("src") || "direct";
+
+function showError(text) {
+  msg.textContent = text;
+  msg.className = "msg error";
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = emailEl.value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError("Please enter a valid email address.");
+    emailEl.focus();
+    return;
+  }
+  btn.disabled = true;
+  msg.className = "msg";
+  msg.textContent = "Issuing your pass…";
+  try {
+    // text/plain avoids a CORS preflight, which Apps Script can't answer.
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ email, src, website: form.website.value })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "failed");
+    form.hidden = true;
+    done.hidden = false;
+  } catch (err) {
+    showError("Something went wrong. Please try again in a moment.");
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
