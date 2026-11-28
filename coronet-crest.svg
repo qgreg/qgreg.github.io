@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-480 -480 960 960" width="1024" height="1024">
+<title>The Coronet crest</title>
+<circle cx="0" cy="0" r="470" fill="#E5D1B3"/>
+<circle cx="0" cy="0" r="430" fill="#35383E"/>
+<rect x="-210" y="45" width="420" height="70" fill="#E5D1B3"/>
+<polygon points="-195.0,45.0 -125.0,45.0 -154.0,-115.0 -166.0,-115.0" fill="#E5D1B3"/>
+<rect x="-178.0" y="-145.0" width="36" height="30" rx="4" fill="#FFE7C4"/>
+<polygon points="-115.0,45.0 -45.0,45.0 -74.0,-65.0 -86.0,-65.0" fill="#E5D1B3"/>
+<rect x="-98.0" y="-95.0" width="36" height="30" rx="4" fill="#FFE7C4"/>
+<polygon points="-35.0,45.0 35.0,45.0 6.0,-115.0 -6.0,-115.0" fill="#E5D1B3"/>
+<rect x="-18.0" y="-145.0" width="36" height="30" rx="4" fill="#FFE7C4"/>
+<polygon points="45.0,45.0 115.0,45.0 86.0,-65.0 74.0,-65.0" fill="#E5D1B3"/>
+<rect x="62.0" y="-95.0" width="36" height="30" rx="4" fill="#FFE7C4"/>
+<polygon points="125.0,45.0 195.0,45.0 166.0,-115.0 154.0,-115.0" fill="#E5D1B3"/>
+<rect x="142.0" y="-145.0" width="36" height="30" rx="4" fill="#FFE7C4"/>
+</svg>
